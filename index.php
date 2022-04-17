@@ -1,8 +1,10 @@
 <?php
     session_start();
 
-    if (isset($_SESSION['id'])){
-        header("Location: views/home.php");
+    if (isset($_SESSION['id'])) {
+        if (isset($_SESSION['rol']) && $_SESSION['rol'] == '1') {
+            header("Location: views/home.php");
+        }
     }
 ?>
 

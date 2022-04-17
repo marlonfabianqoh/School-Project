@@ -36,9 +36,10 @@ toastr.options.closeButton = true;
                         }
                     })
                 }
-                
+
                 form.classList.add('was-validated');
             }, false);
         });
+        
     }, false);
 })();
