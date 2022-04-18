@@ -7,9 +7,9 @@
 
         if(is_array($keys)){
             for($i = 0; $i < count($keys); $i++){
-                $nombre = $keys[$i];
-                $comando = "$" . $nombre . " = \$_POST['$nombre'];";
-                eval($comando);
+                $name = $keys[$i];
+                $command = "$" . $name . " = \$_POST['$name'];";
+                eval($command);
             }
         }
     }
@@ -26,11 +26,11 @@
             $_SESSION['usuario'] = $row['usuario'];
             $_SESSION['rol'] = $row['id_rol_fk'];
 
-            $response = array('STATUS' => true, 'MESSAGE' => 'Inicio de sesión éxitoso');
+            $response = array('STATUS' => true, 'MESSAGE' => 'Inicio de sesión éxitoso', 'DATA' => array());
             echo json_encode($response);
 
         } else {
-            $response = array('STATUS' => false, 'MESSAGE' => 'Usuario y/o contraseña incorrecto(s)');
+            $response = array('STATUS' => false, 'MESSAGE' => 'Usuario y/o contraseña incorrecto(s)', 'DATA' => array());
             echo json_encode($response);
         }
     }

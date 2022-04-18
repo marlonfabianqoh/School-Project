@@ -39,7 +39,7 @@
             </div>
             <div class="row mt-5">
                 <div class="col-md-3">
-                    <a href="/SCHOOL-PROJECT/views/admin/adminSedes.php" class="text-decoration-none">
+                    <a href="./admin/adminSedes.php" class="text-decoration-none">
                         <div class="card text-center shadow-sm p-4">
                             <h4 class="card-title text-dark">Sedes</h4>
                             <h2>
@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <a href="/SCHOOL-PROJECT/views/admin/adminJornadas.php" class="text-decoration-none">
+                    <a href="./admin/adminJornadas.php" class="text-decoration-none">
                         <div class="card text-center shadow-sm p-4">
                             <h4 class="card-title text-dark">Jornadas</h4>
                             <h2>
