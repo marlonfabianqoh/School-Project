@@ -76,11 +76,11 @@
                 }
             }
 
-            $response = array('STATUS' => true, 'MESSAGE' => 'Sedes cargadas con éxito', 'DATA' => $data);
+            $response = array('STATUS' => true, 'MESSAGE' => 'Sede(s) cargada(s) con éxito', 'DATA' => $data);
             echo json_encode($response);
 
         } else {
-            $response = array('STATUS' => false, 'MESSAGE' => 'No existen sedes', 'DATA' => array());
+            $response = array('STATUS' => false, 'MESSAGE' => 'No existe(n) sede(s)', 'DATA' => array());
             echo json_encode($response);
         }
     }

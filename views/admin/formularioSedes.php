@@ -172,7 +172,6 @@
 
                     if(data.STATUS){
                         data = data.DATA[0];
-                        console.log(data);
                         $('#txtName').val(data.nombre);
                         $('#txtAddress').val(data.direccion);
                         $('#txtPhone').val(data.telefono);
@@ -190,8 +189,6 @@
             <?php 
                 }
             ?>
-
-            console.log(department);
 
             // FUNCION QUE CARGA LOS DEPARTAMENTOS
             const result2 = await $.ajax({

@@ -51,7 +51,7 @@ toastr.options.closeButton = true;
     window.addEventListener('load', function() {
         var forms = document.getElementsByClassName('sede-validation');
         var tag = $("body").attr("tag");
-        
+
         var validation = Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
                 event.preventDefault();
@@ -74,6 +74,49 @@ toastr.options.closeButton = true;
                                 toastr.success(data.MESSAGE, {timeOut: 3000});
                                 setTimeout(() => {
                                     window.location.href = "./adminSedes.php";
+                                }, 3000);
+                            } else {
+                                toastr.error(data.MESSAGE);
+                            }
+                        }
+                    })
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// VALIDACIÓN DEL FORMULARIO JORNADA
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('jornada-validation');
+        var tag = $("body").attr("tag");
+        
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (form.checkValidity() === false) {
+                    toastr.warning("Diligencie todos los campos antes de continuar");
+                }
+                else if (form.checkValidity() === true) {
+                    var frm = $("#form-jornada");
+                    
+                    $.ajax({
+                        url: '../../controllers/c_jornada.php',
+                        type: "POST",
+                        data: frm.serialize(),
+                        success: function (result) {
+                            let data = JSON.parse(result);
+
+                            if(data.STATUS){
+                                toastr.success(data.MESSAGE, {timeOut: 3000});
+                                setTimeout(() => {
+                                    window.location.href = "./adminJornadas.php";
                                 }, 3000);
                             } else {
                                 toastr.error(data.MESSAGE);
