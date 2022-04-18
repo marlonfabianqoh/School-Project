@@ -104,11 +104,11 @@
         $result = $mysqli->query($query);
         
         if ($result) {
-            $response = array('STATUS' => true, 'MESSAGE' => 'Sede creada con éxito', 'DATA' => array());
+            $response = array('STATUS' => true, 'MESSAGE' => 'Sede actualizada con éxito', 'DATA' => array());
             echo json_encode($response);
 
         } else {
-            $response = array('STATUS' => false, 'MESSAGE' => 'Fallo al crear la sede', 'DATA' => array());
+            $response = array('STATUS' => false, 'MESSAGE' => 'Fallo al actualizar la sede', 'DATA' => array());
             echo json_encode($response);
         }
     }

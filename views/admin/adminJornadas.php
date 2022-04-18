@@ -1,3 +1,24 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
+        header("Location: ../index.php");
+    } else {
+        // $usuario = $_SESSION['usuario'];
+        require "../../controllers/connection.php";
+
+        if (!empty($_GET['id'])) {
+            $id = $_GET["id"];
+
+            $query = "DELETE FROM `jornada` WHERE id = '$id'";
+            $result = $mysqli->query($query);
+
+        }
+
+        $query = "SELECT * FROM `jornada`;";
+        $jornadas = $mysqli->query($query);
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -54,121 +75,31 @@
             </div>
             <div class="row mt-3">
                 <div class="col-12 mb-4">
-                    <a href="studentList.html">
+                    <a href="formularioJornadas.php">
                         <button type="button" class="btn btn-success">
                             Nueva Jornada
                             <i class="bi bi-plus-lg"></i>
                         </button>
                     </a>
                 </div>
+                <?php foreach ($jornadas as $jornada): ?>
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Jornada # 1</h5>
-                            <p class="card-text text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quibusdam
-                                adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
-                                labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
+                            <h5 class="card-title"><?= $jornada["nombre"] ?></h5>
+                            <p class="card-text text-secondary">
+                                Descripsion de la <?= $jornada["nombre"] ?>
                             </p>
-                            <button type="button" class="btn btn-success">
+                            <a href="formularioJornadas.php?id=<?= $jornada["id"] ?>" type="button" class="btn btn-success">
                                 <i class="bi bi-pencil"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger">
+                            </a>
+                            <a href="adminJornadas.php?id=<?= $jornada["id"] ?>" type="button" class="btn btn-danger">
                                 <i class="bi bi-trash"></i>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Jornada # 2</h5>
-                            <p class="card-text text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quibusdam
-                                adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
-                                labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
-                            </p>
-                            <button type="button" class="btn btn-success">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Jornada # 3</h5>
-                            <p class="card-text text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quibusdam
-                                adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
-                                labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
-                            </p>
-                            <button type="button" class="btn btn-success">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Jornada # 4</h5>
-                            <p class="card-text text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quibusdam
-                                adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
-                                labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
-                            </p>
-                            <button type="button" class="btn btn-success">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Jornada # 5</h5>
-                            <p class="card-text text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quibusdam
-                                adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
-                                labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
-                            </p>
-                            <button type="button" class="btn btn-success">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Jornada # 6</h5>
-                            <p class="card-text text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quibusdam
-                                adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
-                                labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
-                            </p>
-                            <button type="button" class="btn btn-success">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach ?>
                 <div class="col-12 mt-5">
                     <a href="studentList.html">
                         <button type="button" class="btn btn-outline-secondary">Volver</button>
@@ -217,3 +148,7 @@
 </body>
 
 </html>
+
+<?php 
+    }
+?> 
