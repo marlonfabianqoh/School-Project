@@ -1,3 +1,10 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '5') {
+        header("Location: ../../index.php");
+    } else {
+?>
 <!doctype html>
 <html lang="en">
 
@@ -20,37 +27,51 @@
 
 <body>
     <main class="content">
-        <nav class="navbar navbar-dark bg-primary">
+    <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-              <a class="navbar-brand" href="/views/visitor/home.html">School Project</a>
-              <a href="/views/admin/userList.html">
-                <button type="button" class="btn btn-light">Ingresar</button>
-              </a>
+                <a class="navbar-brand" href="../home.php">School Project</a>
+                <div>
+                    <!-- <a href="/views/secretary/dashboard.html">
+                        <button type="button" class="btn btn-light">Secretaria</button>
+                    </a> -->
+                    <a href="../../controllers/logout.php">
+                        <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                    </a>
+                </div>
             </div>
-          </nav>
+        </nav>
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <h1>Listado de cursos.</h1>
+                    <h1>Historial de observaciones.</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <form class="row">
+                        <legend class="mt-5">Datos del estudiante</legend>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="jornada" class="form-label">Jornada:</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected></option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                  </select>
+                                <label for="nombresEstudiante" class="form-label">Nombres del estudiante:</label>
+                                <input type="text" class="form-control" id="nombresEstudiante">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="grado" class="form-label">Grado:</label>
+                                <label for="apellidosEstudiante" class="form-label">Apellidos del estudiante:</label>
+                                <input type="text" class="form-control" id="apellidosEstudiante">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="telefonoEstudiante" class="form-label">Identificacion del
+                                    estudiante:</label>
+                                <input type="number" class="form-control" id="telefonoEstudiante">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="gradoEstudiante" class="form-label">Grado:</label>
                                 <select class="form-select" aria-label="Default select example">
                                     <option selected></option>
                                     <option value="1">1</option>
@@ -62,109 +83,95 @@
                     </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <a href="parameterization.html">
-                        <button type="button" class="btn btn-outline-secondary">Parametros</button>
-                    </a>
-                </div>
-            </div class="row">
             <div class="row mt-5">
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Curso # 1</h5>
+                            <h5 class="card-title">Observacion # 1</h5>
                             <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
                                 adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
                                 labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
                             </p>
-                            <a class="navbar-brand" href="/views/secretary/studentList.html">
-                                <button type="button" class="btn btn-success">
-                                    <i class="bi bi-pencil"></i>
-                                </button>    
-                            </a>
+                            <button type="button" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Curso # 2</h5>
+                            <h5 class="card-title">Observacion # 2</h5>
                             <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
                                 adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
                                 labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
                             </p>
-                            <a class="navbar-brand" href="/views/secretary/studentList.html">
-                                <button type="button" class="btn btn-success">
-                                    <i class="bi bi-pencil"></i>
-                                </button>    
-                            </a>
+                            <button type="button" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Curso # 3</h5>
+                            <h5 class="card-title">Observacion # 3</h5>
                             <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
                                 adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
                                 labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
                             </p>
-                            <a class="navbar-brand" href="/views/secretary/studentList.html">
-                                <button type="button" class="btn btn-success">
-                                    <i class="bi bi-pencil"></i>
-                                </button>    
-                            </a>
+                            <button type="button" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Curso # 4</h5>
+                            <h5 class="card-title">Observacion # 4</h5>
                             <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
                                 adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
                                 labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
                             </p>
-                            <a class="navbar-brand" href="/views/secretary/studentList.html">
-                                <button type="button" class="btn btn-success">
-                                    <i class="bi bi-pencil"></i>
-                                </button>    
-                            </a>
+                            <button type="button" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Curso # 5</h5>
+                            <h5 class="card-title">Observacion # 5</h5>
                             <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
                                 adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
                                 labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
                             </p>
-                            <a class="navbar-brand" href="/views/secretary/studentList.html">
-                                <button type="button" class="btn btn-success">
-                                    <i class="bi bi-pencil"></i>
-                                </button>    
-                            </a>
+                            <button type="button" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Curso # 6</h5>
+                            <h5 class="card-title">Observacion # 6</h5>
                             <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
                                 adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
                                 labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
                             </p>
-                            <a class="navbar-brand" href="/views/secretary/studentList.html">
-                                <button type="button" class="btn btn-success">
-                                    <i class="bi bi-pencil"></i>
-                                </button>    
-                            </a>
+                            <button type="button" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
                         </div>
                     </div>
+                </div>
+                <div class="col-12 mt-5">
+                    <a href="studentList.php">
+                        <button type="button" class="btn btn-outline-secondary">Volver</button>
+                    </a> 
                 </div>
             </div>
         </div>
@@ -209,3 +216,7 @@
 </body>
 
 </html>
+
+<?php 
+    }
+?> 

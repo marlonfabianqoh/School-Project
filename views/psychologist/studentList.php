@@ -1,3 +1,10 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '4') {
+        header("Location: ../../index.php");
+    } else {
+?>
 <!doctype html>
 <html lang="en">
 
@@ -21,12 +28,17 @@
 <body>
   <main class="content">
     <nav class="navbar navbar-dark bg-primary">
-      <div class="container">
-        <a class="navbar-brand" href="/views/visitor/home.html">School Project</a>
-        <a href="/views/admin/userList.html">
-          <button type="button" class="btn btn-light">Ingresar</button>
-        </a>
-      </div>
+        <div class="container">
+            <a class="navbar-brand" href="../home.php">School Project</a>
+            <div>
+                <!-- <a href="/views/secretary/dashboard.html">
+                    <button type="button" class="btn btn-light">Secretaria</button>
+                </a> -->
+                <a href="../../controllers/logout.php">
+                    <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                </a>
+            </div>
+        </div>
     </nav>
     <div class="container mt-5">
       <div class="row">
@@ -90,7 +102,7 @@
                 <td>1234567890</td>
                 <td>10 - A</td>
                 <td class="text-end">
-                  <a href="observation.html" class="btn btn-light">Ver / Editar</a> 
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -102,7 +114,7 @@
                 <td>1234567890</td>
                 <td>5 - B</td>
                 <td class="text-end">
-                  <a href="observation.html" class="btn btn-light">Ver / Editar</a> 
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -114,7 +126,7 @@
                 <td>1234567890</td>
                 <td>9 - C</td>
                 <td class="text-end">
-                  <a href="observation.html" class="btn btn-light">Ver / Editar</a> 
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -126,7 +138,7 @@
                 <td>1234567890</td>
                 <td>10 - A</td>
                 <td class="text-end">
-                  <a href="observation.html" class="btn btn-light">Ver / Editar</a> 
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -138,7 +150,7 @@
                 <td>1234567890</td>
                 <td>10 - A</td>
                 <td class="text-end">
-                  <a href="observation.html" class="btn btn-light">Ver / Editar</a> 
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -150,7 +162,7 @@
                 <td>1234567890</td>
                 <td>5 - B</td>
                 <td class="text-end">
-                  <a href="observation.html" class="btn btn-light">Ver / Editar</a> 
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -162,7 +174,7 @@
                 <td>1234567890</td>
                 <td>9 - C</td>
                 <td class="text-end">
-                  <a href="observation.html" class="btn btn-light">Ver / Editar</a> 
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -174,7 +186,7 @@
                 <td>1234567890</td>
                 <td>10 - A</td>
                 <td class="text-end">
-                  <a href="observation.html" class="btn btn-light">Ver / Editar</a> 
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -226,3 +238,7 @@
 </body>
 
 </html>
+
+<?php 
+    }
+?> 

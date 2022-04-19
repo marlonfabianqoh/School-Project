@@ -2,7 +2,7 @@
     session_start();
 
     if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
-        header("Location: ../index.php");
+        header("Location: ../../index.php");
     } else {
 ?>
 
@@ -28,13 +28,13 @@
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="/views/visitor/home.html">School Project</a>
+                <a class="navbar-brand" href="../home.php">School Project</a>
                 <div>
-                    <a href="/views/secretary/dashboard.html">
+                    <!-- <a href="/views/secretary/dashboard.html">
                         <button type="button" class="btn btn-light">Secretaria</button>
-                    </a>
-                    <a href="userList.html">
-                        <button type="button" class="btn btn-light">Ingresar</button>
+                    </a> -->
+                    <a href="../../controllers/logout.php">
+                        <button type="button" class="btn btn-light">Cerrar Sesion</button>
                     </a>
                 </div>
             </div>
@@ -100,6 +100,12 @@
                     </a>
                 </div>
 
+                <div class="col-12 mt-5">
+                    <a href="../home.php">
+                        <button type="button" class="btn btn-outline-secondary">Volver</button>
+                    </a>
+                </div>
+
                 <div class="col-12">
                     <table class="table mt-5">
                         <thead>
@@ -117,6 +123,8 @@
                     </table>
                 </div>
             </div>
+
+            
        </div>
 
         <footer class="container mt-5">

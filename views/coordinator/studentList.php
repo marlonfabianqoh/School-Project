@@ -1,3 +1,10 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '5') {
+        header("Location: ../../index.php");
+    } else {
+?>
 <!doctype html>
 <html lang="en">
 
@@ -21,70 +28,62 @@
 <body>
   <main class="content">
     <nav class="navbar navbar-dark bg-primary">
-      <div class="container">
-        <a class="navbar-brand" href="/views/visitor/home.html">School Project</a>
-        <div>
-          <a href="/views/secretary/dashboard.html">
-            <button type="button" class="btn btn-light">Secretaria</button>
-          </a>
-          <a href="userList.html">
-            <button type="button" class="btn btn-light">Ingresar</button>
-          </a>
+        <div class="container">
+            <a class="navbar-brand" href="../home.php">School Project</a>
+            <div>
+                <!-- <a href="/views/secretary/dashboard.html">
+                    <button type="button" class="btn btn-light">Secretaria</button>
+                </a> -->
+                <a href="../../controllers/logout.php">
+                    <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                </a>
+            </div>
         </div>
-      </div>
     </nav>
     <div class="container mt-5">
       <div class="row">
         <div class="col">
-          <h1>Listado de Usuarios.</h1>
-          <form class="row">
-            <legend class="mt-5">Filtro de busqueda</legend>
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="nombresUsuario" class="form-label">Nombres del usuario:</label>
-                <input type="text" class="form-control" id="nombresUsuario">
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="apellidosUsuario" class="form-label">Apellidos del usuario:</label>
-                <input type="text" class="form-control" id="apellidosUsuario">
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="telefonoUsuario" class="form-label">Identificacion del
-                  usuario:</label>
-                <input type="number" class="form-control" id="telefonoUsuario">
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="mb-3">
-                <label for="emailUsuario" class="form-label">email del
-                  usuario:</label>
-                <input type="email" class="form-control" id="emailUsuario">
-              </div>
-            </div>
+            <h1>Listado de Estudiantes.</h1>
+            <form class="row">
+                <legend class="mt-5">Filtro de busqueda</legend>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="nombresUsuario" class="form-label">Nombres del usuario:</label>
+                        <input type="text" class="form-control" id="nombresUsuario">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="apellidosUsuario" class="form-label">Apellidos del usuario:</label>
+                        <input type="text" class="form-control" id="apellidosUsuario">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="telefonoUsuario" class="form-label">Identificacion del
+                            usuario:</label>
+                        <input type="number" class="form-control" id="telefonoUsuario">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="emailUsuario" class="form-label">email del
+                            usuario:</label>
+                        <input type="email" class="form-control" id="emailUsuario">
+                    </div>
+                </div>
 
-            <div class="col-12">
-              <button type="button" class="btn btn-success">
-                <i class="bi bi-search"></i>
-                Filtrar
-              </button>
-              <button type="button" class="btn btn-outline-secondary">Limpiar</button>
-            </div>
-          </form>
+                <div class="col-12">
+                  <button type="button" class="btn btn-success">
+                    <i class="bi bi-search"></i>
+                    Filtrar
+                </button>
+                <button type="button" class="btn btn-outline-secondary">Limpiar</button>
+              </div>
+            </form>
         </div>
-      </div>
+    </div>
       <div class="row mt-5">
-        <div class="col-md-6">
-          <a href="userForm.html">
-            <button type="button" class="btn btn-success">
-              <i class="bi bi-plus"></i>
-              Nuevo Usuario
-            </button>
-          </a>
-        </div>
         <div class="col-12">
           <table class="table mt-5">
             <thead>
@@ -92,8 +91,7 @@
                 <th scope="col">Nombre Completo</th>
                 <th scope="col">Email</th>
                 <th scope="col">Celular</th>
-                <th scope="col">Rol</th>
-                <th scope="col">Ultima Conexión</th>
+                <th scope="col">Curso</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -102,10 +100,9 @@
                 <td>Anne Richard</td>
                 <td>anne@site.com</td>
                 <td>1234567890</td>
-                <td>Secretaria</td>
-                <td>hace 1 hora</td>
+                <td>10 - A</td>
                 <td class="text-end">
-                  <a href="userForm.html" class="btn btn-light">Ver / Editar</a>
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -115,10 +112,9 @@
                 <td>David Harrison</td>
                 <td>david@site.com</td>
                 <td>1234567890</td>
-                <td>Coordinador</td>
-                <td>hace 3 hora</td>
+                <td>5 - B</td>
                 <td class="text-end">
-                  <a href="userForm.html" class="btn btn-light">Ver / Editar</a>
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -128,10 +124,9 @@
                 <td>Ella Lauda</td>
                 <td>ella@site.com</td>
                 <td>1234567890</td>
-                <td>Administrador</td>
-                <td>activo</td>
+                <td>9 - C</td>
                 <td class="text-end">
-                  <a href="userForm.html" class="btn btn-light">Ver / Editar</a>
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -141,10 +136,9 @@
                 <td>Costa Quinn</td>
                 <td>costa@site.com</td>
                 <td>1234567890</td>
-                <td>Secretaria</td>
-                <td>hace 1 hora</td>
+                <td>10 - A</td>
                 <td class="text-end">
-                  <a href="userForm.html" class="btn btn-light">Ver / Editar</a>
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -154,10 +148,9 @@
                 <td>Anne Richard</td>
                 <td>anne@site.com</td>
                 <td>1234567890</td>
-                <td>Secretaria</td>
-                <td>hace 1 hora</td>
+                <td>10 - A</td>
                 <td class="text-end">
-                  <a href="userForm.html" class="btn btn-light">Ver / Editar</a>
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -167,10 +160,9 @@
                 <td>David Harrison</td>
                 <td>david@site.com</td>
                 <td>1234567890</td>
-                <td>Coordinador</td>
-                <td>hace 3 hora</td>
+                <td>5 - B</td>
                 <td class="text-end">
-                  <a href="userForm.html" class="btn btn-light">Ver / Editar</a>
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -180,10 +172,9 @@
                 <td>Ella Lauda</td>
                 <td>ella@site.com</td>
                 <td>1234567890</td>
-                <td>Administrador</td>
-                <td>activo</td>
+                <td>9 - C</td>
                 <td class="text-end">
-                  <a href="userForm.html" class="btn btn-light">Ver / Editar</a>
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -193,10 +184,9 @@
                 <td>Costa Quinn</td>
                 <td>costa@site.com</td>
                 <td>1234567890</td>
-                <td>Secretaria</td>
-                <td>hace 1 hora</td>
+                <td>10 - A</td>
                 <td class="text-end">
-                  <a href="userForm.html" class="btn btn-light">Ver / Editar</a>
+                  <a href="observation.php" class="btn btn-light">Ver / Editar</a> 
                   <button type="button" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button>
@@ -248,3 +238,7 @@
 </body>
 
 </html>
+
+<?php 
+    }
+?> 

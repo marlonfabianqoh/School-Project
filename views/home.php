@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
+    if (!isset($_SESSION['id'])) {
         header("Location: ../index.php");
     } else {
         $usuario = $_SESSION['usuario'];
@@ -25,9 +25,19 @@
 
 <body>
     <main class="content">
-        <?php
-            require('../componentes/encabezado.php');
-        ?>
+        <nav class="navbar navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../home.php">School Project</a>
+                <div>
+                    <!-- <a href="/views/secretary/dashboard.html">
+                        <button type="button" class="btn btn-light">Secretaria</button>
+                    </a> -->
+                    <a href="../controllers/logout.php">
+                        <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                    </a>
+                </div>
+            </div>
+        </nav>
         <div class="container my-5">
             <div class="row">
                 <div class="col">
@@ -38,38 +48,90 @@
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-md-3">
-                    <a href="./admin/adminSedes.php" class="text-decoration-none">
-                        <div class="card text-center shadow-sm p-4">
-                            <h4 class="card-title text-dark">Sedes</h4>
-                            <h2>
-                                <i class="bi bi-house text-primary"></i>
-                            </h2>
-                        </div>
-                    </a>
-                </div>
+                <?php if ($_SESSION['rol'] == '1') {?>
+                    <div class="col-md-3">
+                        <a href="./admin/adminSedes.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Sedes</h4>
+                                <h2>
+                                    <i class="bi bi-house text-primary"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
 
-                <div class="col-md-3">
-                    <a href="./admin/adminJornadas.php" class="text-decoration-none">
-                        <div class="card text-center shadow-sm p-4">
-                            <h4 class="card-title text-dark">Jornadas</h4>
-                            <h2>
-                                <i class="bi bi-clock-history text-success"></i>
-                            </h2>
-                        </div>
-                    </a>
-                </div>
+                    <div class="col-md-3">
+                        <a href="./admin/adminJornadas.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Jornadas</h4>
+                                <h2>
+                                    <i class="bi bi-clock-history text-success"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
 
-                <div class="col-md-3">
-                    <a href="#" class="text-decoration-none">
-                        <div class="card text-center shadow-sm p-4">
-                            <h4 class="card-title text-dark">Cursos</h4>
-                            <h2>
-                                <i class="bi bi-journal-bookmark text-danger"></i>
-                            </h2>
-                        </div>
-                    </a>
-                </div>
+                    <!-- <div class="col-md-3">
+                        <a href="#" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Cursos</h4>
+                                <h2>
+                                    <i class="bi bi-journal-bookmark text-danger"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div> -->
+
+                    <div class="col-md-3">
+                        <a href="./admin/adminUsuarios.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Usuarios</h4>
+                                <h2>
+                                    <i class="bi bi-person text-primary"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
+                <?php } ?>
+                
+                <?php if ($_SESSION['rol'] == '5') {?>
+                    <div class="col-md-3">
+                        <a href="./coordinator/studentList.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Estudiantes</h4>
+                                <h2>
+                                    <i class="bi bi-person text-primary"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
+                <?php } ?>
+
+                <?php if ($_SESSION['rol'] == '4') {?>
+                    <div class="col-md-3">
+                        <a href="./psychologist/studentList.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Estudiantes</h4>
+                                <h2>
+                                    <i class="bi bi-person text-primary"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
+                <?php } ?>
+
+                <?php if ($_SESSION['rol'] == '3') {?>
+                    <div class="col-md-3">
+                        <a href="./secretary/dashboard.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Cursos</h4>
+                                <h2>
+                                    <i class="bi bi-journal-bookmark text-danger"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
+                <?php } ?>
             </div>
         </div>
         <?php

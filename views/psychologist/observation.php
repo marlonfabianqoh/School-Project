@@ -1,3 +1,10 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '4') {
+        header("Location: ../../index.php");
+    } else {
+?>
 <!doctype html>
 <html lang="en">
 
@@ -21,13 +28,18 @@
 <body>
     <main class="content">
       <nav class="navbar navbar-dark bg-primary">
-        <div class="container">
-          <a class="navbar-brand" href="/views/visitor/home.html">School Project</a>
-          <a href="/views/admin/userList.html">
-            <button type="button" class="btn btn-light">Ingresar</button>
-          </a>
-        </div>
-      </nav>
+            <div class="container">
+                <a class="navbar-brand" href="../home.php">School Project</a>
+                <div>
+                    <!-- <a href="/views/secretary/dashboard.html">
+                        <button type="button" class="btn btn-light">Secretaria</button>
+                    </a> -->
+                    <a href="../../controllers/logout.php">
+                        <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                    </a>
+                </div>
+            </div>
+        </nav>
         <div class="container my-5">
             <div class="row">
                 <div class="col">
@@ -103,10 +115,10 @@
                               </div>
                         </div>
                         <div class="col-12 mt-5">
-                            <a href="/views/coordinator/studentList.html">
+                            <a href="studentList.php">
                               <button type="button" class="btn btn-primary">Enviar</button>
                             </a>
-                            <a href="/views/visitor/home.html">
+                            <a href="studentList.php">
                               <button type="button" class="btn btn-outline-secondary">Cancelar</button>
                             </a>
                         </div>
@@ -155,3 +167,7 @@
 </body>
 
 </html>
+
+<?php 
+    }
+?> 

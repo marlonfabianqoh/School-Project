@@ -1,3 +1,10 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '5') {
+        header("Location: ../../index.php");
+    } else {
+?>
 <!doctype html>
 <html lang="en">
 
@@ -22,94 +29,92 @@
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-              <a class="navbar-brand" href="/views/visitor/home.html">School Project</a>
-              <a href="userList.html">
-                <button type="button" class="btn btn-light">Ingresar</button>
-              </a>
+                <a class="navbar-brand" href="../home.php">School Project</a>
+                <div>
+                    <!-- <a href="/views/secretary/dashboard.html">
+                        <button type="button" class="btn btn-light">Secretaria</button>
+                    </a> -->
+                    <a href="../../controllers/logout.php">
+                        <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                    </a>
+                </div>
             </div>
-          </nav>
+        </nav>
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <h1>Formulario de usuario.</h1>
+                    <h1>Observaciones del Coordinador.</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <form class="row">
-                        <div class="col-12">
+                        <legend class="mt-5">Datos del coordinador</legend>
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="nombresResponsables" class="form-label">Nombres:</label>
-                                <input type="text" class="form-control" id="nombresResponsables">
+                                <label for="nombresCoordinador" class="form-label">Nombres del coordinador:</label>
+                                <input type="text" class="form-control" id="nombresCoordinador">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="apellidosCoordinador" class="form-label">Apellidos del coordinador:</label>
+                                <input type="text" class="form-control" id="apellidosCoordinador">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="telefonoCoordinador" class="form-label">Identificacion del
+                                    coordinador:</label>
+                                <input type="number" class="form-control" id="telefonoCoordinador">
+                            </div>
+                        </div>
+                        <legend class="mt-5">Datos del estudiante</legend>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="nombresEstudiante" class="form-label">Nombres del estudiante:</label>
+                                <input type="text" class="form-control" id="nombresEstudiante">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="apellidosEstudiante" class="form-label">Apellidos del estudiante:</label>
+                                <input type="text" class="form-control" id="apellidosEstudiante">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="telefonoEstudiante" class="form-label">Identificacion del
+                                    estudiante:</label>
+                                <input type="number" class="form-control" id="telefonoEstudiante">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
-                                <label for="apellidosResponsables" class="form-label">Apellidos:</label>
-                                <input type="text" class="form-control" id="apellidosResponsables">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="telefonoResponsables" class="form-label">Teléfono residencial:</label>
-                                <input type="number" class="form-control" id="telefonoResponsables">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="celularResponsables" class="form-label">Celular:</label>
-                                <input type="number" class="form-control" id="celularResponsables">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="direccionResponsables" class="form-label">Dirrección:</label>
-                                <input type="text" class="form-control" id="direccionResponsables">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="fechaUsuario" class="form-label">Fecha de nacimiento:</label>
-                                <input type="number" class="form-control" id="fechaUsuario">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="edadUsuario" class="form-label">Edad:</label>
-                                <input type="number" class="form-control" id="edadUsuario">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="sexoUsuario" class="form-label">Sexo:</label>
-                                <input type="number" class="form-control" id="sexoUsuario">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="rolUsuario" class="form-label">rol:</label>
-                                <input type="number" class="form-control" id="rolUsuario">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="observacionesUsuario" class="form-label">Observaciones:</label>
-                                <textarea name="observacionesUsuario" class="form-control" id="observacionesUsuario"
+                                <label for="observacionesEstudiante" class="form-label">Observaciones:</label>
+                                <textarea name="observacionesEstudiante" class="form-control" id="observacionesEstudiante"
                                     cols="30" rows="5"></textarea>
                             </div>
                         </div>
+                        <div class="col-12">
+                            <a href="studentObservation.php">
+                                <button type="button" class="btn btn-success">
+                                    <i class="bi bi-book"></i>
+                                    Historial de observaciones
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col-12 mt-5">
+                            <a href="studentList.php">
+                                <button type="button" class="btn btn-primary">Enviar</button>
+                            </a>
+                            <a href="studentList.php">
+                                <button type="button" class="btn btn-outline-secondary">Cancelar</button>
+                            </a>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-12 mt-5">
-                    <a href="studentList.html">
-                        <button type="button" class="btn btn-primary">Enviar</button>
-                    </a>
-                    <a href="studentList.html">
-                        <button type="button" class="btn btn-outline-secondary">Cancelar</button>
-                    </a>
-                </div>
-                </form>
             </div>
-        </div>
         </div>
         <footer class="container mt-5">
             <div class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
@@ -152,3 +157,7 @@
 </body>
 
 </html>
+
+<?php 
+    }
+?> 
