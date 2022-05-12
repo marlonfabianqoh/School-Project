@@ -100,12 +100,6 @@
                     </a>
                 </div>
 
-                <div class="col-12 mt-5">
-                    <a href="../home.php">
-                        <button type="button" class="btn btn-outline-secondary">Volver</button>
-                    </a>
-                </div>
-
                 <div class="col-12">
                     <table class="table mt-5">
                         <thead>
@@ -119,8 +113,41 @@
                             </tr>
                         </thead>
 
-                        <tbody></tbody>
+                        <tbody>
+                            <tr>
+                                <td>Marlon Fabian Garcia Mendoza</td>
+                                <td>marlon@email.com</td>
+                                <td>1234567890</td>
+                                <td>Administrador</td>
+                                <td>12:00</td>
+                                <td class="text-end">
+                                    <a href="userForm.php" class="btn btn-light">Ver / Editar</a> 
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Carlos Javier Rueda Mena</td>
+                                <td>carlos@email.com</td>
+                                <td>1234567890</td>
+                                <td>Coordinador</td>
+                                <td>16:00</td>
+                                <td class="text-end">
+                                    <a href="userForm.php" class="btn btn-light">Ver / Editar</a> 
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <a href="../home.php">
+                        <button type="button" class="btn btn-outline-secondary">Volver</button>
+                    </a>
                 </div>
             </div>
 
@@ -135,7 +162,7 @@
                             <use xlink:href="#bootstrap"></use>
                         </svg>
                     </a>
-                    <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda</span>
+                    <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda  -- Luis Gustavo  -- Eva Orejarena</span>
                 </div>
 
                 <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
+    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '3') {
         header("Location: ../../index.php");
     } else {
 ?>
@@ -42,7 +42,7 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <h1>Administrador de Jornadas</h1>
+                    <h1>Administrador de Grados</h1>
                 </div>
             </div>
 
@@ -56,15 +56,6 @@
                                 <input type="text" class="form-control" id="txtName" name="txtName" onkeyup="buscar(txtName.value)">
                             </div>
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="sedeObservation" class="form-label">Sede</label>
-                                <select class="form-select" id="sedeObservation" name="sedeObservation" onchange="ciudades(selDepartment.value)" required>
-                                    <option value="" selected disabled>Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -73,9 +64,15 @@
                 <div class="col-12 mb-4">
                     <a href="./formularioJornadas.php">
                         <button type="button" class="btn btn-success">
-                            Nueva Jornada
+                            Nueva Grado
                             <i class="bi bi-plus-lg"></i>
                         </button>
+                    </a>
+                </div>
+
+                <div class="col-12 mb-4">
+                    <a href="parameterization.php">
+                        <button type="button" class="btn btn-outline-secondary">Parametros</button>
                     </a>
                 </div>
 

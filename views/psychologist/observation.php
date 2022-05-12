@@ -134,7 +134,7 @@
                   <use xlink:href="#bootstrap"></use>
                 </svg>
               </a>
-              <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda</span>
+              <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda  -- Luis Gustavo  -- Eva Orejarena</span>
             </div>
     
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

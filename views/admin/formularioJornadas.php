@@ -77,6 +77,15 @@
                                 <textarea class="form-control" cols="30" rows="5" id="txtObservation" name="txtObservation"></textarea>
                             </div>
                         </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="sedeObservation" class="form-label">Sede</label>
+                                <select class="form-select" id="sedeObservation" name="sedeObservation" onchange="ciudades(selDepartment.value)" required>
+                                    <option value="" selected disabled>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="col-12 mt-5">
                             <button type="submit" class="btn btn-primary">Guardar</button>
@@ -97,7 +106,7 @@
                             <use xlink:href="#bootstrap"></use>
                         </svg>
                     </a>
-                    <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda</span>
+                    <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda  -- Luis Gustavo  -- Eva Orejarena</span>
                 </div>
 
                 <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
