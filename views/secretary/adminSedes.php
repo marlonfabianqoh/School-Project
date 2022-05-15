@@ -1,25 +1,17 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
-        header("Location: ../../index.php");
+    if (!isset($_SESSION['id'])) {
+        session_destroy();
+        header("Location: ../../login.php");
     } else {
-        $option = 1;
-
-        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $params = parse_url($url);
-        if (isset($params['query'])) {
-            parse_str($params['query'], $params);
-
-            if (isset($params['id'])) {
-                $option = 2;
-            }
-        }
+        if ($_SESSION['rol'] != '2') {
+            header("Location: ../home.php");
+        } else {
 ?>
 
 <!doctype html>
 <html lang="en">
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -35,16 +27,13 @@
     <title>School Project</title>
 </head>
 
-<body>
+<body tag="">
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
                 <a class="navbar-brand" href="../home.php">School Project</a>
                 <div>
-                    <!-- <a href="/views/secretary/dashboard.html">
-                        <button type="button" class="btn btn-light">Secretaria</button>
-                    </a> -->
-                    <a href="../../controllers/logout.php">
+                    <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar Sesion</button>
                     </a>
                 </div>
@@ -54,46 +43,64 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <h1>Formulario de jornadas</h1>
+                    <h1>Administrador de sedes</h1>
                 </div>
             </div>
 
-            <div class="row mt-5">
+            <div class="row">
                 <div class="col">
-                    <form id="form-jornada" class="row jornada-validation" method="POST" novalidate>
-                        <input type="text" id="option" name="option" value="<?php if ($option == 1) { echo 'jornadas-crear'; } else { echo 'jornadas-editar'; } ?>" hidden>
-                        <input type="text" id="id" name="id" value="<?php if (isset($params['id'])) { echo $params['id']; } else { echo ''; } ?>" hidden>
-
-                        <div class="col-12">
+                    <legend class="mt-5">Filtrar:</legend>
+                    <div class="row">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="txtName" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="txtName" name="txtName" required>
+                                <label for="txtName" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="txtName" name="txtName">
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="txtObservation" class="form-label">Observaciones</label>
-                                <textarea class="form-control" cols="30" rows="5" id="txtObservation" name="txtObservation"></textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="sedeObservation" class="form-label">Sede</label>
-                                <select class="form-select" id="sedeObservation" name="sedeObservation" onchange="ciudades(selDepartment.value)" required>
-                                    <option value="" selected disabled>Seleccionar</option>
+                                <label for="selDepartment" class="form-label">Departamento:</label>
+                                <select class="form-select" id="selDepartment" name="selDepartment" onchange="listar_ciudades(selDepartment.value);">
+                                    <option value="" selected>Seleccionar</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-12 mt-5">
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="./adminJornadas.php">
-                                <button type="button" class="btn btn-outline-secondary">Cancelar</button>
-                            </a>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="selCity" class="form-label">Ciudad:</label>
+                                <select class="form-select" id="selCity" name="selCity" disabled>
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                    
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success" onclick="filtrar_sedes(txtName.value, selDepartment.value, selCity.value)">
+                            <i class="bi bi-search"></i>
+                            Filtrar
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="limpiar()">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sedes" class="row mt-3">
+                <div class="col-12 mb-4">
+                    <a href="./formularioSedes.php">
+                        <button type="button" class="btn btn-success">
+                            Nueva Sede
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                    </a>
+                </div>
+            
+                <div class="col-12 mt-5">
+                    <a href="../home.php">
+                        <button type="button" class="btn btn-outline-secondary">Volver</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -124,8 +131,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript" src="../../assets/js/validation.js"></script>
-
+    <script type="text/javascript" src="../../assets/js/sede.js"></script>
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
@@ -133,38 +139,15 @@
     -->
 
     <script type="text/javascript">
-        // FUNCION QUE CARGA LA JORNADA AL EDITAR
-        $(document).ready(async function () {
-            <?php 
-                if (isset($params['id'])) { 
-            ?>
-
-            const result1 = await $.ajax({
-                url: '../../controllers/c_jornada.php',
-                type: 'POST',
-                data: { option: 'jornadas-listar', id: <?php echo $params['id']; ?> },
-                success: function (result) {
-                    let data = JSON.parse(result);
-
-                    if(data.STATUS){
-                        data = data.DATA[0];
-                        $('#txtName').val(data.nombre);
-                        $('#txtObservation').val(data.observacion);
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
-
-            <?php 
-                }
-            ?>
+        $(document).ready(function () {
+            listar_sedes();
+            listar_departamentos();
         });
     </script>
 </body>
-
 </html>
 
 <?php 
+        }
     }
 ?>

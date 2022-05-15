@@ -1,9 +1,13 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
-        header("Location: ../../index.php");
+    if (!isset($_SESSION['id'])) {
+        session_destroy();
+        header("Location: ../../login.php");
     } else {
+        if ($_SESSION['rol'] != '2') {
+            header("Location: ../home.php");
+        } else {
 ?>
 
 <!doctype html>
@@ -29,10 +33,7 @@
             <div class="container">
                 <a class="navbar-brand" href="../home.php">School Project</a>
                 <div>
-                    <!-- <a href="/views/secretary/dashboard.html">
-                        <button type="button" class="btn btn-light">Secretaria</button>
-                    </a> -->
-                    <a href="../../controllers/logout.php">
+                    <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar Sesion</button>
                     </a>
                 </div>
@@ -48,24 +49,32 @@
 
             <div class="row">
                 <div class="col">
-                    <form class="row">
-                        <legend class="mt-5">Filtrar:</legend>
+                    <legend class="mt-5">Filtrar:</legend>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="txtName" class="form-label">Buscador:</label>
-                                <input type="text" class="form-control" id="txtName" name="txtName" onkeyup="buscar(txtName.value)">
+                                <input type="text" class="form-control" id="txtName" name="txtName">
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="sedeObservation" class="form-label">Sede</label>
-                                <select class="form-select" id="sedeObservation" name="sedeObservation" onchange="ciudades(selDepartment.value)" required>
+                                <label for="selCampus" class="form-label">Sede</label>
+                                <select class="form-select" id="selCampus" name="selCampus">
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
                         </div>
-                    </form>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success" onclick="filtrar_jornadas(txtName.value, selCampus.value)">
+                            <i class="bi bi-search"></i>
+                            Filtrar
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="limpiar()">Limpiar</button>
+                    </div>
                 </div>
             </div>
 
@@ -113,7 +122,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript" src="../../assets/js/validation.js"></script>
+    <script type="text/javascript" src="../../assets/js/jornada.js"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--
@@ -122,90 +131,15 @@
     -->
 
     <script type="text/javascript">
-        // FUNCION QUE CARGA LAS JORNADAS
         $(document).ready(function () {
-            $.ajax({
-                url: '../../controllers/c_jornada.php',
-                type: 'POST',
-                data: { option: 'jornadas-listar'},
-                success: function (result) {
-                    let data = JSON.parse(result);
-
-                    if (data.STATUS) {
-                        data.DATA.forEach(element => {
-                            $('#jornadas div').eq(-1).before(`
-                                <div class="col-md-4 jornada">
-                                    <div class="card mb-4">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${element.nombre}</h5>
-                                            <p class="card-text text-secondary">${element.observacion}</p>
-                                            <a href="./formularioJornadas.php?id=${element.id}"><button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button></a>
-                                            <button type="button" class="btn btn-danger" onclick="eliminar(${element.id})"><i class="bi bi-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `);
-                        });
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
+            listar_jornadas();
+            listar_sedes();
         });
-
-        function buscar (nombre) {
-            $.ajax({
-                url: '../../controllers/c_jornada.php',
-                type: 'POST',
-                data: { option: 'jornadas-buscar', nombre: nombre },
-                success: function (result) {
-                    let data = JSON.parse(result);
-
-                    if (data.STATUS) {
-                        $('#jornadas .jornada').remove();
-
-                        data.DATA.forEach(element => {
-                            $('#jornadas div').eq(-1).before(`
-                                <div class="col-md-4 jornada">
-                                    <div class="card mb-4">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${element.nombre}</h5>
-                                            <p class="card-text text-secondary">${element.observacion}</p>
-                                            <a href="./formularioJornadas.php?id=${element.id}"><button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button></a>
-                                            <button type="button" class="btn btn-danger" onclick="eliminar(${element.id})"><i class="bi bi-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `);
-                        });
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
-        }
-
-        function eliminar (id) {
-            $.ajax({
-                url: '../../controllers/c_jornada.php',
-                type: 'POST',
-                data: { option: 'jornadas-eliminar', id: id },
-                success: function (result) {
-                    let data = JSON.parse(result);
-
-                    if (data.STATUS) {
-                        toastr.success(data.MESSAGE, { timeOut: 3000 });
-                        window.location.reload();
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
-        }
     </script>
 </body>
 </html>
 
 <?php 
+        }
     }
 ?> 

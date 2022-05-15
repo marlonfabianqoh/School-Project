@@ -1,20 +1,24 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
-        header("Location: ../../index.php");
+    if (!isset($_SESSION['id'])) {
+        session_destroy();
+        header("Location: ../../login.php");
     } else {
-        $option = 1;
+        if ($_SESSION['rol'] != '2') {
+            header("Location: ../home.php");
+        } else {
+            $option = 1;
 
-        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $params = parse_url($url);
-        if (isset($params['query'])) {
-            parse_str($params['query'], $params);
+            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $params = parse_url($url);
+            if (isset($params['query'])) {
+                parse_str($params['query'], $params);
 
-            if (isset($params['id'])) {
-                $option = 2;
+                if (isset($params['id'])) {
+                    $option = 2;
+                }
             }
-        }
 ?>
 
 <!doctype html>
@@ -40,10 +44,7 @@
             <div class="container">
                 <a class="navbar-brand" href="../home.php">School Project</a>
                 <div>
-                    <!-- <a href="/views/secretary/dashboard.html">
-                        <button type="button" class="btn btn-light">Secretaria</button>
-                    </a> -->
-                    <a href="../../controllers/logout.php">
+                    <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar Sesion</button>
                     </a>
                 </div>
@@ -60,7 +61,6 @@
             <div class="row mt-5">
                 <div class="col">
                     <form id="form-sede" class="row sede-validation" method="POST" novalidate>
-                        <input type="text" id="option" name="option" value="<?php if ($option == 1) { echo 'sedes-crear'; } else { echo 'sedes-editar'; } ?>" hidden>
                         <input type="text" id="id" name="id" value="<?php if (isset($params['id'])) { echo $params['id']; } else { echo ''; } ?>" hidden>
 
                         <div class="col-12">
@@ -87,7 +87,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="selDepartment" class="form-label">Departamento</label>
-                                <select class="form-select" id="selDepartment" name="selDepartment" onchange="ciudades(selDepartment.value)" required>
+                                <select class="form-select" id="selDepartment" name="selDepartment" onchange="listar_ciudades(selDepartment.value)" required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -146,7 +146,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript" src="../../assets/js/validation.js"></script>
+    <script type="text/javascript" src="../../assets/js/sede.js"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--
@@ -155,95 +155,20 @@
     -->
 
     <script type="text/javascript">
-        // FUNCION QUE CARGA LA SEDE AL EDITAR
         $(document).ready(async function () {
-            let department = '';
+            <?php if (isset($params['id'])) { ?>
 
-            <?php 
-                if (isset($params['id'])) { 
-            ?>
+            buscar_sede(<?php echo $params['id']; ?>);
 
-            const result1 = await $.ajax({
-                url: '../../controllers/c_sede.php',
-                type: 'POST',
-                data: { option: 'sedes-listar', id: <?php echo $params['id']; ?> },
-                success: function (result) {
-                    let data = JSON.parse(result);
+            <?php } ?>
 
-                    if(data.STATUS){
-                        data = data.DATA[0];
-                        $('#txtName').val(data.nombre);
-                        $('#txtAddress').val(data.direccion);
-                        $('#txtPhone').val(data.telefono);
-                        $('#selDepartment').val(parseInt(data.id_departamento_fk));
-                        ciudades(data.id_departamento_fk, data.id_ciudad_fk);
-                        $('#selCity').val(parseInt(data.id_ciudad_fk));
-                        department = parseInt(data.id_departamento_fk);
-                        $('#txtObservation').val(data.observacion);
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
-
-            <?php 
-                }
-            ?>
-
-            // FUNCION QUE CARGA LOS DEPARTAMENTOS
-            const result2 = await $.ajax({
-                url: '../../controllers/c_principal.php',
-                type: 'POST',
-                data: { option: 'departamentos-listar' },
-                success: function (result) {
-                    let data = JSON.parse(result);
-
-                    if(data.STATUS){
-                        $('#selDepartment').html('<option value="" selected disabled>Seleccionar</option>');
-
-                        data.DATA.forEach(element => {
-                            if (element.id == department) {
-                                $('#selDepartment').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
-                            } else {
-                                $('#selDepartment').append(`<option value="${element.id}">${element.nombre}</option>`);
-                            }
-                        });
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
+            listar_departamentos();
         });
-
-        function ciudades (departamento, ciudad=null) {
-            $.ajax({
-                url: '../../controllers/c_principal.php',
-                type: 'POST',
-                data: { option: 'ciudades-listar', departamento: departamento },
-                success: function (result) {
-                    let data = JSON.parse(result);
-                    
-                    if(data.STATUS){
-                        $('#selCity').html('<option value="" selected disabled>Seleccionar</option>');
-                        data.DATA.forEach(element => {
-                            if (element.id == ciudad) {
-                                $('#selCity').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
-                            } else {
-                                $('#selCity').append(`<option value="${element.id}">${element.nombre}</option>`);
-                            }
-                            
-                            $('#selCity').prop('disabled', false);
-                        });
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
-        }
     </script>
 </body>
 </html>
 
 <?php 
+        }
     }
 ?>

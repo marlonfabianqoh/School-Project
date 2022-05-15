@@ -1,129 +1,58 @@
 <?php
-    require "connection.php";
+	class C_sede {
+		public function __construct(){
+			require_once "models/m_sede.php";
+		}
+		
+		public function listar () {
+			$sede = new M_sede();
+			$response = $sede->obtener_sedes();
+			echo $response;
+		}
 
-    if (isset($_POST)) {
-        $array = $_POST;
-        $keys = array_keys($array);
+		public function buscar () {
+			$id = $_POST['id'];
 
-        if (is_array($keys)) {
-            for ($i = 0; $i < count($keys); $i++) {
-                $name = $keys[$i];
-                $command = "$" . $name . " = \$_POST['$name'];";
-                eval($command);
-            }
-        }
-    }
+			$sede = new M_sede();
+			$response = $sede->obtener_sede($id);
+			echo $response;
+		}
 
-    if (isset($option) && $option == "sedes-listar") {
-        $query = "SELECT s.id, s.nombre, s.direccion, (SELECT d.id FROM departamento d INNER JOIN ciudad c ON c.id_departamento_fk = d.id WHERE c.id = s.id_ciudad_fk) AS id_departamento_fk, s.id_ciudad_fk, s.telefono, IFNULL(s.observacion, '') as observacion FROM sede s";
-        
-        if (!empty($id)) {
-            $query .= " WHERE s.id = $id";
-        }
+		public function filtrar () {
+			$nombre = $_POST['nombre'];
+			$departamento = $_POST['departamento'];
+			$ciudad = $_POST['ciudad'];
 
-        $query .= ";";
-        $result = $mysqli->query($query);
-        
-        if ($result->num_rows) {
-            $data = array();
+			$sede = new M_sede();
+			$response = $sede->filtrar_sedes($nombre, $departamento, $ciudad);
+			echo $response;
+		}
 
-            if ($result->num_rows) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $data[] = $row;
-                }
-            }
+		public function guardar () {
+			$id = $_POST['id'];
+			$nombre = $_POST['txtName'];
+			$direccion = $_POST['txtAddress'];
+			$ciudad = $_POST['selCity'];
+			$telefono = $_POST['txtPhone'];
+			$observacion = $_POST['txtObservation'];
 
-            $response = array('STATUS' => true, 'MESSAGE' => 'Sede(s) cargada(s) con éxito', 'DATA' => $data);
-            echo json_encode($response);
+			$sede = new M_sede();
 
-        } else {
-            $response = array('STATUS' => false, 'MESSAGE' => 'No existe(n) sede(s)', 'DATA' => array());
-            echo json_encode($response);
-        }
-    }
+			if (empty($id)) {
+				$response = $sede->crear_sede($nombre, $direccion, $ciudad, $telefono, $observacion);
+			} else {
+				$response = $sede->editar_sede($id, $nombre, $direccion, $ciudad, $telefono, $observacion);
+			}
 
-    if (isset($option) && $option == "sedes-buscar") {
-        $query = "SELECT s.id, s.nombre, s.direccion, (SELECT d.id FROM departamento d INNER JOIN ciudad c ON c.id_departamento_fk = d.id WHERE c.id = s.id_ciudad_fk) AS id_departamento_fk, s.id_ciudad_fk, s.telefono, IFNULL(s.observacion, '') as observacion FROM sede s";
-        
-        if (!empty($nombre) || !empty($ciudad)) {
-            $count = 0;
-            $query .= " WHERE";
+			echo $response;
+		}
 
-            if (!empty($nombre)) {
-                $count++;
-                $query .= " s.nombre LIKE '%$nombre%'";
-            }
+		public function eliminar () {
+			$id = $_POST['id'];
 
-            if (!empty($ciudad)) {
-                if ($count > 0) {
-                    $query .= " OR s.id_ciudad_fk = $ciudad";
-                } else {
-                    $query .= " s.id_ciudad_fk = $ciudad";
-                }
-            }
-
-            $query .= ";";
-        }
-
-        $result = $mysqli->query($query);
-        
-        if ($result->num_rows) {
-            $data = array();
-
-            if ($result->num_rows) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $data[] = $row;
-                }
-            }
-
-            $response = array('STATUS' => true, 'MESSAGE' => 'Sede(s) cargada(s) con éxito', 'DATA' => $data);
-            echo json_encode($response);
-
-        } else {
-            $response = array('STATUS' => false, 'MESSAGE' => 'No existe(n) sede(s)', 'DATA' => array());
-            echo json_encode($response);
-        }
-    }
-
-    if (isset($option) && $option == "sedes-crear") {
-        $query = "INSERT INTO sede (nombre, direccion, id_ciudad_fk, telefono, observacion) VALUES ('$txtName', '$txtAddress', $selCity, '$txtPhone', '$txtObservation');";
-        $result = $mysqli->query($query);
-        
-        if ($result) {
-            $response = array('STATUS' => true, 'MESSAGE' => 'Sede creada con éxito', 'DATA' => array());
-            echo json_encode($response);
-
-        } else {
-            $response = array('STATUS' => false, 'MESSAGE' => 'Fallo al crear la sede', 'DATA' => array());
-            echo json_encode($response);
-        }
-    }
-
-    if (isset($option) && $option == "sedes-editar") {
-        $query = "UPDATE sede SET nombre = '$txtName', direccion = '$txtAddress', id_ciudad_fk =  $selCity, telefono = '$txtPhone', observacion = '$txtObservation' WHERE id = $id";
-        $result = $mysqli->query($query);
-        
-        if ($result) {
-            $response = array('STATUS' => true, 'MESSAGE' => 'Sede actualizada con éxito', 'DATA' => array());
-            echo json_encode($response);
-
-        } else {
-            $response = array('STATUS' => false, 'MESSAGE' => 'Fallo al actualizar la sede', 'DATA' => array());
-            echo json_encode($response);
-        }
-    }
-
-    if (isset($option) && $option == "sedes-eliminar") {
-        $query = "DELETE FROM sede WHERE id = $id;";
-        $result = $mysqli->query($query);
-        
-        if ($result) {
-            $response = array('STATUS' => true, 'MESSAGE' => 'Sede eliminada con éxito', 'DATA' => array());
-            echo json_encode($response);
-
-        } else {
-            $response = array('STATUS' => false, 'MESSAGE' => 'Fallo al eliminar la sede', 'DATA' => array());
-            echo json_encode($response);
-        }
-    }
+			$sede = new M_sede();
+			$response = $sede->eliminar_sede($id);
+			echo $response;
+		}
+	}
 ?>

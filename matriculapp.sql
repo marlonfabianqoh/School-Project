@@ -2,6 +2,14 @@ CREATE DATABASE matriculapp CHARSET="utf8";
 
 USE matriculapp;
 
+CREATE TABLE parametro (
+id INT PRIMARY KEY auto_increment,
+nombre VARCHAR(20) NOT NULL,
+valor VARCHAR(20) NOT NULL,
+fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE departamento (
 id INT PRIMARY KEY auto_increment,
 nombre VARCHAR(30) NOT NULL,
@@ -20,28 +28,6 @@ fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
 FOREIGN KEY (id_departamento_fk) REFERENCES departamento(id)
 );
 
-CREATE TABLE parametro (
-id INT PRIMARY KEY auto_increment,
-nombre VARCHAR(20) NOT NULL,
-valor VARCHAR(20) NOT NULL,
-fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE estado (
-id INT PRIMARY KEY auto_increment,
-nombre VARCHAR(20) NOT NULL,
-fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE rol (
-id INT PRIMARY KEY auto_increment,
-nombre VARCHAR(20) NOT NULL,
-fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
-);
-
 CREATE TABLE tipo_documento (
 id INT PRIMARY KEY auto_increment,
 nombre VARCHAR(30) NOT NULL,
@@ -52,6 +38,7 @@ fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
 CREATE TABLE genero (
 id INT PRIMARY KEY auto_increment,
 nombre VARCHAR(20) NOT NULL,
+observacion TEXT,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
 );
@@ -70,17 +57,33 @@ fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE rol (
+id INT PRIMARY KEY auto_increment,
+nombre VARCHAR(20) NOT NULL,
+fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE estado_usuario (
+id INT PRIMARY KEY auto_increment,
+nombre VARCHAR(20) NOT NULL,
+fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE usuario (
 id INT PRIMARY KEY auto_increment,
 usuario VARCHAR(50) NOT NULL,
 clave VARCHAR(50) NOT NULL,
 id_rol_fk INT NOT NULL, 
+id_estado_usuario_fk INT NOT NULL,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (id_rol_fk) REFERENCES rol(id)
+FOREIGN KEY (id_rol_fk) REFERENCES rol(id),
+FOREIGN KEY (id_estado_usuario_fk) REFERENCES estado_usuario(id)
 );
 
-CREATE TABLE aspirante (
+CREATE TABLE detalle_usuario (
 id INT PRIMARY KEY auto_increment,
 documento VARCHAR(20) NOT NULL, 
 id_tipo_documento_fk INT NOT NULL, 
@@ -93,17 +96,17 @@ telefono VARCHAR(20),
 celular VARCHAR(20),
 fecha_nacimiento DATETIME NOT NULL,
 id_genero_fk INT NOT NULL,
-id_estado_fk INT NOT NULL,
 id_preferencia_fk INT NOT NULL,
 id_tipo_sangre_fk INT NOT NULL,
+id_usuario_fk INT NOT NULL,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
 FOREIGN KEY (id_tipo_documento_fk) REFERENCES tipo_documento(id),
 FOREIGN KEY (id_ciudad_fk) REFERENCES ciudad(id),
 FOREIGN KEY (id_genero_fk) REFERENCES genero(id),
-FOREIGN KEY (id_estado_fk) REFERENCES estado(id),
 FOREIGN KEY (id_preferencia_fk) REFERENCES preferencia(id),
-FOREIGN KEY (id_tipo_sangre_fk) REFERENCES tipo_sangre(id)
+FOREIGN KEY (id_tipo_sangre_fk) REFERENCES tipo_sangre(id),
+FOREIGN KEY (id_usuario_fk) REFERENCES usuario(id)
 );
 
 CREATE TABLE acudiente (
@@ -120,10 +123,12 @@ fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
 FOREIGN KEY (id_ciudad_fk) REFERENCES ciudad(id)
 );
 
-CREATE TABLE aspirante_acudiente (
+CREATE TABLE detalle_usuario_acudiente (
 id INT PRIMARY KEY auto_increment,
-id_aspirante_fk INT NOT NULL,
-id_acudiente_fk INT NOT NULL
+id_detalle_usuario_fk INT NOT NULL,
+id_acudiente_fk INT NOT NULL,
+FOREIGN KEY (id_detalle_usuario_fk) REFERENCES detalle_usuario(id),
+FOREIGN KEY (id_acudiente_fk) REFERENCES acudiente(id)
 );
 
 CREATE TABLE sede (
@@ -142,52 +147,47 @@ CREATE TABLE jornada (
 id INT PRIMARY KEY auto_increment,
 nombre VARCHAR(20) NOT NULL,
 observacion TEXT,
+id_sede_fk INT NOT NULL,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
+fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (id_sede_fk) REFERENCES sede(id)
 );
 
 CREATE TABLE grado (
 id INT PRIMARY KEY auto_increment,
 nombre VARCHAR(20) NOT NULL,
+id_jornada_fk INT NOT NULL,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
+fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (id_jornada_fk) REFERENCES jornada(id)
 );
 
 CREATE TABLE curso (
+id INT PRIMARY KEY auto_increment,
+nombre VARCHAR(20) NOT NULL,
+id_grado_fk INT NOT NULL,
+fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (id_grado_fk) REFERENCES grado(id)
+);
+
+CREATE TABLE estado_matricula (
 id INT PRIMARY KEY auto_increment,
 nombre VARCHAR(20) NOT NULL,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE prematricula (
-id INT PRIMARY KEY auto_increment,
-id_aspirante_fk INT NOT NULL,
-id_curso_fk INT NOT NULL,
-id_estado_fk INT NOT NULL,
-fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (id_aspirante_fk) REFERENCES aspirante(id),
-FOREIGN KEY (id_curso_fk) REFERENCES sede(id),
-FOREIGN KEY (id_estado_fk) REFERENCES estado(id)
-);
-
 CREATE TABLE matricula (
 id INT PRIMARY KEY auto_increment,
 id_usuario_fk INT NOT NULL,
-id_prematricula_fk INT NOT NULL,
-id_sede_fk INT NOT NULL,
-id_jornada_fk INT NOT NULL,
-id_grado_fk INT NOT NULL,
 id_curso_fk INT NOT NULL,
+id_estado_matricula_fk INT NOT NULL,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
 FOREIGN KEY (id_usuario_fk) REFERENCES usuario(id),
-FOREIGN KEY (id_prematricula_fk) REFERENCES prematricula(id),
-FOREIGN KEY (id_sede_fk) REFERENCES sede(id),
-FOREIGN KEY (id_jornada_fk) REFERENCES jornada(id),
-FOREIGN KEY (id_grado_fk) REFERENCES grado(id),
-FOREIGN KEY (id_curso_fk) REFERENCES curso(id)
+FOREIGN KEY (id_curso_fk) REFERENCES curso(id),
+FOREIGN KEY (id_estado_matricula_fk) REFERENCES estado_matricula(id)
 );
 
 INSERT INTO departamento (id, nombre, codigo) VALUES
@@ -1363,10 +1363,11 @@ INSERT INTO tipo_documento (id, nombre) VALUES
 
 INSERT INTO rol (id, nombre) VALUES
 (1, 'Administrador'),
-(2, 'Director'),
-(3, 'Secretaria'),
+(2, 'Secretaria'),
+(3, 'Coordinador'),
 (4, 'Psicologo'),
-(5, 'Coordinador');
+(5, 'Estudiante'),
+(6, 'Aspirante');
 
 INSERT INTO genero (id, nombre) VALUES
 (1, 'Masculino'),
@@ -1388,9 +1389,10 @@ INSERT INTO tipo_sangre (id, nombre) VALUES
 (7, 'O+'),
 (8, 'O-');
 
-
 INSERT INTO usuario (usuario, clave, id_rol_fk) VALUES
-('admin', SHA1('admin'), '1'),
-('coordinador', SHA1('coordinador'), '5'),
-('psicologo', SHA1('psicologo'), '4'),
-('secretaria', SHA1('secretaria'), '3');
+('administrador', SHA1('administrador'), 1),
+('secretaria', SHA1('secretaria'), 2),
+('coordinador', SHA1('coordinador'), 3),
+('psicoorientador', SHA1('psicoorientador'), 4),
+('estudiante', SHA1('estudiante'), 5),
+('aspirante', SHA1('aspirante'), 6);
