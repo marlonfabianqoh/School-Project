@@ -1,5 +1,14 @@
-toastr.options.timeOut = 5000;
-toastr.options.closeButton = true;
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
 
 (function() {
     'use strict';
@@ -13,7 +22,7 @@ toastr.options.closeButton = true;
                 event.stopPropagation();
 
                 if (form.checkValidity() === false) {
-                    toastr.warning("Diligencie todos los campos antes de continuar");
+                    Toast.fire({ icon: 'warning', title: 'Diligencie todos los campos antes de continuar' });
                 }
                 else if (form.checkValidity() === true) {
                     var frm = $("#form-jornada");
@@ -26,12 +35,12 @@ toastr.options.closeButton = true;
                             let data = JSON.parse(result);
 
                             if(data.CODE == 1){
-                                toastr.success(data.DESCRIPTION, {timeOut: 3000});
+                                Toast.fire({ icon: 'success', title: data.DESCRIPTION });
                                 setTimeout(() => {
                                     window.location.href = "./adminJornadas.php";
                                 }, 3000);
                             } else {
-                                toastr.error(data.DESCRIPTION);
+                                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
                             }
                         }
                     })
@@ -68,7 +77,7 @@ function listar_jornadas () {
                     `);
                 });
             } else {
-                toastr.error(data.DESCRIPTION);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
@@ -88,7 +97,7 @@ function buscar_jornada (id) {
                 $('#txtObservation').val(data.observacion);
                 $('#selCampus').val(parseInt(data.id_sede_fk));
             } else {
-                toastr.error(data.DESCRIPTION);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
@@ -107,7 +116,7 @@ function listar_sedes () {
                 });
             } else {
                 $('#selCampus').append(`<option value="">Seleccionar</option>`);
-                toastr.error(data.DESCRIPTION);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
@@ -139,38 +148,37 @@ function filtrar_jornadas (nombre, sede) {
                     `);
                 });
             } else {
-                toastr.error(data.DESCRIPTION);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
 }
 
 function eliminar_jornada (id) {
-    toastr.warning("<button type='button' id='confirmation' class='btn btn-secondary mt-2'>Si</button>",'¿Está seguro(a) que desea eliminar esta jornada?', {
-        closeButton: false,
-        allowHtml: true,
-        timeOut: 0,
-        extendedTimeOut: 0,
-        onShown: function (toast) {
-            $("#confirmation").click(function(){
-                $.ajax({
-                    url: '../../index.php?c=c_jornada&a=eliminar',
-                    type: 'POST',
-                    data: { id: id },
-                    success: function (result) {
-                        let data = JSON.parse(result);
-    
-                        if (data.CODE == 1) {
-                            toastr.success(data.DESCRIPTION, { timeOut: 3000 });
-                            listar_jornadas();
-                        } else {
-                            toastr.error(data.DESCRIPTION);
-                        }
+    Swal.fire({
+        title: '¿Está seguro(a) que desea eliminar esta sede?',
+        showCancelButton: true,
+        confirmButtonText: 'Continuar',
+        cancelButtonText: `Cancelar`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../index.php?c=c_jornada&a=eliminar',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    let data = JSON.parse(result);
+
+                    if (data.CODE == 1) {
+                        Toast.fire({ icon: 'success', title: data.DESCRIPTION });
+                        listar_jornadas();
+                    } else {
+                        Toast.fire({ icon: 'error', title: data.DESCRIPTION });
                     }
-                });
+                }
             });
         }
-    });
+    })
 }
 
 function limpiar () {

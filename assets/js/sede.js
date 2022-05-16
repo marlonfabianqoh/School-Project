@@ -1,11 +1,19 @@
-toastr.options.timeOut = 5000;
-toastr.options.closeButton = true;
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
 
 (function() {
     'use strict';
     window.addEventListener('load', function() {
         var forms = document.getElementsByClassName('sede-validation');
-        var tag = $("body").attr("tag");
 
         var validation = Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
@@ -13,7 +21,7 @@ toastr.options.closeButton = true;
                 event.stopPropagation();
 
                 if (form.checkValidity() === false) {
-                    toastr.warning("Diligencie todos los campos antes de continuar");
+                    Toast.fire({ icon: 'warning', title: 'Diligencie todos los campos antes de continuar' });
                 }
                 else if (form.checkValidity() === true) {
                     var frm = $("#form-sede");
@@ -26,12 +34,12 @@ toastr.options.closeButton = true;
                             let data = JSON.parse(result);
 
                             if(data.CODE == 1){
-                                toastr.success(data.DESCRIPTION, {timeOut: 3000});
+                                Toast.fire({ icon: 'success', title: data.DESCRIPTION });
                                 setTimeout(() => {
                                     window.location.href = "./adminSedes.php";
                                 }, 3000);
                             } else {
-                                toastr.error(data.DESCRIPTION);
+                                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
                             }
                         }
                     })
@@ -68,7 +76,7 @@ function listar_sedes () {
                     `);
                 });
             } else {
-                toastr.error(data.DESCRIPTION);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
@@ -93,7 +101,7 @@ function buscar_sede (id) {
                 department = parseInt(data.id_departamento_fk);
                 $('#txtObservation').val(data.observacion);
             } else {
-                toastr.error(data.DESCRIPTION);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
@@ -112,7 +120,7 @@ function listar_departamentos () {
                 });
             } else {
                 $('#selDepartment').append(`<option value="">Seleccionar</option>`);
-                toastr.error(data.DESCRIPTION);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
@@ -140,7 +148,7 @@ function listar_ciudades (departamento, ciudad=null) {
                         }
                     });
                 } else {
-                    toastr.error(data.DESCRIPTION);
+                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
                 }
             }
         });
@@ -175,38 +183,37 @@ function filtrar_sedes (nombre, departamento, ciudad) {
                     `);
                 });
             } else {
-                toastr.error(data.DESCRIPTION);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
 }
 
 function eliminar_sede (id) {
-    toastr.warning("<button type='button' id='confirmation' class='btn btn-secondary mt-2'>Si</button>",'¿Está seguro(a) que desea eliminar esta sede?', {
-        closeButton: false,
-        allowHtml: true,
-        timeOut: 0,
-        extendedTimeOut: 0,
-        onShown: function (toast) {
-            $("#confirmation").click(function(){
-                $.ajax({
-                    url: '../../index.php?c=c_sede&a=eliminar',
-                    type: 'POST',
-                    data: { id: id },
-                    success: function (result) {
-                        let data = JSON.parse(result);
-            
-                        if (data.CODE == 1) {
-                            toastr.success(data.DESCRIPTION, { timeOut: 3000 });
-                            listar_sedes();
-                        } else {
-                            toastr.error(data.DESCRIPTION);
-                        }
+    Swal.fire({
+        title: '¿Está seguro(a) que desea eliminar esta sede?',
+        showCancelButton: true,
+        confirmButtonText: 'Continuar',
+        cancelButtonText: `Cancelar`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../index.php?c=c_sede&a=eliminar',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    let data = JSON.parse(result);
+        
+                    if (data.CODE == 1) {
+                        Toast.fire({ icon: 'success', title: data.DESCRIPTION });
+                        listar_sedes();
+                    } else {
+                        Toast.fire({ icon: 'error', title: data.DESCRIPTION });
                     }
-                });
+                }
             });
         }
-    });
+    })
 }
 
 function limpiar () {
