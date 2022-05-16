@@ -157,6 +157,7 @@ CREATE TABLE grado (
 id INT PRIMARY KEY auto_increment,
 nombre VARCHAR(20) NOT NULL,
 id_jornada_fk INT NOT NULL,
+observacion TEXT,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
 FOREIGN KEY (id_jornada_fk) REFERENCES jornada(id)
@@ -166,6 +167,7 @@ CREATE TABLE curso (
 id INT PRIMARY KEY auto_increment,
 nombre VARCHAR(20) NOT NULL,
 id_grado_fk INT NOT NULL,
+observacion TEXT,
 fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
 FOREIGN KEY (id_grado_fk) REFERENCES grado(id)

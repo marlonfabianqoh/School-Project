@@ -8,17 +8,6 @@
         if ($_SESSION['rol'] != '2') {
             header("Location: ../home.php");
         } else {
-            $option = 1;
-
-            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-            $params = parse_url($url);
-            if (isset($params['query'])) {
-                parse_str($params['query'], $params);
-
-                if (isset($params['id'])) {
-                    $option = 2;
-                }
-            }
 ?>
 
 <!doctype html>
@@ -34,7 +23,7 @@
 
     <!-- CSS Custom -->
     <link rel="stylesheet" href="../../assets/css/style.css">
-
+    
     <!-- Sweetalert -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -57,68 +46,64 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <h1>Formulario de sedes</h1>
+                    <h1>Administrador de sedes</h1>
                 </div>
             </div>
 
-            <div class="row mt-5">
+            <div class="row">
                 <div class="col">
-                    <form id="form-sede" class="row sede-validation" method="POST" novalidate>
-                        <input type="text" id="id" name="id" value="<?php if (isset($params['id'])) { echo $params['id']; } else { echo ''; } ?>" hidden>
-
-                        <div class="col-12">
+                    <legend class="mt-5">Filtrar:</legend>
+                    <div class="row">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="txtName" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="txtName" name="txtName" required>
+                                <label for="txtName" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="txtName" name="txtName">
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="txtAddress" class="form-label">Dirección</label>
-                                <input type="text" class="form-control" id="txtAddress" name="txtAddress" required>
-                            </div>
-                        </div>
-                        
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="txtPhone" class="form-label">Teléfono</label>
-                                <input type="number" class="form-control" id="txtPhone" name="txtPhone" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="selDepartment" class="form-label">Departamento</label>
-                                <select class="form-select" id="selDepartment" name="selDepartment" onchange="listar_ciudades(selDepartment.value)" required>
-                                    <option value="" selected disabled>Seleccionar</option>
+                                <label for="selDepartment" class="form-label">Departamento:</label>
+                                <select class="form-select" id="selDepartment" name="selDepartment" onchange="listar_ciudades(selDepartment.value);">
+                                    <option value="" selected>Seleccionar</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="selCity" class="form-label">Ciudad</label>
-                                <select class="form-select" id="selCity" name="selCity" disabled required>
-                                    <option value="" selected disabled>Seleccionar</option>
+                                <label for="selCity" class="form-label">Ciudad:</label>
+                                <select class="form-select" id="selCity" name="selCity" disabled>
+                                    <option value="" selected>Seleccionar</option>
                                 </select>
                             </div>
                         </div>
-
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="txtObservation" class="form-label">Observaciones</label>
-                                <textarea class="form-control" cols="30" rows="5" id="txtObservation" name="txtObservation"></textarea>
-                            </div>
-                        </div>
+                    </div>
                     
-                        <div class="col-12 mt-5">
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="./sedes.php">
-                                <button type="button" class="btn btn-outline-secondary">Cancelar</button>
-                            </a>
-                        </div>
-                    </form>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success" onclick="filtrar_sedes(txtName.value, selDepartment.value, selCity.value)">
+                            <i class="bi bi-search"></i>
+                            Filtrar
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="limpiar()">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sedes" class="row mt-3">
+                <div class="col-12 mb-4">
+                    <a href="./formularioSedes.php">
+                        <button type="button" class="btn btn-success">
+                            Nueva Sede
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                    </a>
+                </div>
+            
+                <div class="col-12 mt-5">
+                    <a href="../home.php">
+                        <button type="button" class="btn btn-outline-secondary">Volver</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -142,7 +127,7 @@
             </div>
         </footer>
     </main>
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     
@@ -153,13 +138,8 @@
     <script type="text/javascript" src="../../assets/js/sede.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(async function () {
-            <?php if (isset($params['id'])) { ?>
-
-            buscar_sede(<?php echo $params['id']; ?>);
-
-            <?php } ?>
-
+        $(document).ready(function () {
+            listar_sedes();
             listar_departamentos();
         });
     </script>

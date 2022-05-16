@@ -1,9 +1,13 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '3') {
-        header("Location: ../../index.php");
+    if (!isset($_SESSION['id'])) {
+        session_destroy();
+        header("Location: ../../login.php");
     } else {
+        if ($_SESSION['rol'] != '2') {
+            header("Location: ../home.php");
+        } else {
 ?>
 
 <!doctype html>
@@ -16,10 +20,13 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <!-- CSS Custom -->
     <link rel="stylesheet" href="../../assets/css/style.css">
+
+    <!-- Sweetalert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>School Project</title>
 </head>
 
@@ -29,10 +36,7 @@
             <div class="container">
                 <a class="navbar-brand" href="../home.php">School Project</a>
                 <div>
-                    <!-- <a href="/views/secretary/dashboard.html">
-                        <button type="button" class="btn btn-light">Secretaria</button>
-                    </a> -->
-                    <a href="../../controllers/logout.php">
+                    <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar Sesion</button>
                     </a>
                 </div>
@@ -48,31 +52,51 @@
 
             <div class="row">
                 <div class="col">
-                    <form class="row">
-                        <legend class="mt-5">Filtrar:</legend>
+                    <legend class="mt-5">Filtrar:</legend>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="txtName" class="form-label">Buscador:</label>
+                                <label for="txtName" class="form-label">Nombre:</label>
                                 <input type="text" class="form-control" id="txtName" name="txtName" onkeyup="buscar(txtName.value)">
                             </div>
                         </div>
-                    </form>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="selCampus" class="form-label">Sede:</label>
+                                <select class="form-select" id="selCampus" name="selCampus" onchange="listar_jornadas(selCampus.value);">
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="selSession" class="form-label">Jornada:</label>
+                                <select class="form-select" id="selSession" name="selSession" disabled>
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success" onclick="filtrar_grados(txtName.value, selCampus.value, selSession.value)">
+                            <i class="bi bi-search"></i>
+                            Filtrar
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="limpiar()">Limpiar</button>
+                    </div>
                 </div>
             </div>
 
-            <div id="jornadas" class="row mt-3">
+            <div id="grados" class="row mt-3">
                 <div class="col-12 mb-4">
-                    <a href="./formularioJornadas.php">
+                    <a href="./formularioGrados.php">
                         <button type="button" class="btn btn-success">
-                            Nueva Grado
+                            Nuevo Grado
                             <i class="bi bi-plus-lg"></i>
                         </button>
-                    </a>
-                </div>
-
-                <div class="col-12 mb-4">
-                    <a href="parameterization.php">
-                        <button type="button" class="btn btn-outline-secondary">Parametros</button>
                     </a>
                 </div>
 
@@ -92,7 +116,7 @@
                             <use xlink:href="#bootstrap"></use>
                         </svg>
                     </a>
-                    <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda  -- Luis Gustavo  -- Eva Orejarena</span>
+                    <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda</span>
                 </div>
 
                 <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
@@ -104,105 +128,25 @@
         </footer>
     </main>
 
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+     <!-- Bootstrap JS -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript" src="../../assets/js/validation.js"></script>
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    -->
+    <!-- JS Custom -->
+    <script type="text/javascript" src="../../assets/js/grado.js"></script>
 
     <script type="text/javascript">
-        // FUNCION QUE CARGA LAS JORNADAS
         $(document).ready(function () {
-            $.ajax({
-                url: '../../controllers/c_jornada.php',
-                type: 'POST',
-                data: { option: 'jornadas-listar'},
-                success: function (result) {
-                    let data = JSON.parse(result);
-
-                    if (data.STATUS) {
-                        data.DATA.forEach(element => {
-                            $('#jornadas div').eq(-1).before(`
-                                <div class="col-md-4 jornada">
-                                    <div class="card mb-4">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${element.nombre}</h5>
-                                            <p class="card-text text-secondary">${element.observacion}</p>
-                                            <a href="./formularioJornadas.php?id=${element.id}"><button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button></a>
-                                            <button type="button" class="btn btn-danger" onclick="eliminar(${element.id})"><i class="bi bi-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `);
-                        });
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
+            listar_grados();
+            listar_sedes();
         });
-
-        function buscar (nombre) {
-            $.ajax({
-                url: '../../controllers/c_jornada.php',
-                type: 'POST',
-                data: { option: 'jornadas-buscar', nombre: nombre },
-                success: function (result) {
-                    let data = JSON.parse(result);
-
-                    if (data.STATUS) {
-                        $('#jornadas .jornada').remove();
-
-                        data.DATA.forEach(element => {
-                            $('#jornadas div').eq(-1).before(`
-                                <div class="col-md-4 jornada">
-                                    <div class="card mb-4">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${element.nombre}</h5>
-                                            <p class="card-text text-secondary">${element.observacion}</p>
-                                            <a href="./formularioJornadas.php?id=${element.id}"><button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button></a>
-                                            <button type="button" class="btn btn-danger" onclick="eliminar(${element.id})"><i class="bi bi-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `);
-                        });
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
-        }
-
-        function eliminar (id) {
-            $.ajax({
-                url: '../../controllers/c_jornada.php',
-                type: 'POST',
-                data: { option: 'jornadas-eliminar', id: id },
-                success: function (result) {
-                    let data = JSON.parse(result);
-
-                    if (data.STATUS) {
-                        toastr.success(data.MESSAGE, { timeOut: 3000 });
-                        window.location.reload();
-                    } else {
-                        toastr.error(data.MESSAGE);
-                    }
-                }
-            });
-        }
     </script>
 </body>
 </html>
 
 <?php 
+        }
     }
 ?> 

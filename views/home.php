@@ -20,7 +20,7 @@
 
     <!-- CSS Custom -->
     <link rel="stylesheet" href="/assets/css/style.css">
-    
+
     <title>School Project</title>
 </head>
 
@@ -64,7 +64,7 @@
 
                 <?php if ($_SESSION['rol'] == '2') { ?>
                     <div class="col-md-3">
-                        <a href="./secretary/adminSedes.php" class="text-decoration-none">
+                        <a href="./secretary/sedes.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Sedes</h4>
                                 <h2>
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <a href="./secretary/adminJornadas.php" class="text-decoration-none">
+                        <a href="./secretary/jornadas.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Jornadas</h4>
                                 <h2>
@@ -86,11 +86,22 @@
                     </div>
 
                     <div class="col-md-3">
-                        <a href="#" class="text-decoration-none">
+                        <a href="./secretary/grados.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Grados</h4>
+                                <h2>
+                                    <i class="bi bi-puzzle text-primary"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3">
+                        <a href="./secretary/dashboard.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Cursos</h4>
                                 <h2>
-                                    <i class="bi bi-journal-bookmark text-danger"></i>
+                                    <i class="bi bi-journal-bookmark text-success"></i>
                                 </h2>
                             </div>
                         </a>
@@ -100,7 +111,7 @@
 
                 <?php if ($_SESSION['rol'] == '3') {?>
                     <div class="col-md-3">
-                        <a href="./secretary/adminSedes.php" class="text-decoration-none">
+                        <a href="./secretary/sedes.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Sedes</h4>
                                 <h2>
@@ -111,7 +122,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <a href="./secretary/adminJornadas.php" class="text-decoration-none">
+                        <a href="./secretary/jornadas.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Jornadas</h4>
                                 <h2>

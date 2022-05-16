@@ -36,7 +36,7 @@ const Toast = Swal.mixin({
                             if(data.CODE == 1){
                                 Toast.fire({ icon: 'success', title: data.DESCRIPTION });
                                 setTimeout(() => {
-                                    window.location.href = "./adminSedes.php";
+                                    window.location.href = "./sedes.php";
                                 }, 3000);
                             } else {
                                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
@@ -82,6 +82,7 @@ function listar_sedes () {
     });
 }
 
+var department = '';
 function buscar_sede (id) {
     $.ajax({
         url: '../../index.php?c=c_sede&a=buscar',
@@ -116,7 +117,11 @@ function listar_departamentos () {
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    $('#selDepartment').append(`<option value="${element.id}">${element.nombre}</option>`);
+                    if (element.id == department) {
+                        $('#selDepartment').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                    } else {
+                        $('#selDepartment').append(`<option value="${element.id}">${element.nombre}</option>`);
+                    }
                 });
             } else {
                 $('#selDepartment').append(`<option value="">Seleccionar</option>`);
