@@ -29,7 +29,7 @@
 		}
 
 		public function obtener_usuario ($id) {
-			$query = "SELECT s.id, s.nombre, s.direccion, (SELECT d.id FROM departamento d INNER JOIN ciudad c ON c.id_departamento_fk = d.id WHERE c.id = s.id_ciudad_fk) AS id_departamento_fk, s.id_ciudad_fk, s.telefono, IFNULL(s.observacion, '') as observacion FROM sede s WHERE s.id = ".$id.";";
+			$query = "SELECT u.usuario, u.id_rol_fk, u.id_estado_usuario_fk, du.documento, du.id_tipo_documento_fk, du.nombres, du.apellidos, du.correo, du.direccion, du.id_ciudad_fk, du.telefono, du.celular, DATE_FORMAT(du.fecha_nacimiento, '%Y-%m-%d') as fecha_nacimiento, du.id_genero_fk, du.id_preferencia_fk, du.id_tipo_sangre_fk, du.observacion, d.id AS id_departamento_fk FROM usuario u INNER JOIN detalle_usuario du ON u.id = du.id_usuario_fk INNER JOIN ciudad c ON du.id_ciudad_fk = c.id INNER JOIN departamento d ON c.id_departamento_fk = d.id WHERE u.id = $id;";
 			$result = $this->mysqli->query($query);
 			
 			if ($result->num_rows) {
@@ -41,11 +41,11 @@
 					}
 				}
 	
-				$response = array('CODE' => 1, 'DESCRIPTION' => 'Sede cargada con éxito', 'DATA' => $data);
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Usuario cargado con éxito', 'DATA' => $data);
 				return json_encode($response);
 	
 			} else {
-				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existe la sede', 'DATA' => array());
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existe el usuario', 'DATA' => array());
 				return json_encode($response);
 			}
 		}
@@ -64,9 +64,9 @@
 	
 				if (!empty($nombre)) {
 					if ($count > 0) {
-						$query .= " AND du.nombres LIKE '%$nombre%'";
+						$query .= " AND CONCAT(du.nombres, ' ', du.apellidos) LIKE '%$nombre%'";
 					} else {
-						$query .= " du.nombres LIKE '%$nombre%'";
+						$query .= " CONCAT(du.nombres, ' ', du.apellidos) LIKE '%$nombre%'";
 					}
 
 					$count++;
@@ -113,44 +113,60 @@
 			}
 		}
 
-		public function crear_usuario ($nombre, $direccion, $ciudad, $telefono, $observacion) {
-			$query = "INSERT INTO sede (nombre, direccion, id_ciudad_fk, telefono, observacion) VALUES ('$nombre', '$direccion', $ciudad, '$telefono', '$observacion');";
+		public function crear_usuario ($usuario, $clave, $rol, $estado, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion) {
+			$query = "INSERT INTO usuario (usuario, clave, id_rol_fk, id_estado_usuario_fk) VALUES ('$usuario', '".sha1($clave)."', $rol, '$estado');";
+			$result = $this->mysqli->query($query);
+
+			$last_id = $this->mysqli->insert_id;
+
+			$query = "INSERT INTO detalle_usuario (documento, id_tipo_documento_fk, nombres, apellidos, correo, direccion, id_ciudad_fk, telefono, celular, fecha_nacimiento, id_genero_fk, id_preferencia_fk, id_tipo_sangre_fk, id_usuario_fk, observacion) VALUES ('$documento', $tipo_documento, '$nombres', '$apellidos', '$correo', '$direccion', $ciudad, '$telefono', '$celular', '$fecha_nacimiento', $genero, $preferencia, $tipo_sangre, $last_id, '$observacion');";
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {
-				$response = array('CODE' => 1, 'DESCRIPTION' => 'Sede creada con éxito', 'DATA' => array());
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Usuario creado con éxito', 'DATA' => array());
 				return json_encode($response);
 
 			} else {
-				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al crear la sede', 'DATA' => array());
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al crear el usuario', 'DATA' => array());
 				return json_encode($response);
 			}
 		}
 
-		public function editar_usuario ($id, $nombre, $direccion, $ciudad, $telefono, $observacion) {
-			$query = "UPDATE sede SET nombre = '$nombre', direccion = '$direccion', id_ciudad_fk =  $ciudad, telefono = '$telefono', observacion = '$observacion' WHERE id = $id";
+		public function editar_usuario ($id, $usuario, $clave, $rol, $estado, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion) {
+			$query = "UPDATE usuario SET usuario = '$usuario', id_rol_fk = $rol, id_estado_usuario_fk = $estado";
+			
+			if (!empty($clave)) {
+				$query .= ", clave = '".sha1($clave)."'";
+			}
+
+			$query .= " WHERE id = $id"; 
+			$result = $this->mysqli->query($query);
+
+			$query = "UPDATE detalle_usuario SET documento = '$documento', id_tipo_documento_fk = $tipo_documento, nombres = '$nombres', apellidos = '$apellidos', correo = '$correo', direccion = '$direccion', id_ciudad_fk = $ciudad, telefono = '$telefono', celular = '$celular', fecha_nacimiento = '$fecha_nacimiento', id_genero_fk = $genero, id_preferencia_fk = $preferencia, id_tipo_sangre_fk = $tipo_sangre, observacion = '$observacion' WHERE id_usuario_fk = $id;";
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {
-				$response = array('CODE' => 1, 'DESCRIPTION' => 'Sede actualizada con éxito', 'DATA' => array());
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Usuario actualizado con éxito', 'DATA' => array());
 				return json_encode($response);
 
 			} else {
-				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al actualizar la sede', 'DATA' => array());
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al actualizar el usuario', 'DATA' => array());
 				return json_encode($response);
 			}
 		}
 
 		public function eliminar_usuario ($id) {
-			$query = "DELETE FROM sede WHERE id = $id;";
+			$query = "DELETE FROM detalle_usuario WHERE id_usuario_fk = $id;";
+			$result = $this->mysqli->query($query);
+
+			$query = "DELETE FROM usuario WHERE id = $id;";
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {
-				$response = array('CODE' => 1, 'DESCRIPTION' => 'Sede eliminada con éxito', 'DATA' => array());
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Usuario eliminado con éxito', 'DATA' => array());
 				return json_encode($response);
-
 			} else {
-				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al eliminar la sede', 'DATA' => array());
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al eliminar el usuario', 'DATA' => array());
 				return json_encode($response);
 			}
 		}

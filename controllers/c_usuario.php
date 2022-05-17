@@ -19,30 +19,43 @@
 		}
 
 		public function filtrar () {
-			$usuarion = $_POST['usuario'];
+			$user = $_POST['usuario'];
 			$nombre = $_POST['nombre'];
 			$rol = $_POST['rol'];
 			$estado = $_POST['estado'];
 			
 			$usuario = new M_usuario();
-			$response = $usuario->filtrar_usuarios($usuarion, $nombre, $rol, $estado);
+			$response = $usuario->filtrar_usuarios($user, $nombre, $rol, $estado);
 			echo $response;
 		}
 
 		public function guardar () {
 			$id = $_POST['id'];
-			$nombre = $_POST['txtName'];
+			$user = $_POST['txtUser'];
+			$clave = $_POST['txtPass'];
+			$rol = $_POST['selRole'];
+			$estado = $_POST['selStatus'];
+			$documento = $_POST['txtId'];
+			$tipo_documento = $_POST['selTypeId'];
+			$nombres = $_POST['txtName'];
+			$apellidos = $_POST['txtLastName'];
+			$correo = $_POST['txtEmail'];
 			$direccion = $_POST['txtAddress'];
 			$ciudad = $_POST['selCity'];
 			$telefono = $_POST['txtPhone'];
+			$celular = $_POST['txtMobile'];
+			$fecha_nacimiento = $_POST['txtDate'];
+			$genero = $_POST['selGender'];
+			$preferencia = $_POST['selPreference'];
+			$tipo_sangre = $_POST['selTypeBlood'];
 			$observacion = $_POST['txtObservation'];
 
 			$usuario = new M_usuario();
 
 			if (empty($id)) {
-				$response = $usuario->crear_usuario($nombre, $direccion, $ciudad, $telefono, $observacion);
+				$response = $usuario->crear_usuario($user, $clave, $rol, $estado, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion);
 			} else {
-				$response = $usuario->editar_usuario($id, $nombre, $direccion, $ciudad, $telefono, $observacion);
+				$response = $usuario->editar_usuario($id, $user, $clave, $rol, $estado, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion);
 			}
 
 			echo $response;

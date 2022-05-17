@@ -78,7 +78,7 @@ function listar_usuarios () {
                             <td>${element.nombre_estado}</td>
                             <td class="text-end">
                                 <a href="./formularioUsuarios.php?id=${element.id}" class="btn btn-light">Ver / Editar</a>
-                                <button type="button" class="btn btn-danger" onclick="eliminar(${element.id})"><i class="bi bi-trash"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="eliminar_usuario(${element.id})"><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
                     `);
@@ -92,7 +92,54 @@ function listar_usuarios () {
 
 var role = '';
 var state = '';
+var typeId = '';
 var department = '';
+var gender = '';
+var typeBlood = '';
+var preference = '';
+function buscar_usuario (id) {
+    $.ajax({
+        url: '../../index.php?c=c_usuario&a=buscar',
+        type: 'POST',
+        data: { id: id },
+        success: function (result) {
+            let data = JSON.parse(result);
+
+            if(data.CODE == 1){
+                console.log(data.DATA[0]);
+                data = data.DATA[0];
+                $('#txtUser').val(data.usuario);
+                $('#selRole').val(data.id_rol_fk);
+                role = parseInt(data.id_rol_fk);
+                $('#selStatus').val(data.id_estado_usuario_fk);
+                state = parseInt(data.id_estado_usuario_fk);
+                $('#selTypeId').val(data.id_tipo_documento_fk);
+                typeId = parseInt(data.id_tipo_documento_fk);
+                $('#txtId').val(parseInt(data.documento));
+                $('#txtName').val(data.nombres);
+                $('#txtLastName').val(data.apellidos);
+                $('#txtDate').val(data.fecha_nacimiento);
+                $('#txtEmail').val(data.correo);
+                $('#txtPhone').val(parseInt(data.telefono));
+                $('#txtMobile').val(parseInt(data.celular));
+                $('#selDepartment').val(parseInt(data.id_departamento_fk));
+                listar_ciudades(data.id_departamento_fk, data.id_ciudad_fk);
+                $('#selCity').val(parseInt(data.id_ciudad_fk));
+                department = parseInt(data.id_departamento_fk);
+                $('#txtAddress').val(data.direccion);
+                $('#selGender').val(data.id_genero_fk);
+                gender = parseInt(data.id_genero_fk);
+                $('#selTypeBlood').val(data.id_tipo_sangre_fk);
+                typeBlood = parseInt(data.id_tipo_sangre_fk);
+                $('#selPreference').val(data.id_preferencia_fk);
+                preference = parseInt(data.id_preferencia_fk);
+                $('#txtObservation').val(data.observacion);
+            } else {
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+            }
+        }
+    });
+}
 
 function listar_roles () {
     $.ajax({
@@ -149,7 +196,7 @@ function listar_tipos_identificacion () {
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    if (element.id == state) {
+                    if (element.id == typeId) {
                         $('#selTypeId').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
                     } else {
                         $('#selTypeId').append(`<option value="${element.id}">${element.nombre}</option>`);
@@ -226,7 +273,7 @@ function listar_generos () {
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    if (element.id == state) {
+                    if (element.id == gender) {
                         $('#selGender').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
                     } else {
                         $('#selGender').append(`<option value="${element.id}">${element.nombre}</option>`);
@@ -249,7 +296,7 @@ function listar_tipos_sangre () {
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    if (element.id == state) {
+                    if (element.id == typeBlood) {
                         $('#selTypeBlood').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
                     } else {
                         $('#selTypeBlood').append(`<option value="${element.id}">${element.nombre}</option>`);
@@ -272,7 +319,7 @@ function listar_preferencias () {
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    if (element.id == state) {
+                    if (element.id == preference) {
                         $('#selPreference').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
                     } else {
                         $('#selPreference').append(`<option value="${element.id}">${element.nombre}</option>`);
@@ -306,7 +353,7 @@ function filtrar_usuarios (usuario, nombre, rol, estado) {
                             <td>${element.nombre_estado}</td>
                             <td class="text-end">
                                 <a href="./formularioUsuarios.php?id=${element.id}" class="btn btn-light">Ver / Editar</a>
-                                <button type="button" class="btn btn-danger" onclick="eliminar(${element.id})"><i class="bi bi-trash"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="eliminar_usuario(${element.id})"><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
                     `);
@@ -316,6 +363,33 @@ function filtrar_usuarios (usuario, nombre, rol, estado) {
             }
         }
     });
+}
+
+function eliminar_usuario (id) {
+    Swal.fire({
+        title: '¿Está seguro(a) que desea eliminar este usuario?',
+        showCancelButton: true,
+        confirmButtonText: 'Continuar',
+        cancelButtonText: `Cancelar`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../index.php?c=c_usuario&a=eliminar',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    let data = JSON.parse(result);
+        
+                    if (data.CODE == 1) {
+                        Toast.fire({ icon: 'success', title: data.DESCRIPTION });
+                        listar_usuarios();
+                    } else {
+                        Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                    }
+                }
+            });
+        }
+    })
 }
 
 function limpiar () {

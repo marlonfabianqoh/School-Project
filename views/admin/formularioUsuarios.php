@@ -76,14 +76,14 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtPass" class="form-label">Clave:</label>
-                                <input type="text" class="form-control" id="txtPass" name="txtPass" required>
+                                <input type="text" class="form-control" id="txtPass" name="txtPass">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selRole" class="form-label">Rol:</label>
-                                <select class="form-select" id="selRole" name="selRole">
+                                <select class="form-select" id="selRole" name="selRole" required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -92,7 +92,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selStatus" class="form-label">Estado:</label>
-                                <select class="form-select" id="selStatus" name="selStatus">
+                                <select class="form-select" id="selStatus" name="selStatus" required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -101,7 +101,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selTypeId" class="form-label">Tipo de identificación:</label>
-                                <select class="form-select" id="selTypeId" name="selTypeId">
+                                <select class="form-select" id="selTypeId" name="selTypeId" required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -177,7 +177,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="txtAddress" class="form-label">Dirección:</label>
-                                <input type="number" class="form-control" id="txtAddress" name="txtAddress" required>
+                                <input type="text" class="form-control" id="txtAddress" name="txtAddress" required>
                             </div>
                         </div>
 
@@ -210,8 +210,8 @@
 
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="txtObservations" class="form-label">Observaciones:</label>
-                                <textarea  class="form-control" cols="30" rows="5" id="txtObservations" name="txtObservations"></textarea>
+                                <label for="txtObservation" class="form-label">Observaciones:</label>
+                                <textarea  class="form-control" cols="30" rows="5" id="txtObservation" name="txtObservation"></textarea>
                             </div>
                         </div>
 
