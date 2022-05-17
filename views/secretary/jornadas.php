@@ -46,7 +46,7 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <h1>Administrador de Jornadas</h1>
+                    <h1>Administrador de jornadas</h1>
                 </div>
             </div>
 

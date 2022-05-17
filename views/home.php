@@ -51,7 +51,7 @@
             <div class="row mt-5">
                 <?php if ($_SESSION['rol'] == '1') { ?>
                     <div class="col-md-3">
-                        <a href="./admin/adminUsuarios.php" class="text-decoration-none">
+                        <a href="./admin/usuarios.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Usuarios</h4>
                                 <h2>

@@ -17,5 +17,41 @@
 			$response = $general->obtener_ciudades($departamento);
 			echo $response;
 		}
+
+		public function listar_estados_usuario () {
+			$general = new M_general();
+			$response = $general->obtener_estados_usuario();
+			echo $response;
+		}
+
+		public function listar_roles () {
+			$general = new M_general();
+			$response = $general->obtener_roles();
+			echo $response;
+		}
+
+		public function listar_tipos_documento () {
+			$general = new M_general();
+			$response = $general->obtener_tipos_documento();
+			echo $response;
+		}
+
+		public function listar_generos () {
+			$general = new M_general();
+			$response = $general->obtener_generos();
+			echo $response;
+		}
+
+		public function listar_tipos_sangre () {
+			$general = new M_general();
+			$response = $general->obtener_tipos_sangre();
+			echo $response;
+		}
+
+		public function listar_preferencias () {
+			$general = new M_general();
+			$response = $general->obtener_preferencias();
+			echo $response;
+		}
 	}
 ?>

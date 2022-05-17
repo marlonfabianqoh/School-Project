@@ -17,10 +17,13 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <!-- CSS Custom -->
     <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Sweetalert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>School Project</title>
 </head>
 
@@ -30,10 +33,7 @@
             <div class="container">
                 <a class="navbar-brand" href="../home.php">School Project</a>
                 <div>
-                    <!-- <a href="/views/secretary/dashboard.html">
-                        <button type="button" class="btn btn-light">Secretaria</button>
-                    </a> -->
-                    <a href="../../controllers/logout.php">
+                    <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar Sesion</button>
                     </a>
                 </div>
@@ -43,7 +43,7 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <h1>Administrador de Usuarios</h1>
+                    <h1>Administrador de usuarios</h1>
                 </div>
             </div>
 
@@ -53,35 +53,39 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="txtNames" class="form-label">Nombres del usuario:</label>
-                                <input type="text" class="form-control" id="txtNames" name="txtNames">
+                                <label for="txtUser" class="form-label">Usuario:</label>
+                                <input type="text" class="form-control" id="txtUser" name="txtUser">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="txtLastNames" class="form-label">Apellidos del usuario:</label>
-                                <input type="text" class="form-control" id="txtLastNames" name="txtLastNames">
+                                <label for="txtName" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="txtName" name="txtName">
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="txtIdentification" class="form-label">Identificacion del usuario:</label>
-                                <input type="number" class="form-control" id="txtIdentification" name="txtIdentification">
+                                <label for="selRole" class="form-label">Rol:</label>
+                                <select class="form-select" id="selRole" name="selRole">
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="txtEmail" class="form-label">Email del usuario:</label>
-                                <input type="email" class="form-control" id="txtEmail" name="txtEmail">
+                                <label for="selStatus" class="form-label">Estado:</label>
+                                <select class="form-select" id="selStatus" name="selStatus">
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-12">
-                        <button type="submit" class="btn btn-success" onclick="buscar()">
+                        <button type="submit" class="btn btn-success" onclick="filtrar_usuarios(txtUser.value, txtName.value, selRole.value, selStatus.value)">
                             <i class="bi bi-search"></i>
                             Filtrar
                         </button>
@@ -104,43 +108,15 @@
                     <table class="table mt-5">
                         <thead>
                             <tr>
+                                <th scope="col">Usuario</th>
                                 <th scope="col">Nombre Completo</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Celular</th>
                                 <th scope="col">Rol</th>
-                                <th scope="col">Ultima Conexión</th>
+                                <th scope="col">Estado</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
 
-                        <tbody>
-                            <tr>
-                                <td>Marlon Fabian Garcia Mendoza</td>
-                                <td>marlon@email.com</td>
-                                <td>1234567890</td>
-                                <td>Administrador</td>
-                                <td>12:00</td>
-                                <td class="text-end">
-                                    <a href="userForm.php" class="btn btn-light">Ver / Editar</a> 
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Carlos Javier Rueda Mena</td>
-                                <td>carlos@email.com</td>
-                                <td>1234567890</td>
-                                <td>Coordinador</td>
-                                <td>16:00</td>
-                                <td class="text-end">
-                                    <a href="userForm.php" class="btn btn-light">Ver / Editar</a> 
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
 
@@ -174,21 +150,24 @@
         </footer>
     </main>
 
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript" src="../../assets/js/validation.js"></script>
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    -->
+    <!-- JS Custom -->
+    <script type="text/javascript" src="../../assets/js/usuario.js"></script>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            listar_usuarios();
+            listar_roles();
+            listar_estados_usuario();
+        });
+    </script>
+
+    <!-- <script type="text/javascript">
         // FUNCION QUE CARGA LOS USUARIOS
         $(document).ready(function () {
             $.ajax({
@@ -200,19 +179,7 @@
 
                     if (data.STATUS) {
                         data.DATA.forEach(element => {
-                            $('#usuarios table tbody').append(`
-                                <tr>
-                                    <td>${element.nombres} ${element.apellidos}</td>
-                                    <td>${element.correo}</td>
-                                    <td>${element.celular}</td>
-                                    <td>${element.nombre_rol}</td>
-                                    <td>${element.fecha_conexion}</td>
-                                    <td class="text-end">
-                                        <a href="./formularioUsuarios.php?id=${element.id}" class="btn btn-light">Ver / Editar</a>
-                                        <button type="button" class="btn btn-danger" onclick="eliminar(${element.id})"><i class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                            `);
+                            
                         });
                     } else {
                         toastr.error(data.MESSAGE);
@@ -283,7 +250,7 @@
                 }
             });
         }
-    </script>
+    </script> -->
 </body>
 </html>
 

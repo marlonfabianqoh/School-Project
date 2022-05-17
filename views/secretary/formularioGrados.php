@@ -41,7 +41,7 @@
     <title>School Project</title>
 </head>
 
-<body tag="">
+<body>
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
