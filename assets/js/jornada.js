@@ -83,6 +83,7 @@ function listar_jornadas () {
     });
 }
 
+var campus = '';
 function buscar_jornada (id) {
     $.ajax({
         url: '../../index.php?c=c_jornada&a=buscar',
@@ -96,6 +97,7 @@ function buscar_jornada (id) {
                 $('#txtName').val(data.nombre);
                 $('#txtObservation').val(data.observacion);
                 $('#selCampus').val(parseInt(data.id_sede_fk));
+                campus = parseInt(data.id_sede_fk);
             } else {
                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
@@ -112,7 +114,11 @@ function listar_sedes () {
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    $('#selCampus').append(`<option value="${element.id}">${element.nombre}</option>`);
+                    if (element.id == campus) {
+                        $('#selCampus').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                    } else {
+                        $('#selCampus').append(`<option value="${element.id}">${element.nombre}</option>`);
+                    }
                 });
             } else {
                 $('#selCampus').append(`<option value="">Seleccionar</option>`);

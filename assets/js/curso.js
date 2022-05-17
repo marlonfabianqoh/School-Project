@@ -13,7 +13,7 @@ const Toast = Swal.mixin({
 (function() {
     'use strict';
     window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('grado-validation');
+        var forms = document.getElementsByClassName('curso-validation');
 
         var validation = Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
@@ -24,10 +24,10 @@ const Toast = Swal.mixin({
                     Toast.fire({ icon: 'warning', title: 'Diligencie todos los campos antes de continuar' });
                 }
                 else if (form.checkValidity() === true) {
-                    var frm = $("#form-grado");
+                    var frm = $("#form-curso");
                     
                     $.ajax({
-                        url: '../../index.php?c=c_grado&a=guardar',
+                        url: '../../index.php?c=c_curso&a=guardar',
                         type: "POST",
                         data: frm.serialize(),
                         success: function (result) {
@@ -36,7 +36,7 @@ const Toast = Swal.mixin({
                             if(data.CODE == 1){
                                 Toast.fire({ icon: 'success', title: data.DESCRIPTION });
                                 setTimeout(() => {
-                                    window.location.href = "./grados.php";
+                                    window.location.href = "./cursos.php";
                                 }, 3000);
                             } else {
                                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
@@ -51,25 +51,25 @@ const Toast = Swal.mixin({
     }, false);
 })();
 
-function listar_grados () {
-    $('#grados .grado').remove();
+function listar_cursos () {
+    $('#cursos .curso').remove();
 
     $.ajax({
-        url: '../../index.php?c=c_grado&a=listar',
+        url: '../../index.php?c=c_curso&a=listar',
         type: 'POST',
         success: function (result) {
             let data = JSON.parse(result);
 
             if (data.CODE == 1) {
                 data.DATA.forEach(element => {
-                    $('#grados div').eq(-1).before(`
-                        <div class="col-md-4 grado">
+                    $('#cursos div').eq(-1).before(`
+                        <div class="col-md-4 curso">
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <h5 class="card-title">${element.nombre}</h5>
                                     <p class="card-text text-secondary">${element.observacion}</p>
-                                    <a href="./formularioGrados.php?id=${element.id}"><button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button></a>
-                                    <button type="button" class="btn btn-danger" onclick="eliminar_grado(${element.id})"><i class="bi bi-trash"></i></button>
+                                    <a href="./formularioCursos.php?id=${element.id}"><button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button></a>
+                                    <button type="button" class="btn btn-danger" onclick="eliminar_curso(${element.id})"><i class="bi bi-trash"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -84,9 +84,10 @@ function listar_grados () {
 
 var campus = '';
 var session = '';
-function buscar_grado (id) {
+var grade = '';
+function buscar_curso (id) {
     $.ajax({
-        url: '../../index.php?c=c_grado&a=buscar',
+        url: '../../index.php?c=c_curso&a=buscar',
         type: 'POST',
         data: { id: id },
         success: function (result) {
@@ -95,11 +96,12 @@ function buscar_grado (id) {
             if(data.CODE == 1){
                 data = data.DATA[0];
                 $('#txtName').val(data.nombre);
-                $('#selCampus').val(parseInt(data.id_jornada_fk));
+                $('#selCampus').val(parseInt(data.id_sede_fk));
                 campus = parseInt(data.id_sede_fk);
                 listar_jornadas(data.id_sede_fk, data.id_jornada_fk);
                 $('#selSession').val(parseInt(data.id_jornada_fk));
-                session = parseInt(data.id_jornada_fk);
+                listar_grados(data.id_jornada_fk, data.id_grado_fk);
+                $('#selGrade').val(parseInt(data.id_grado_fk));
                 $('#txtObservation').val(data.observacion);
             } else {
                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
@@ -162,26 +164,57 @@ function listar_jornadas (sede, jornada=null) {
     }
 }
 
-function filtrar_grados (nombre, sede, jornada) {
-    $('#grados .grado').remove();
+function listar_grados (jornada, grado=null) {
+    $('#selGrade').html(`<option value="" selected>Seleccionar</option>`);
+    
+    if (jornada != '') {
+        $('#selGrade').prop('disabled', false);
+
+        $.ajax({
+            url: '../../index.php?c=c_grado&a=filtrar',
+            type: 'POST',
+            data: { nombre: '', sede: '', jornada: jornada },
+            success: function (result) {
+                let data = JSON.parse(result);
+
+                if(data.CODE == 1){
+                    data.DATA.forEach(element => {
+                        if (element.id == grade || element.id == grado) {
+                            $('#selGrade').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                        } else {
+                            $('#selGrade').append(`<option value="${element.id}">${element.nombre}</option>`);
+                        }
+                    });
+                } else {
+                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                }
+            }
+        });
+    } else {
+        $('#selGrade').prop('disabled', true);
+    }
+}
+
+function filtrar_cursos (nombre, sede, jornada, grado) {
+    $('#cursos .curso').remove();
 
     $.ajax({
-        url: '../../index.php?c=c_grado&a=filtrar',
+        url: '../../index.php?c=c_curso&a=filtrar',
         type: 'POST',
-        data: { nombre: nombre, sede: sede, jornada: jornada },
+        data: { nombre: nombre, sede: sede, jornada: jornada, grado: grado },
         success: function (result) {
             let data = JSON.parse(result);
 
             if (data.CODE == 1) {
                 data.DATA.forEach(element => {
-                    $('#grados div').eq(-1).before(`
-                        <div class="col-md-4 grado">
+                    $('#cursos div').eq(-1).before(`
+                        <div class="col-md-4 curso">
                             <div class="card mb-4">
                                 <div class="card-body">
                                     <h5 class="card-title">${element.nombre}</h5>
                                     <p class="card-text text-secondary">${element.observacion}</p>
-                                    <a href="./formularioGrados.php?id=${element.id}"><button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button></a>
-                                    <button type="button" class="btn btn-danger" onclick="eliminar_grado(${element.id})"><i class="bi bi-trash"></i></button>
+                                    <a href="./formularioCursos.php?id=${element.id}"><button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button></a>
+                                    <button type="button" class="btn btn-danger" onclick="eliminar_curso(${element.id})"><i class="bi bi-trash"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -194,16 +227,16 @@ function filtrar_grados (nombre, sede, jornada) {
     });
 }
 
-function eliminar_grado (id) {
+function eliminar_curso (id) {
     Swal.fire({
-        title: '¿Está seguro(a) que desea eliminar este grado?',
+        title: '¿Está seguro(a) que desea eliminar este curso?',
         showCancelButton: true,
         confirmButtonText: 'Continuar',
         cancelButtonText: `Cancelar`,
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '../../index.php?c=c_grado&a=eliminar',
+                url: '../../index.php?c=c_curso&a=eliminar',
                 type: 'POST',
                 data: { id: id },
                 success: function (result) {
@@ -211,7 +244,7 @@ function eliminar_grado (id) {
         
                     if (data.CODE == 1) {
                         Toast.fire({ icon: 'success', title: data.DESCRIPTION });
-                        listar_grados();
+                        listar_cursos();
                     } else {
                         Toast.fire({ icon: 'error', title: data.DESCRIPTION });
                     }
@@ -225,5 +258,6 @@ function limpiar () {
     $('#txtName').val('');
     $('#selCampus').val('');
     $('#selSession').val('');
-    listar_grados();
+    $('#selGrade').val('');
+    listar_cursos();
 }

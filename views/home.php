@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <a href="./secretary/dashboard.php" class="text-decoration-none">
+                        <a href="./secretary/cursos.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Cursos</h4>
                                 <h2>

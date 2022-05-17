@@ -123,9 +123,9 @@ function buscar_usuario (id) {
                 $('#txtPhone').val(parseInt(data.telefono));
                 $('#txtMobile').val(parseInt(data.celular));
                 $('#selDepartment').val(parseInt(data.id_departamento_fk));
+                department = parseInt(data.id_departamento_fk);
                 listar_ciudades(data.id_departamento_fk, data.id_ciudad_fk);
                 $('#selCity').val(parseInt(data.id_ciudad_fk));
-                department = parseInt(data.id_departamento_fk);
                 $('#txtAddress').val(data.direccion);
                 $('#selGender').val(data.id_genero_fk);
                 gender = parseInt(data.id_genero_fk);

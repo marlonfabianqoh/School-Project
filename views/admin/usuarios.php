@@ -126,8 +126,6 @@
                     </a>
                 </div>
             </div>
-
-            
        </div>
 
         <footer class="container mt-5">

@@ -7,22 +7,27 @@
 		}
 		
 		public function iniciar_sesion ($usuario, $clave) {
-			$query = "SELECT id, clave, id_rol_fk FROM usuario WHERE usuario = '$usuario';";
+			$query = "SELECT id, clave, id_rol_fk, id_estado_usuario_fk FROM usuario WHERE usuario = '$usuario';";
 			$result = $this->mysqli->query($query);
 
 			if ($result->num_rows) {
 				$row = $result->fetch_assoc();
 
-				if (sha1($clave) == $row['clave']) {
-					session_start();
-					$_SESSION['id'] = $row['id'];
-					$_SESSION['usuario'] = $usuario;
-					$_SESSION['rol'] = $row['id_rol_fk'];
+				if ($row['id_estado_usuario_fk'] == 1) {
+					if (sha1($clave) == $row['clave']) {
+						session_start();
+						$_SESSION['id'] = $row['id'];
+						$_SESSION['usuario'] = $usuario;
+						$_SESSION['rol'] = $row['id_rol_fk'];
 
-					$response = array('CODE' => 1, 'DESCRIPTION' => 'Inicio de sesión éxitoso', 'DATA' => array());
-					return json_encode($response);
+						$response = array('CODE' => 1, 'DESCRIPTION' => 'Inicio de sesión éxitoso', 'DATA' => array());
+						return json_encode($response);
+					} else {
+						$response = array('CODE' => 2, 'DESCRIPTION' => 'Contraseña incorrecta', 'DATA' => array());
+						return json_encode($response);
+					}
 				} else {
-					$response = array('CODE' => 2, 'DESCRIPTION' => 'Contraseña incorrecta', 'DATA' => array());
+					$response = array('CODE' => 2, 'DESCRIPTION' => 'El usuario se encuentra inactivo', 'DATA' => array());
 					return json_encode($response);
 				}
 			} else {
