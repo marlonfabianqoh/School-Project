@@ -6,7 +6,7 @@
         header("Location: ../../login.php");
     } else {
         if ($_SESSION['rol'] != '2') {
-            header("Location: ../home.php");
+            header("Location: ../dashboard.php");
         } else {
             $option = 1;
 
@@ -45,7 +45,7 @@
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../home.php">School Project</a>
+                <a class="navbar-brand" href="../dashboard.php">School Project</a>
                 <div>
                     <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar Sesion</button>

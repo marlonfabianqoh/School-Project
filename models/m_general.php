@@ -13,10 +13,8 @@
 			if ($result->num_rows) {
 				$data = array();
 
-				if ($result->num_rows) {
-					while ($row = mysqli_fetch_assoc($result)) {
-						$data[] = $row;
-					}
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
 				}
 
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Departamentos cargados con éxito', 'DATA' => $data);
@@ -35,10 +33,8 @@
 			if ($result->num_rows) {
 				$data = array();
 	
-				if ($result->num_rows) {
-					while ($row = mysqli_fetch_assoc($result)) {
-						$data[] = $row;
-					}
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
 				}
 	
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Ciudades cargadas con éxito', 'DATA' => $data);
@@ -57,10 +53,8 @@
 			if ($result->num_rows) {
 				$data = array();
 
-				if ($result->num_rows) {
-					while ($row = mysqli_fetch_assoc($result)) {
-						$data[] = $row;
-					}
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
 				}
 
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Roles cargados con éxito', 'DATA' => $data);
@@ -79,10 +73,8 @@
 			if ($result->num_rows) {
 				$data = array();
 
-				if ($result->num_rows) {
-					while ($row = mysqli_fetch_assoc($result)) {
-						$data[] = $row;
-					}
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
 				}
 
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Estados cargados con éxito', 'DATA' => $data);
@@ -101,10 +93,8 @@
 			if ($result->num_rows) {
 				$data = array();
 
-				if ($result->num_rows) {
-					while ($row = mysqli_fetch_assoc($result)) {
-						$data[] = $row;
-					}
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
 				}
 
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Tipos de documento cargados con éxito', 'DATA' => $data);
@@ -123,10 +113,8 @@
 			if ($result->num_rows) {
 				$data = array();
 
-				if ($result->num_rows) {
-					while ($row = mysqli_fetch_assoc($result)) {
-						$data[] = $row;
-					}
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
 				}
 
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Géneros cargados con éxito', 'DATA' => $data);
@@ -145,10 +133,8 @@
 			if ($result->num_rows) {
 				$data = array();
 
-				if ($result->num_rows) {
-					while ($row = mysqli_fetch_assoc($result)) {
-						$data[] = $row;
-					}
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
 				}
 
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Tipos de sangre cargados con éxito', 'DATA' => $data);
@@ -167,10 +153,8 @@
 			if ($result->num_rows) {
 				$data = array();
 
-				if ($result->num_rows) {
-					while ($row = mysqli_fetch_assoc($result)) {
-						$data[] = $row;
-					}
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
 				}
 
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Preferencias cargadas con éxito', 'DATA' => $data);
@@ -178,6 +162,26 @@
 
 			} else {
 				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existen preferencias', 'DATA' => array());
+				return json_encode($response);
+			}
+		}
+
+		public function obtener_anualidades() {
+			$query = "SELECT id, anio FROM anualidad ORDER BY anio ASC;";
+			$result = $this->mysqli->query($query);
+			
+			if ($result->num_rows) {
+				$data = array();
+
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
+				}
+
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Anualidades cargadas con éxito', 'DATA' => $data);
+				return json_encode($response);
+
+			} else {
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existen anualidades', 'DATA' => array());
 				return json_encode($response);
 			}
 		}

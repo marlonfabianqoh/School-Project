@@ -36,7 +36,7 @@ const Toast = Swal.mixin({
                             if (data.CODE == 1) {
                                 Toast.fire({ icon: 'success', title: data.DESCRIPTION });
                                 setTimeout(() => {
-                                    window.location.href = "views/home.php";
+                                    window.location.href = "views/dashboard.php";
                                 }, 3000);
                             } else {
                                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });

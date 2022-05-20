@@ -53,5 +53,11 @@
 			$response = $general->obtener_preferencias();
 			echo $response;
 		}
+
+		public function listar_anualidades () {
+			$general = new M_general();
+			$response = $general->obtener_anualidades();
+			echo $response;
+		}
 	}
 ?>

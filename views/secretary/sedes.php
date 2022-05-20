@@ -6,7 +6,7 @@
         header("Location: ../../login.php");
     } else {
         if ($_SESSION['rol'] != '2') {
-            header("Location: ../home.php");
+            header("Location: ../dashboard.php");
         } else {
 ?>
 
@@ -34,7 +34,7 @@
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../home.php">School Project</a>
+                <a class="navbar-brand" href="../dashboard.php">School Project</a>
                 <div>
                     <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar Sesion</button>
@@ -101,7 +101,7 @@
                 </div>
             
                 <div class="col-12 mt-5">
-                    <a href="../home.php">
+                    <a href="../dashboard.php">
                         <button type="button" class="btn btn-outline-secondary">Volver</button>
                     </a>
                 </div>

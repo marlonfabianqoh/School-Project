@@ -29,7 +29,7 @@
   <main class="content">
   <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../home.php">School Project</a>
+                <a class="navbar-brand" href="../dashboard.php">School Project</a>
                 <div>
                     <!-- <a href="/views/secretary/dashboard.html">
                         <button type="button" class="btn btn-light">Secretaria</button>

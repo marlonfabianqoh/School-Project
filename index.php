@@ -12,10 +12,10 @@
         session_start();
 
         if (isset($_SESSION['id'])) {
-            header("Location: views/home.php");
+            header("Location: views/dashboard.php");
         } else {
             session_destroy();
-            header("Location: login.php");
+            header("Location: home.php");
         }
     }
 ?>

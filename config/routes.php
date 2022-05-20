@@ -6,8 +6,8 @@
 		return $control;
 	}
 	
-	function cargar_accion($controlador, $accion){
-		if(isset($accion) && method_exists($controlador, $accion)){
+	function cargar_accion ($controlador, $accion) {
+		if (isset($accion) && method_exists($controlador, $accion)) {
 			$controlador->$accion();
 		}	
 	}

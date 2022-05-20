@@ -2,7 +2,7 @@
     session_start();
 
     if (!isset($_SESSION['id'])) {
-        header("Location: ../index.php");
+        header("Location: ../login.php");
     } else {
         $usuario = $_SESSION['usuario'];
 ?>
@@ -28,11 +28,8 @@
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../home.php">School Project</a>
+                <a class="navbar-brand" href="dashboard.php">School Project</a>
                 <div>
-                    <!-- <a href="/views/secretary/dashboard.html">
-                        <button type="button" class="btn btn-light">Secretaria</button>
-                    </a> -->
                     <a href="../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar Sesion</button>
                     </a>
