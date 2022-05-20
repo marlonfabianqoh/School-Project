@@ -106,7 +106,7 @@ CREATE TABLE detalle_usuario (
     id_genero_fk INT NOT NULL,
     id_preferencia_fk INT NOT NULL,
     id_tipo_sangre_fk INT NOT NULL,
-    id_usuario_fk INT,
+    id_usuario_fk INT NOT NULL,
     observacion TEXT,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
@@ -123,8 +123,8 @@ CREATE TABLE acudiente (
     nombres VARCHAR(20) NOT NULL,
     apellidos VARCHAR(20) NOT NULL,
     correo VARCHAR(50) NOT NULL,
-    direccion VARCHAR(100),
-    id_ciudad_fk INT,
+    direccion VARCHAR(100) NOT NULL,
+    id_ciudad_fk INT NOT NULL,
     telefono VARCHAR(20),
     celular VARCHAR(20) NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -184,43 +184,34 @@ CREATE TABLE curso (
     FOREIGN KEY (id_grado_fk) REFERENCES grado(id)
 );
 
-CREATE TABLE matricula (
-    id INT PRIMARY KEY auto_increment,
-    id_usuario_fk INT NOT NULL,
-    id_curso_fk INT NOT NULL,
-    anio VARCHAR(4) NOT NULL,
-    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario_fk) REFERENCES usuario(id),
-    FOREIGN KEY (id_curso_fk) REFERENCES curso(id)
-);
-
-CREATE TABLE estado_inscripcion (
+CREATE TABLE estado_matricula (
     id INT PRIMARY KEY auto_increment,
     nombre VARCHAR(20) NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE inscripcion (
+CREATE TABLE matricula (
     id INT PRIMARY KEY auto_increment,
-    id_detalle_usuario_fk INT NOT NULL,
-    id_grado_fk INT NOT NULL,
-    id_estado_inscripcion_fk INT NOT NULL,
     anio VARCHAR(4) NOT NULL,
+    id_curso_fk INT,
+    id_grado_fk INT NOT NULL,
+    id_detalle_usuario_fk INT NOT NULL,
+    id_estado_matricula_fk INT NOT NULL,
     observacion TEXT,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_detalle_usuario_fk) REFERENCES detalle_usuario(id),
+    FOREIGN KEY (id_curso_fk) REFERENCES curso(id),
     FOREIGN KEY (id_grado_fk) REFERENCES grado(id),
-    FOREIGN KEY (id_estado_inscripcion_fk) REFERENCES estado_inscripcion(id)
+    FOREIGN KEY (id_detalle_usuario_fk) REFERENCES detalle_usuario(id),
+    FOREIGN KEY (id_estado_matricula_fk) REFERENCES estado_matricula(id)
 );
 
-CREATE TABLE documento_inscripcion (
+CREATE TABLE documento_matricula (
     id INT PRIMARY KEY auto_increment,
     nombre TEXT NOT NULL,
-    id_inscripcion_fk INT NOT NULL,
-    FOREIGN KEY (id_inscripcion_fk) REFERENCES inscripcion(id)
+    id_matricula_fk INT NOT NULL,
+    FOREIGN KEY (id_matricula_fk) REFERENCES matricula(id)
 );
 
 INSERT INTO anualidad (anio) VALUES 
@@ -1435,7 +1426,7 @@ INSERT INTO usuario (usuario, clave, id_rol_fk, id_estado_usuario_fk) VALUES
     ('coordinador', SHA1('coordinador'), 3, 1),
     ('psicoorientador', SHA1('psicoorientador'), 4, 1);
 
-INSERT INTO estado_inscripcion (id, nombre) VALUES
+INSERT INTO estado_matricula (id, nombre) VALUES
     (1, 'Preinscrito'),
     (2, 'Prematriculado'),
     (3, 'Matriculado'),

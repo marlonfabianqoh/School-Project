@@ -1,3 +1,15 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['id'])) {
+        session_destroy();
+        header("Location: ../../login.php");
+    } else {
+        if ($_SESSION['rol'] != '5') {
+            header("Location: ../dashboard.php");
+        } else {
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,7 +34,12 @@
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../../home.php">School Project</a>
+                <a class="navbar-brand" href="../dashboard.php">School Project</a>
+                <div>
+                    <a href="../../index.php?c=c_login&a=salir">
+                        <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                    </a>
+                </div>
             </div>
         </nav>
 
@@ -30,7 +47,7 @@
             <div class="row">
                 <div class="col">
                     <div class="px-4 text-center">
-                        <h1 class="fw-bold">Consulta de preinscripción</h1>
+                        <h1 class="fw-bold">Consulta de matricula</h1>
                     </div>
                 </div>
             </div>
@@ -38,19 +55,14 @@
             <div class="row">
                 <div class="col">
                     <form id="form-consult" class="row consult-validation" method="POST" novalidate>
+                        <input type="text" id="txtId" name="txtId" value="<?php echo $_SESSION['documento']; ?>" hidden>
+
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selYear" class="form-label">Año:</label>
                                 <select class="form-select" id="selYear" name="selYear" required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtId" class="form-label">Identificación:</label>
-                                <input type="text" class="form-control" id="txtId" name="txtId" onkeypress="validarNumeros(event)" required>
                             </div>
                         </div>
 
@@ -93,7 +105,7 @@
                     </div>
 
                     <div class="col-12 mt-5">
-                        <a href="../../home.php">
+                        <a href="../dashboard.php">
                             <button type="button" class="btn btn-outline-secondary">Volver</button>
                         </a>
                     </div>
@@ -128,7 +140,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- JS Custom -->
-    <script type="text/javascript" src="../../assets/js/preinscription.js"></script>
+    <script type="text/javascript" src="../../assets/js/matricula.js"></script>
 
     <script type="text/javascript">
         $(document).ready(async function () {
@@ -137,3 +149,8 @@
     </script>
 </body>
 </html>
+
+<?php 
+        }
+    }
+?>

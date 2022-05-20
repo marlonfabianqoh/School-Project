@@ -25,24 +25,28 @@ const Toast = Swal.mixin({
                 }
                 else if (form.checkValidity() === true) {
                     var frm = $("#form-preinscription");
-                    
-                    $.ajax({
-                        url: '../../index.php?c=c_preinscripcion&a=guardar',
-                        type: "POST",
-                        data: frm.serialize(),
-                        success: function (result) {
-                            let data = JSON.parse(result);
 
-                            if(data.CODE == 1){
-                                Toast.fire({ icon: 'success', title: data.DESCRIPTION });
-                                setTimeout(() => {
-                                    window.location.href = "../../home.php";
-                                }, 3000);
-                            } else {
-                                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                    if ($('#txtPass').val() == $('#txtPassConfirm').val()) {
+                        $.ajax({
+                            url: '../../index.php?c=c_matricula&a=guardar',
+                            type: "POST",
+                            data: frm.serialize(),
+                            success: function (result) {
+                                let data = JSON.parse(result);
+    
+                                if(data.CODE == 1){
+                                    Toast.fire({ icon: 'success', title: data.DESCRIPTION });
+                                    setTimeout(() => {
+                                        window.location.href = "../../home.php";
+                                    }, 3000);
+                                } else {
+                                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                                }
                             }
-                        }
-                    })
+                        })
+                    } else {
+                        Toast.fire({ icon: 'warning', title: 'Las claves no coinciden' });
+                    }
                 }
 
                 form.classList.add('was-validated');
@@ -68,7 +72,7 @@ const Toast = Swal.mixin({
                     var frm = $("#form-consult");
                     
                     $.ajax({
-                        url: '../../index.php?c=c_preinscripcion&a=consultar',
+                        url: '../../index.php?c=c_matricula&a=consultar',
                         type: "POST",
                         data: frm.serialize(),
                         success: function (result) {
@@ -79,7 +83,7 @@ const Toast = Swal.mixin({
                                 $('#result').removeClass('d-none');
                                 let info = data.DATA[0];
                                 
-                                switch (info.id_estado_inscripcion_fk) {
+                                switch (info.id_estado_matricula_fk) {
                                     case '1':
                                         $("#cbxPending").prop("checked", true);
                                         $("#txtObservation").val(info.observacion);

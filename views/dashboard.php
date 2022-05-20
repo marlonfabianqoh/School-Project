@@ -4,7 +4,7 @@
     if (!isset($_SESSION['id'])) {
         header("Location: ../login.php");
     } else {
-        $usuario = $_SESSION['usuario'];
+        $nombre = $_SESSION['nombre'];
 ?>
 
 <!doctype html>
@@ -41,7 +41,7 @@
                 <div class="col">
                     <div class="px-4 text-center">
                         <h1 class="fw-bold">Bienvenido a School Project.</h1>
-                        <h2 class="text-primary"><?php echo $usuario; ?></h2>
+                        <h2 class="text-primary"><?php echo $nombre; ?></h2>
                     </div>
                 </div>
             </div>
@@ -167,21 +167,11 @@
                 
                 <?php if ($_SESSION['rol'] == '5') {?>
                     <div class="col-md-3">
-                        <a href="./secretary/dashboard.php" class="text-decoration-none">
+                        <a href="./student/consult.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
-                                <h4 class="card-title text-dark">Cursos</h4>
+                                <h4 class="card-title text-dark">Consultar matricula</h4>
                                 <h2>
                                     <i class="bi bi-journal-bookmark text-success"></i>
-                                </h2>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3">
-                        <a href="./coordinator/studentList.php" class="text-decoration-none">
-                            <div class="card text-center shadow-sm p-4">
-                                <h4 class="card-title text-dark">Estudiantes</h4>
-                                <h2>
-                                    <i class="bi bi-person text-primary"></i>
                                 </h2>
                             </div>
                         </a>

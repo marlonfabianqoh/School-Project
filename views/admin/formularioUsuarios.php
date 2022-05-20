@@ -76,7 +76,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtPass" class="form-label">Clave:</label>
-                                <input type="text" class="form-control" id="txtPass" name="txtPass">
+                                <input type="password" class="form-control" id="txtPass" name="txtPass">
                             </div>
                         </div>
 

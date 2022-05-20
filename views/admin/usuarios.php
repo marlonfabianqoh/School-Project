@@ -1,11 +1,14 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '1') {
-        header("Location: ../../index.php");
+    if (!isset($_SESSION['id'])) {
+        session_destroy();
+        header("Location: ../../login.php");
     } else {
+        if ($_SESSION['rol'] != '1') {
+            header("Location: ../dashboard.php");
+        } else {
 ?>
-
 <!doctype html>
 <html lang="en">
 
@@ -253,5 +256,6 @@
 </html>
 
 <?php 
+        }
     }
 ?> 

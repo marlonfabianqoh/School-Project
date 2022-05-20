@@ -7,7 +7,7 @@
 		}
 		
 		public function iniciar_sesion ($usuario, $clave) {
-			$query = "SELECT id, clave, id_rol_fk, id_estado_usuario_fk FROM usuario WHERE usuario = '$usuario';";
+			$query = "SELECT u.id, u.clave, u.id_rol_fk, u.id_estado_usuario_fk, CONCAT(du.nombres, ' ', du.apellidos) AS nombre, du.documento FROM usuario u INNER JOIN detalle_usuario du ON u.id = du.id_usuario_fk WHERE u.usuario = '$usuario';";
 			$result = $this->mysqli->query($query);
 
 			if ($result->num_rows) {
@@ -19,6 +19,8 @@
 						$_SESSION['id'] = $row['id'];
 						$_SESSION['usuario'] = $usuario;
 						$_SESSION['rol'] = $row['id_rol_fk'];
+						$_SESSION['nombre'] = $row['nombre'];
+						$_SESSION['documento'] = $row['documento'];
 
 						$response = array('CODE' => 1, 'DESCRIPTION' => 'Inicio de sesión éxitoso', 'DATA' => array());
 						return json_encode($response);

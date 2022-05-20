@@ -1,7 +1,7 @@
 <?php
-	class C_preinscripcion {
+	class C_matricula {
 		public function __construct(){
-			require_once "models/m_preinscripcion.php";
+			require_once "models/m_matricula.php";
 		}
 
 		public function guardar () {
@@ -12,6 +12,9 @@
 			$ciudadAcudiente = $_POST['selCityAttendant'];
 			$telefonoAcudiente = $_POST['txtPhoneAttendant'];
 			$celularAcudiente = $_POST['txtMobileAttendant'];
+			
+			$usuario = $_POST['txtUser'];
+			$clave = $_POST['txtPass'];
 
 			$documento = $_POST['txtId'];
 			$tipo_documento = $_POST['selTypeId'];
@@ -30,8 +33,8 @@
 			$anio = $_POST['selYear'];
 			$grado = $_POST['selGrade'];
 
-			$preinscripcion = new M_preinscripcion();
-			$response = $preinscripcion->crear_preinscripcion($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado);
+			$matricula = new M_matricula();
+			$response = $matricula->crear_matricula($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado);
 			echo $response;
 		}
 
@@ -39,8 +42,8 @@
 			$anio = $_POST['selYear'];
 			$documento = $_POST['txtId'];
 
-			$preinscripcion = new M_preinscripcion();
-			$response = $preinscripcion->consultar_preinscripcion($anio, $documento);
+			$matricula = new M_matricula();
+			$response = $matricula->consultar_matricula($anio, $documento);
 			echo $response;
 		}
 	}

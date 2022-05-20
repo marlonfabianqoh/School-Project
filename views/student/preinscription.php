@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
     <!-- CSS Custom -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
 
     <!-- Sweetalert -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -97,14 +97,37 @@
                             </div>
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="txtAddressAttendant" class="form-label">Dirección:</label>
-                                <input type="text" class="form-control" id="txtAddressAttendant" name="txtAddressAttendant">
+                                <input type="text" class="form-control" id="txtAddressAttendant" name="txtAddressAttendant" >
                             </div>
                         </div>
 
                         <legend class="mt-5">Datos del aspirante</legend>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="txtUser" class="form-label">Usuario:</label>
+                                <input type="text" class="form-control" id="txtUser" name="txtUser" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="txtPass" class="form-label">Clave:</label>
+                                <input type="password" class="form-control" id="txtPass" name="txtPass" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="txtPassConfirm" class="form-label">Confirmar clave:</label>
+                                <input type="password" class="form-control" id="txtPassConfirm" name="txtPassConfirm" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3"></div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
@@ -297,7 +320,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- JS Custom -->
-    <script type="text/javascript" src="../../assets/js/preinscription.js"></script>
+    <script type="text/javascript" src="../../assets/js/matricula.js"></script>
 
     <script type="text/javascript">
         $(document).ready(async function () {
