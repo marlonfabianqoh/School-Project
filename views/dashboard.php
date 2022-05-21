@@ -31,7 +31,7 @@
                 <a class="navbar-brand" href="dashboard.php">School Project</a>
                 <div>
                     <a href="../index.php?c=c_login&a=salir">
-                        <button type="button" class="btn btn-light">Salir</button>
+                        <button type="button" class="btn btn-light">Cerrar sesión</button>
                     </a>
                 </div>
             </div>
@@ -47,7 +47,7 @@
             </div>
             <div class="row mt-5">
                 <?php if ($_SESSION['rol'] == '1') { ?>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-5">
                         <a href="./admin/usuarios.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Usuarios</h4>
@@ -60,7 +60,18 @@
                 <?php } ?>
 
                 <?php if ($_SESSION['rol'] == '2') { ?>
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-5">
+                        <a href="./secretary/parametros.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Parámetros</h4>
+                                <h2>
+                                    <i class="bi bi-gear text-secondary"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 mb-5">
                         <a href="./secretary/sedes.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Sedes</h4>
@@ -71,7 +82,7 @@
                         </a>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-5">
                         <a href="./secretary/jornadas.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Jornadas</h4>
@@ -82,7 +93,7 @@
                         </a>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-5">
                         <a href="./secretary/grados.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Grados</h4>
@@ -93,7 +104,7 @@
                         </a>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-5">
                         <a href="./secretary/cursos.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Cursos</h4>

@@ -37,7 +37,7 @@
                 <a class="navbar-brand" href="../home.php">School Project</a>
                 <div>
                     <a href="../../controllers/logout.php">
-                        <button type="button" class="btn btn-light">Salir</button>
+                        <button type="button" class="btn btn-light">Cerrar sesión</button>
                     </a>
                 </div>
             </div>
@@ -52,25 +52,34 @@
 
             <div class="row">
                 <div class="col">
-                    <div class="col-md-3">
-                        <div class="mb-3">
-                            <label for="selYear" class="form-label">Año:</label>
-                            <select class="form-select" id="selYear" name="selYear" onchange="buscar_parametro(selYear.value)" required>
-                                <option value="" selected disabled>Seleccionar</option>
-                            </select>
+                    <form id="form-parametro" class="row parametro-validation" method="POST" novalidate>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="selYear" class="form-label">Año:</label>
+                                <select class="form-select" id="selYear" name="selYear" onchange="buscar_parametro(selYear.value)" required>
+                                    <option value="" selected disabled>Seleccionar</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                        
+                        <div class="col-12">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAnnuity">
+                                <i class="bi bi-plus"></i>
+                                Agregar anualidad
+                            </button>
+                        </div>
 
-                    <div id="result" class="d-none">
-                        <form id="form-parametro" class="row parametro-validation" method="POST" novalidate>
-                            <div class="col-md-6">
+                        <div id="result" class="row mt-5 d-none">
+                            <input type="text" id="id" name="id" value="" hidden>
+
+                            <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="txtCourse" class="form-label">Número máximo de cursos por grado:</label>
                                     <input type="text" class="form-control" id="txtCourse" name="txtCourse" onkeypress="validarNumeros(event)">
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="txtStudent" class="form-label">Número máximo de estudiantes por curso:</label>
                                     <input type="text" class="form-control" id="txtStudent" name="txtStudent" onkeypress="validarNumeros(event)">
@@ -83,7 +92,34 @@
                                     <button type="button" class="btn btn-outline-secondary">Volver</button>
                                 </a>
                             </div>
-                        </form>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalAnnuity" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Agregar anualidad</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="form-anualidad" class="row anualidad-validation" method="POST" novalidate>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="txtYear" class="form-label">Año:</label>
+                                        <input type="text" class="form-control" maxlength="4" id="txtYear" name="txtYear" onkeypress="validarNumeros(event)"required>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-2">
+                                    <button type="submit" class="btn btn-primary">Agregar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -7,7 +7,7 @@
 		}
 		
 		public function obtener_cursos () {
-			$query = "SELECT c.id, c.nombre, c.id_grado_fk, j.id AS id_jornada_fk, s.id AS id_sede_fk, IFNULL(c.observacion, '') as observacion FROM curso c INNER JOIN grado g ON c.id_grado_fk = g.id INNER JOIN jornada j ON g.id_jornada_fk = j.id INNER JOIN sede s ON j.id_sede_fk = s.id;";
+			$query = "SELECT c.id, c.nombre, c.id_grado_fk, j.id AS id_jornada_fk, s.id AS id_sede_fk, IFNULL(c.observacion, '') as observacion, c.anio FROM curso c INNER JOIN grado g ON c.id_grado_fk = g.id INNER JOIN jornada j ON g.id_jornada_fk = j.id INNER JOIN sede s ON j.id_sede_fk = s.id;";
 			$result = $this->mysqli->query($query);
 			
 			if ($result->num_rows) {
@@ -27,7 +27,7 @@
 		}
 
 		public function obtener_curso ($id) {
-			$query = "SELECT c.id, c.nombre, c.id_grado_fk, j.id AS id_jornada_fk, s.id AS id_sede_fk, IFNULL(c.observacion, '') as observacion FROM curso c INNER JOIN grado g ON c.id_grado_fk = g.id INNER JOIN jornada j ON g.id_jornada_fk = j.id INNER JOIN sede s ON j.id_sede_fk = s.id WHERE c.id = ".$id.";";
+			$query = "SELECT c.id, c.nombre, c.id_grado_fk, j.id AS id_jornada_fk, s.id AS id_sede_fk, IFNULL(c.observacion, '') as observacion, c.anio FROM curso c INNER JOIN grado g ON c.id_grado_fk = g.id INNER JOIN jornada j ON g.id_jornada_fk = j.id INNER JOIN sede s ON j.id_sede_fk = s.id WHERE c.id = ".$id.";";
 			$result = $this->mysqli->query($query);
 			
 			if ($result->num_rows) {
@@ -46,15 +46,25 @@
 			}
 		}
 
-		public function filtrar_cursos ($nombre, $sede, $jornada, $grado) {
-			$query = "SELECT c.id, c.nombre, c.id_grado_fk, j.id AS id_jornada_fk, s.id AS id_sede_fk, IFNULL(c.observacion, '') as observacion FROM curso c INNER JOIN grado g ON c.id_grado_fk = g.id INNER JOIN jornada j ON g.id_jornada_fk = j.id INNER JOIN sede s ON j.id_sede_fk = s.id";
+		public function filtrar_cursos ($anio, $nombre, $sede, $jornada, $grado) {
+			$query = "SELECT c.id, c.nombre, c.id_grado_fk, j.id AS id_jornada_fk, s.id AS id_sede_fk, IFNULL(c.observacion, '') as observacion, c.anio FROM curso c INNER JOIN grado g ON c.id_grado_fk = g.id INNER JOIN jornada j ON g.id_jornada_fk = j.id INNER JOIN sede s ON j.id_sede_fk = s.id";
         
-			if (!empty($nombre) || !empty($sede) || !empty($jornada) || !empty($grado)) {
+			if (!empty($anio) || !empty($nombre) || !empty($sede) || !empty($jornada) || !empty($grado)) {
 				$count = 0;
 				$query .= " WHERE";
+
+				if (!empty($anio)) {
+					$query .= " c.anio = $anio";
+					$count++;
+				}
 	
-				if (!empty($nombre)) {
-					$query .= " c.nombre LIKE '%$nombre%'";
+				if (!empty($nombre) && !empty($sede) && empty($jornada) && empty($grado)) {
+					if ($count > 0) {
+						$query .= " AND c.nombre LIKE '%$nombre%'";
+					} else {
+						$query .= " c.nombre LIKE '%$nombre%'";
+					}
+
 					$count++;
 				}
 
@@ -107,8 +117,20 @@
 			}
 		}
 
-		public function crear_curso ($nombre, $grado, $observacion) {
-			$query = "INSERT INTO curso (nombre, id_grado_fk, observacion) VALUES ('$nombre', $grado, '$observacion');";
+		public function crear_curso ($nombre, $grado, $observacion, $anio) {
+			$query = "SELECT COUNT(c.id) AS cantidad, (SELECT p.cantidad_cursos FROM parametro p WHERE p.anio = $anio) AS cantidad_cursos FROM curso c WHERE c.id_grado_fk = $grado AND c.anio = $anio;";
+			$result = $this->mysqli->query($query);
+
+			if ($result->num_rows) {
+				while ($row = mysqli_fetch_assoc($result)) {
+					if ($row['cantidad'] >= $row['cantidad_cursos']) {
+						$response = array('CODE' => 2, 'DESCRIPTION' => 'Ha llegado al límite de cursos permitidos por grado ('.$row['cantidad_cursos'].')', 'DATA' => array());
+						return json_encode($response);
+					}
+				}
+			}
+
+			$query = "INSERT INTO curso (nombre, id_grado_fk, observacion, anio) VALUES ('$nombre', $grado, '$observacion', $anio);";
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {
@@ -121,8 +143,8 @@
 			}
 		}
 
-		public function editar_curso ($id, $nombre, $grado, $observacion) {
-			$query = "UPDATE curso SET nombre = '$nombre', id_grado_fk =  $grado, observacion = '$observacion' WHERE id = $id";
+		public function editar_curso ($id, $nombre, $grado, $observacion, $anio) {
+			$query = "UPDATE curso SET nombre = '$nombre', id_grado_fk =  $grado, observacion = '$observacion', anio = $anio WHERE id = $id";
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {

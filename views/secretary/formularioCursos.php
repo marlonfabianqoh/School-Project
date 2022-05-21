@@ -48,7 +48,7 @@
                 <a class="navbar-brand" href="../dashboard.php">School Project</a>
                 <div>
                     <a href="../../index.php?c=c_login&a=salir">
-                        <button type="button" class="btn btn-light">Salir</button>
+                        <button type="button" class="btn btn-light">Cerrar sesión</button>
                     </a>
                 </div>
             </div>
@@ -66,14 +66,25 @@
                     <form id="form-curso" class="row curso-validation" method="POST" novalidate>
                         <input type="text" id="id" name="id" value="<?php if (isset($params['id'])) { echo $params['id']; } else { echo ''; } ?>" hidden>
 
-                        <div class="col-12">
+                        <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="txtName" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="txtName" name="txtName" required>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6"></div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="selYear" class="form-label">Año</label>
+                                <select class="form-select" id="selYear" name="selYear" required>
+                                    <option value="" selected disabled>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selCampus" class="form-label">Sede</label>
                                 <select class="form-select" id="selCampus" name="selCampus" onchange="listar_jornadas(selCampus.value)" required>
@@ -82,7 +93,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selSession" class="form-label">Jornada</label>
                                 <select class="form-select" id="selSession" name="selSession" onchange="listar_grados(selSession.value)" disabled required>
@@ -91,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selGrade" class="form-label">Grado</label>
                                 <select class="form-select" id="selGrade" name="selGrade" disabled required>
@@ -155,6 +166,7 @@
 
             <?php } ?>
 
+            listar_anualidades();
             listar_sedes();
         });
     </script>

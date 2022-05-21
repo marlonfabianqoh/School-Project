@@ -17,11 +17,11 @@
 					$data[] = $row;
 				}
 	
-				$response = array('CODE' => 1, 'DESCRIPTION' => 'Parámetro cargado con éxito', 'DATA' => $data);
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Parámetros cargados con éxito', 'DATA' => $data);
 				return json_encode($response);
 	
 			} else {
-				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existe el parámetro', 'DATA' => array());
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existen los parámetros', 'DATA' => array());
 				return json_encode($response);
 			}
 		}
@@ -31,25 +31,39 @@
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {
-				$response = array('CODE' => 1, 'DESCRIPTION' => 'Parámetro guardado con éxito', 'DATA' => array());
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Parámetros guardados con éxito', 'DATA' => array());
 				return json_encode($response);
 
 			} else {
-				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al guardar el parámetro', 'DATA' => array());
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al guardar los parámetros', 'DATA' => array());
 				return json_encode($response);
 			}
 		}
 
 		public function editar_parametro ($id, $cursos, $estudiantes, $anio) {
-			$query = "UPDATE parametro SET cantidad_cursos = $cursos, cantidad_estudiantes = $estudiantes WHERE anio = $anio";
+			$query = "UPDATE parametro SET cantidad_cursos = $cursos, cantidad_estudiantes = $estudiantes, anio = $anio WHERE id = $id";
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {
-				$response = array('CODE' => 1, 'DESCRIPTION' => 'Parámetro guardado con éxito', 'DATA' => array());
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Parámetros guardados con éxito', 'DATA' => array());
 				return json_encode($response);
 
 			} else {
-				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al guardar el parámetro', 'DATA' => array());
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al guardar los parámetros', 'DATA' => array());
+				return json_encode($response);
+			}
+		}
+
+		public function crear_anualidad ($anio) {
+			$query = "INSERT INTO anualidad (anio) VALUES ('$anio');";
+			$result = $this->mysqli->query($query);
+			
+			if ($result) {
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Anualidad guardada con éxito', 'DATA' => array());
+				return json_encode($response);
+
+			} else {
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'Fallo al guardar la anualidad', 'DATA' => array());
 				return json_encode($response);
 			}
 		}

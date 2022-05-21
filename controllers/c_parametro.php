@@ -13,22 +13,28 @@
 		}
 
 		public function guardar () {
-			/* $id = $_POST['id'];
-			$nombre = $_POST['txtName'];
-			$direccion = $_POST['txtAddress'];
-			$ciudad = $_POST['selCity'];
-			$telefono = $_POST['txtPhone'];
-			$observacion = $_POST['txtObservation'];
+			$id = $_POST['id'];
+			$cursos = $_POST['txtCourse'];
+			$estudiantes = $_POST['txtStudent'];
+			$anio = $_POST['selYear'];
 
-			$sede = new M_sede();
+			$parametro = new M_parametro();
 
 			if (empty($id)) {
-				$response = $sede->crear_sede($nombre, $direccion, $ciudad, $telefono, $observacion);
+				$response = $parametro->crear_parametro($cursos, $estudiantes, $anio);
 			} else {
-				$response = $sede->editar_sede($id, $nombre, $direccion, $ciudad, $telefono, $observacion);
+				$response = $parametro->editar_parametro($id, $cursos, $estudiantes, $anio);
 			}
 
-			echo $response; */
+			echo $response;
+		}
+
+		public function guardar_anualidad () {
+			$anio = $_POST['txtYear'];
+
+			$parametro = new M_parametro();
+			$response = $parametro->crear_anualidad($anio);
+			echo $response;
 		}
 	}
 ?>

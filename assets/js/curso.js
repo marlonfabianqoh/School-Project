@@ -96,6 +96,7 @@ function buscar_curso (id) {
             if(data.CODE == 1){
                 data = data.DATA[0];
                 $('#txtName').val(data.nombre);
+                $('#selYear').val(parseInt(data.anio));
                 $('#selCampus').val(parseInt(data.id_sede_fk));
                 campus = parseInt(data.id_sede_fk);
                 listar_jornadas(data.id_sede_fk, data.id_jornada_fk);
@@ -104,6 +105,25 @@ function buscar_curso (id) {
                 $('#selGrade').val(parseInt(data.id_grado_fk));
                 $('#txtObservation').val(data.observacion);
             } else {
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+            }
+        }
+    });
+}
+
+function listar_anualidades () {
+    $.ajax({
+        url: '../../index.php?c=c_general&a=listar_anualidades',
+        type: 'POST',
+        success: function (result) {
+            let data = JSON.parse(result);
+
+            if(data.CODE == 1){
+                data.DATA.forEach(element => {
+                    $('#selYear').append(`<option value="${element.id}">${element.anio}</option>`);
+                });
+            } else {
+                $('#selYear').append(`<option value="">Seleccionar</option>`);
                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
@@ -135,6 +155,8 @@ function listar_sedes () {
 
 function listar_jornadas (sede, jornada=null) {
     $('#selSession').html(`<option value="" selected>Seleccionar</option>`);
+    $('#selGrade').html(`<option value="" selected>Seleccionar</option>`);
+    $('#selGrade').prop('disabled', true);
     
     if (sede != '') {
         $('#selSession').prop('disabled', false);
@@ -195,13 +217,13 @@ function listar_grados (jornada, grado=null) {
     }
 }
 
-function filtrar_cursos (nombre, sede, jornada, grado) {
+function filtrar_cursos (anio, nombre, sede, jornada, grado) {
     $('#cursos .curso').remove();
 
     $.ajax({
         url: '../../index.php?c=c_curso&a=filtrar',
         type: 'POST',
-        data: { nombre: nombre, sede: sede, jornada: jornada, grado: grado },
+        data: { anio: anio, nombre: nombre, sede: sede, jornada: jornada, grado: grado },
         success: function (result) {
             let data = JSON.parse(result);
 
@@ -256,6 +278,7 @@ function eliminar_curso (id) {
 
 function limpiar () {
     $('#txtName').val('');
+    $('#selYear').val('');
     $('#selCampus').val('');
     $('#selSession').val('');
     $('#selGrade').val('');

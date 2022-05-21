@@ -20,12 +20,13 @@
 
 		public function filtrar () {
 			$nombre = $_POST['nombre'];
+			$anio = $_POST['anio'];
 			$sede = $_POST['sede'];
 			$jornada = $_POST['jornada'];
 			$grado = $_POST['grado'];
 
 			$curso = new M_curso();
-			$response = $curso->filtrar_cursos($nombre, $sede, $jornada, $grado);
+			$response = $curso->filtrar_cursos($anio, $nombre, $sede, $jornada, $grado);
 			echo $response;
 		}
 
@@ -34,13 +35,14 @@
 			$nombre = $_POST['txtName'];
 			$grado = $_POST['selGrade'];
 			$observacion = $_POST['txtObservation'];
+			$anio = $_POST['selYear'];
 
 			$curso = new M_curso();
 
 			if (empty($id)) {
-				$response = $curso->crear_curso($nombre, $grado, $observacion);
+				$response = $curso->crear_curso($nombre, $grado, $observacion, $anio);
 			} else {
-				$response = $curso->editar_curso($id, $nombre, $grado, $observacion);
+				$response = $curso->editar_curso($id, $nombre, $grado, $observacion, $anio);
 			}
 
 			echo $response;
