@@ -48,7 +48,7 @@
                 <a class="navbar-brand" href="../dashboard.php">School Project</a>
                 <div>
                     <a href="../../index.php?c=c_login&a=salir">
-                        <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                        <button type="button" class="btn btn-light">Salir</button>
                     </a>
                 </div>
             </div>

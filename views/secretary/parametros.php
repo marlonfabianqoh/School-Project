@@ -32,11 +32,11 @@
 
 <body>
     <main class="content">
-        <nav class="navbar navbar-dark bg-primary">
+    <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../dashboard.php">School Project</a>
+                <a class="navbar-brand" href="../home.php">School Project</a>
                 <div>
-                    <a href="../../index.php?c=c_login&a=salir">
+                    <a href="../../controllers/logout.php">
                         <button type="button" class="btn btn-light">Salir</button>
                     </a>
                 </div>
@@ -46,73 +46,45 @@
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <h1>Administrador de cursos</h1>
+                    <h1>Parámetros</h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <legend class="mt-5">Filtrar:</legend>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtName" class="form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="txtName" name="txtName" onkeyup="buscar(txtName.value)">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="selCampus" class="form-label">Sede:</label>
-                                <select class="form-select" id="selCampus" name="selCampus" onchange="listar_jornadas(selCampus.value);">
-                                    <option value="" selected>Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="selSession" class="form-label">Jornada:</label>
-                                <select class="form-select" id="selSession" name="selSession" onchange="listar_grados(selSession.value);" disabled>
-                                    <option value="" selected>Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="selGrade" class="form-label">Grado:</label>
-                                <select class="form-select" id="selGrade" name="selGrade" disabled>
-                                    <option value="" selected>Seleccionar</option>
-                                </select>
-                            </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label for="selYear" class="form-label">Año:</label>
+                            <select class="form-select" id="selYear" name="selYear" onchange="buscar_parametro(selYear.value)" required>
+                                <option value="" selected disabled>Seleccionar</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success" onclick="filtrar_cursos(txtName.value, selCampus.value, selSession.value, selGrade.value)">
-                            <i class="bi bi-search"></i>
-                            Filtrar
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="limpiar()">Limpiar</button>
+                    <div id="result" class="d-none">
+                        <form id="form-parametro" class="row parametro-validation" method="POST" novalidate>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="txtCourse" class="form-label">Número máximo de cursos por grado:</label>
+                                    <input type="text" class="form-control" id="txtCourse" name="txtCourse" onkeypress="validarNumeros(event)">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="txtStudent" class="form-label">Número máximo de estudiantes por curso:</label>
+                                    <input type="text" class="form-control" id="txtStudent" name="txtStudent" onkeypress="validarNumeros(event)">
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-5">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <a href="../dashboard.php">
+                                    <button type="button" class="btn btn-outline-secondary">Volver</button>
+                                </a>
+                            </div>
+                        </form>
                     </div>
-                </div>
-            </div>
-
-            <div id="cursos" class="row mt-3">
-                <div class="col-12 mb-4">
-                    <a href="./formularioCursos.php">
-                        <button type="button" class="btn btn-success">
-                            Nuevo curso
-                            <i class="bi bi-plus-lg"></i>
-                        </button>
-                    </a>
-                </div>
-
-                <div class="col-12 mt-5">
-                    <a href="../dashboard.php">
-                        <button type="button" class="btn btn-outline-secondary">Volver</button>
-                    </a>
                 </div>
             </div>
         </div>
@@ -144,12 +116,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- JS Custom -->
-    <script type="text/javascript" src="../../assets/js/curso.js"></script>
+    <script type="text/javascript" src="../../assets/js/parametro.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            listar_cursos();
-            listar_sedes();
+            listar_anualidades();
         });
     </script>
 </body>

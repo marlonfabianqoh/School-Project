@@ -15,7 +15,7 @@
 				return json_encode($response);
 			}
 			
-			$query = "SELECT m.id, m.id_estado_matricula_fk FROM matricula m INNER JOIN detalle_usuario du ON m.id_detalle_usuario_fk = du.id WHERE m.anio = '$anio' AND du.documento = '$documento';";
+			$query = "SELECT m.id, m.id_estado_matricula_fk FROM matricula m INNER JOIN detalle_usuario du ON m.id_detalle_usuario_fk = du.id WHERE m.anio = $anio AND du.documento = '$documento';";
 			$result = $this->mysqli->query($query);
 
 			if ($result->num_rows) {

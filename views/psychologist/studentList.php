@@ -35,7 +35,7 @@
                     <button type="button" class="btn btn-light">Secretaria</button>
                 </a> -->
                 <a href="../../controllers/logout.php">
-                    <button type="button" class="btn btn-light">Cerrar Sesion</button>
+                    <button type="button" class="btn btn-light">Salir</button>
                 </a>
             </div>
         </div>

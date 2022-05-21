@@ -35,10 +35,6 @@
                             <a href="views/student/preinscription.php">
                                 <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Iniciar la preinscripción</button>
                             </a>
-
-                            <a href="views/student/consult.php">
-                                <button type="button" class="btn btn-outline-secondary btn-lg px-4">Consultar el estado de la inscripción</button>
-                            </a>
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ CREATE TABLE parametro (
     id INT PRIMARY KEY auto_increment,
     cantidad_cursos VARCHAR(20) NOT NULL,
     cantidad_estudiantes VARCHAR(20) NOT NULL,
-    anio VARCHAR(4) NOT NULL,
+    anio INT NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
 );
@@ -167,7 +167,6 @@ CREATE TABLE grado (
     nombre VARCHAR(20) NOT NULL,
     id_jornada_fk INT NOT NULL,
     observacion TEXT,
-    anio VARCHAR(4) NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_jornada_fk) REFERENCES jornada(id)
@@ -177,8 +176,8 @@ CREATE TABLE curso (
     id INT PRIMARY KEY auto_increment,
     nombre VARCHAR(20) NOT NULL,
     id_grado_fk INT NOT NULL,
+    anio INT NOT NULL,
     observacion TEXT,
-    anio VARCHAR(4) NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_grado_fk) REFERENCES grado(id)
@@ -193,7 +192,7 @@ CREATE TABLE estado_matricula (
 
 CREATE TABLE matricula (
     id INT PRIMARY KEY auto_increment,
-    anio VARCHAR(4) NOT NULL,
+    anio INT NOT NULL,
     id_curso_fk INT,
     id_grado_fk INT NOT NULL,
     id_detalle_usuario_fk INT NOT NULL,
@@ -215,9 +214,9 @@ CREATE TABLE documento_matricula (
 );
 
 INSERT INTO anualidad (anio) VALUES 
-    (2022);
+    ('2022');
 INSERT INTO parametro (cantidad_cursos, cantidad_estudiantes, anio) VALUES 
-    (4, 20, 2022);
+    (4, 20, 1);
 INSERT INTO departamento (id, nombre, codigo) VALUES
     (1, 'Antioquia', 5),
     (2, 'Atlantico', 8),
