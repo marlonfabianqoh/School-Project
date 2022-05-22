@@ -1,3 +1,19 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['id'])) {
+        session_destroy();
+        header("Location: ../../login.php");
+    } else {
+        if ($_SESSION['rol'] != '4') {
+            header("Location: ../dashboard.php");
+        } else {
+            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $params = parse_url($url);
+            if (isset($params['query'])) {
+                parse_str($params['query'], $params);
+            }
+?>
 
 <!doctype html>
 <html lang="en">
@@ -23,116 +39,31 @@
     <main class="content">
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../../home.php">School Project</a>
+                <a class="navbar-brand" href="../dashboard.php">School Project</a>
+                <div>
+                    <a href="../../index.php?c=c_login&a=salir">
+                        <button type="button" class="btn btn-light">Cerrar sesión</button>
+                    </a>
+                </div>
             </div>
         </nav>
 
         <div class="container my-5">
             <div class="row">
                 <div class="col">
-                    <div class="px-4 text-center">
-                        <h1 class="fw-bold">Formulario de preinscripción</h1>
-                        <p class="lead mb-4">Complete el siguiente formulario en su totalidad para iniciar el proceso de preinscripción</p>
-                    </div>
+                    <h1>Observaciones del psicoorientador</h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <form id="form-preinscription" class="row preinscription-validation" method="POST" novalidate>
-                        <legend class="mt-5">Datos del acudiente</legend>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtNameAttendant" class="form-label">Nombres:</label>
-                                <input type="text" class="form-control" id="txtNameAttendant" name="txtNameAttendant" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtLastNameAttendant" class="form-label">Apellidos:</label>
-                                <input type="text" class="form-control" id="txtLastNameAttendant" name="txtLastNameAttendant" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="txtEmailAttendant" class="form-label">Correo:</label>
-                                <input type="email" class="form-control" id="txtEmailAttendant" name="txtEmailAttendant" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtPhoneAttendant" class="form-label">Teléfono:</label>
-                                <input type="text" class="form-control" id="txtPhoneAttendant" name="txtPhoneAttendant" onkeypress="validarNumeros(event)">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtMobileAttendant" class="form-label">Celular:</label>
-                                <input type="text" class="form-control" id="txtMobileAttendant" name="txtMobileAttendant" onkeypress="validarNumeros(event)" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6"></div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="selDepartmentAttendant" class="form-label">Departamento:</label>
-                                <select class="form-select" id="selDepartmentAttendant" name="selDepartmentAttendant" onchange="listar_ciudades_acudiente(selDepartmentAttendant.value)">
-                                    <option value="" selected disabled>Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="selCityAttendant" class="form-label">Ciudad:</label>
-                                <select class="form-select" id="selCityAttendant" name="selCityAttendant" disabled>
-                                    <option value="" selected disabled>Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="txtAddressAttendant" class="form-label">Dirección:</label>
-                                <input type="text" class="form-control" id="txtAddressAttendant" name="txtAddressAttendant" >
-                            </div>
-                        </div>
-
-                        <legend class="mt-5">Datos del aspirante</legend>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtUser" class="form-label">Usuario:</label>
-                                <input type="text" class="form-control" id="txtUser" name="txtUser" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtPass" class="form-label">Clave:</label>
-                                <input type="password" class="form-control" id="txtPass" name="txtPass" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtPassConfirm" class="form-label">Confirmar clave:</label>
-                                <input type="password" class="form-control" id="txtPassConfirm" name="txtPassConfirm" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3"></div>
-
+                    <legend class="mt-5">Datos del Aspirante</legend>
+                    
+                    <div class="row">
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selTypeId" class="form-label">Tipo de identificación:</label>
-                                <select class="form-select" id="selTypeId" name="selTypeId" required>
+                                <select class="form-select" id="selTypeId" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -141,56 +72,56 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtId" class="form-label">Identificación:</label>
-                                <input type="text" class="form-control" id="txtId" name="txtId" onkeypress="validarNumeros(event)" required>
+                                <input type="text" class="form-control" id="txtId" disabled>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtName" class="form-label">Nombres:</label>
-                                <input type="text" class="form-control" id="txtName" name="txtName" required>
+                                <input type="text" class="form-control" id="txtName" disabled>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtLastName" class="form-label">Apellidos:</label>
-                                <input type="text" class="form-control" id="txtLastName" name="txtLastName" required>
+                                <input type="text" class="form-control" id="txtLastName" disabled>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtDate" class="form-label">Fecha de nacimiento:</label>
-                                <input type="date" class="form-control" id="txtDate" name="txtDate" required>
+                                <input type="date" class="form-control" id="txtDate" disabled>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtEmail" class="form-label">Correo:</label>
-                                <input type="email" class="form-control" id="txtEmail" name="txtEmail" required>
+                                <input type="email" class="form-control" id="txtEmail" disabled>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtPhone" class="form-label">Teléfono:</label>
-                                <input type="text" class="form-control" id="txtPhone" name="txtPhone" onkeypress="validarNumeros(event)">
+                                <input type="text" class="form-control" id="txtPhone" disabled>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtMobile" class="form-label">Celular:</label>
-                                <input type="text" class="form-control" id="txtMobile" name="txtMobile" onkeypress="validarNumeros(event)" required>
+                                <input type="text" class="form-control" id="txtMobile" disabled>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selDepartment" class="form-label">Departamento:</label>
-                                <select class="form-select" id="selDepartment" name="selDepartment" onchange="listar_ciudades(selDepartment.value)" required>
+                                <select class="form-select" id="selDepartment" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -199,7 +130,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selCity" class="form-label">Ciudad:</label>
-                                <select class="form-select" id="selCity" name="selCity" disabled required>
+                                <select class="form-select" id="selCity" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -208,14 +139,14 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="txtAddress" class="form-label">Dirección:</label>
-                                <input type="text" class="form-control" id="txtAddress" name="txtAddress" required>
+                                <input type="text" class="form-control" id="txtAddress" disabled>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selGender" class="form-label">Género:</label>
-                                <select class="form-select" id="selGender" name="selGender" required>
+                                <select class="form-select" id="selGender" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -224,7 +155,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selTypeBlood" class="form-label">Tipo de sangre:</label>
-                                <select class="form-select" id="selTypeBlood" name="selTypeBlood" required>
+                                <select class="form-select" id="selTypeBlood" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -233,7 +164,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selPreference" class="form-label">Preferencia:</label>
-                                <select class="form-select" id="selPreference" name="selPreference" required>
+                                <select class="form-select" id="selPreference" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -241,15 +172,15 @@
 
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="txtObservation" class="form-label">Observaciones:</label>
-                                <textarea  class="form-control" cols="30" rows="5" id="txtObservation" name="txtObservation"></textarea>
+                                <label for="txtObservationn" class="form-label">Observaciones:</label>
+                                <textarea class="form-control" cols="30" rows="5" id="txtObservationn" disabled></textarea>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selYear" class="form-label">Año:</label>
-                                <select class="form-select" id="selYear" name="selYear" onchange="listar_sedes(selYear.value)" required>
+                                <select class="form-select" id="selYear" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -258,7 +189,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selCampus" class="form-label">Sede:</label>
-                                <select class="form-select" id="selCampus" name="selCampus" onchange="listar_jornadas(selCampus.value)" disabled required>
+                                <select class="form-select" id="selCampus" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -267,7 +198,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selSession" class="form-label">Jornada:</label>
-                                <select class="form-select" id="selSession" name="selSession" onchange="listar_grados(selSession.value)" disabled required>
+                                <select class="form-select" id="selSession" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -276,16 +207,41 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selGrade" class="form-label">Grado al que aspira:</label>
-                                <select class="form-select" id="selGrade" name="selGrade" disabled required>
+                                <select class="form-select" id="selGrade" disabled>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <form id="form-observacion" class="row observacion-validation" method="POST" novalidate>
+                        <input type="text" id="id" name="id" value="<?php if (isset($params['id'])) { echo $params['id']; } else { echo ''; } ?>" hidden>
+
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="txtObservation" class="form-label">Observaciones del aspirante:</label>
+                                <textarea class="form-control" cols="30" rows="5" id="txtObservation" name="txtObservation" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" value="2" id="cbxAccepted" name="cbxStatus" required>
+                                <label class="form-check-label" for="cbxAccepted">Aceptado</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" value="4" id="cbxRejected" name="cbxStatus" required>
+                                <label class="form-check-label" for="cbxRejected">Rechazado</label>
                             </div>
                         </div>
 
                         <div class="col-12 mt-5">
                             <button type="submit" class="btn btn-primary">Enviar</button>
-                            <a href="../../home.php">
-                                <button type="button" class="btn btn-outline-secondary">Cancelar</button>
+                            <a href="aspirantes.php">
+                              <button type="button" class="btn btn-outline-secondary">Cancelar</button>
                             </a>
                         </div>
                     </form>
@@ -293,7 +249,7 @@
             </div>
         </div>
 
-        <footer class="container mt-5">
+         <footer class="container mt-5">
             <div class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
                 <div class="col d-flex align-items-center">
                     <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
@@ -320,17 +276,29 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- JS Custom -->
-    <script type="text/javascript" src="../../assets/js/matricula.js"></script>
+    <script type="text/javascript" src="../../assets/js/aspirante.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(async function () {
+        $(document).ready(function () {
+            <?php if (isset($params['id'])) { ?>
+
+            buscar_aspirante(<?php echo $params['id']; ?>);
+            
+            <?php } ?>
+
             listar_tipos_identificacion();
             listar_departamentos();
             listar_generos();
             listar_tipos_sangre();
             listar_preferencias();
             listar_anualidades();
+            listar_sedes();
         });
     </script>
 </body>
 </html>
+
+<?php
+        } 
+    }
+?> 

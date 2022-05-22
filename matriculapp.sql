@@ -1413,7 +1413,8 @@ INSERT INTO rol (id, nombre) VALUES
     (2, 'Secretaria'),
     (3, 'Coordinador'),
     (4, 'Psicoorientador'),
-    (5, 'Estudiante');
+    (5, 'Estudiante'),
+    (6, 'Aspirante');
 
 INSERT INTO estado_usuario (id, nombre) VALUES
     (1, 'Activo'),

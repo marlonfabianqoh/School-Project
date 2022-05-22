@@ -59,5 +59,11 @@
 			$response = $general->obtener_anualidades();
 			echo $response;
 		}
+
+		public function listar_estados_matricula () {
+			$general = new M_general();
+			$response = $general->obtener_estados_matricula();
+			echo $response;
+		}
 	}
 ?>

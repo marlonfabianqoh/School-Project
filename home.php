@@ -32,7 +32,7 @@
                         <h1 class="fw-bold">Bienvenido a la plataforma de recepción de solicitudes de inscripción.</h1>
                         <p class="lead mb-4">Seleccione la opción que desea realizar</p>
                         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                            <a href="views/student/preinscription.php">
+                            <a href="views/student/preinscripcion.php">
                                 <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Iniciar la preinscripción</button>
                             </a>
                         </div>

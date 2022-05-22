@@ -165,9 +165,9 @@
 
                 <?php if ($_SESSION['rol'] == '4') {?>
                     <div class="col-md-3">
-                        <a href="./psychologist/studentList.php" class="text-decoration-none">
+                        <a href="./psychocounselor/aspirantes.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
-                                <h4 class="card-title text-dark">Estudiantes</h4>
+                                <h4 class="card-title text-dark">Aspirantes</h4>
                                 <h2>
                                     <i class="bi bi-person text-primary"></i>
                                 </h2>
@@ -176,9 +176,9 @@
                     </div>
                 <?php } ?>
                 
-                <?php if ($_SESSION['rol'] == '5') {?>
+                <?php if ($_SESSION['rol'] == '5' || $_SESSION['rol'] == '6') {?>
                     <div class="col-md-3">
-                        <a href="./student/consult.php" class="text-decoration-none">
+                        <a href="./student/consultar.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Consultar matricula</h4>
                                 <h2>

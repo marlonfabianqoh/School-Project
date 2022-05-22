@@ -5,7 +5,7 @@
         session_destroy();
         header("Location: ../../login.php");
     } else {
-        if ($_SESSION['rol'] != '5') {
+        if ($_SESSION['rol'] != '4') {
             header("Location: ../dashboard.php");
         } else {
 ?>
@@ -43,72 +43,90 @@
             </div>
         </nav>
 
-        <div class="container my-5">
+        <div class="container mt-5">
             <div class="row">
                 <div class="col">
-                    <div class="px-4 text-center">
-                        <h1 class="fw-bold">Consulta de matricula</h1>
-                    </div>
+                    <h1>Listado de aspirantes</h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
-                    <form id="form-consult" class="row consult-validation" method="POST" novalidate>
-                        <input type="text" id="txtId" name="txtId" value="<?php echo $_SESSION['documento']; ?>" hidden>
-
-                        <div class="col-md-3">
+                    <legend class="mt-5">Filtro de búsqueda</legend>
+                    <div class="row">
+                        <div class="col-md-2">
                             <div class="mb-3">
                                 <label for="selYear" class="form-label">Año:</label>
-                                <select class="form-select" id="selYear" name="selYear" required>
-                                    <option value="" selected disabled>Seleccionar</option>
+                                <select class="form-select" id="selYear" name="selYear">
+                                    <option value="" selected>Seleccionar</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="mb-3 pt-3">
-                                <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="selCampus" class="form-label">Sede:</label>
+                                <select class="form-select" id="selCampus" name="selCampus" onchange="listar_jornadas(selCampus.value);" >
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
                             </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="selSession" class="form-label">Jornada:</label>
+                                <select class="form-select" id="selSession" name="selSession" onchange="listar_grados(selSession.value);" disabled>
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="selGrade" class="form-label">Grado:</label>
+                                <select class="form-select" id="selGrade" name="selGrade" disabled>
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label for="selStatus" class="form-label">Estado:</label>
+                                <select class="form-select" id="selStatus" name="selStatus">
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="button" class="btn btn-success" onclick="filtrar_aspirantes(selYear.value, selCampus.value, selSession.value, selGrade.value, selStatus.value)">
+                                <i class="bi bi-search"></i>
+                                Filtrar
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="limpiar()">Limpiar</button>
                         </div>
                     </form>
+                </div>
+            </div>
 
-                    <div id="result" class="d-none">
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="nombresSolicitud" class="form-label">Resultado:</label>
-                                <div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="cbxPending" id="cbxPending" value="" disabled>
-                                        <label class="form-check-label" for="cbxPending">Pendiente</label>
-                                    </div>
+            <div id="aspirantes" class="row mt-5">
+                <div class="col-12">
+                    <table class="table mt-5">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Sede</th>
+                                <th scope="col">Jornada</th>
+                                <th scope="col">Grado</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
 
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="cbxAccepted" id="cbxAccepted" value="" disabled>
-                                        <label class="form-check-label" for="cbxAccepted">Aceptado</label>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="cbxRejected" id="cbxRejected" value="" disabled>
-                                        <label class="form-check-label" for="cbxRejected">Rechazado</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="txtObservation" class="form-label">Observaciones:</label>
-                                <textarea name="txtObservation" class="form-control" id="txtObservation" cols="30" rows="5" readonly></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 mt-5">
-                        <a href="../dashboard.php">
-                            <button type="button" class="btn btn-outline-secondary">Volver</button>
-                        </a>
-                    </div>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -140,11 +158,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- JS Custom -->
-    <script type="text/javascript" src="../../assets/js/matricula.js"></script>
+    <script type="text/javascript" src="../../assets/js/aspirante.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(async function () {
+        $(document).ready(function () {
+            listar_aspirantes();
             listar_anualidades();
+            listar_sedes();
+            listar_estados_matricula();
         });
     </script>
 </body>
@@ -153,4 +174,4 @@
 <?php 
         }
     }
-?>
+?> 

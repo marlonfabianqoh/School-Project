@@ -27,7 +27,7 @@
 				}
 			}
 
-			$query = "INSERT INTO usuario (usuario, clave, id_rol_fk, id_estado_usuario_fk) VALUES ('$usuario', '".sha1($clave)."', 5, 1);";
+			$query = "INSERT INTO usuario (usuario, clave, id_rol_fk, id_estado_usuario_fk) VALUES ('$usuario', '".sha1($clave)."', 6, 1);";
 			$result1 = $this->mysqli->query($query);
 
 			$id_usuario = $this->mysqli->insert_id;

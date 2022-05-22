@@ -185,5 +185,25 @@
 				return json_encode($response);
 			}
 		}
+
+		public function obtener_estados_matricula () {
+			$query = "SELECT id, nombre FROM estado_matricula ORDER BY nombre ASC;";
+			$result = $this->mysqli->query($query);
+			
+			if ($result->num_rows) {
+				$data = array();
+
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
+				}
+
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Estados cargados con éxito', 'DATA' => $data);
+				return json_encode($response);
+
+			} else {
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existen estados', 'DATA' => array());
+				return json_encode($response);
+			}
+		}
 	} 
 ?>

@@ -13,7 +13,7 @@ const Toast = Swal.mixin({
 (function() {
     'use strict';
     window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('usuario-validation');
+        var forms = document.getElementsByClassName('observacion-validation');
 
         var validation = Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
@@ -24,10 +24,10 @@ const Toast = Swal.mixin({
                     Toast.fire({ icon: 'warning', title: 'Diligencie todos los campos antes de continuar' });
                 }
                 else if (form.checkValidity() === true) {
-                    var frm = $("#form-usuario");
+                    var frm = $("#form-observacion");
                     
                     $.ajax({
-                        url: '../../index.php?c=c_usuario&a=guardar',
+                        url: '../../index.php?c=c_aspirante&a=observar',
                         type: "POST",
                         data: frm.serialize(),
                         success: function (result) {
@@ -36,7 +36,7 @@ const Toast = Swal.mixin({
                             if(data.CODE == 1){
                                 Toast.fire({ icon: 'success', title: data.DESCRIPTION });
                                 setTimeout(() => {
-                                    window.location.href = "./usuarios.php";
+                                    window.location.href = "./aspirantes.php";
                                 }, 3000);
                             } else {
                                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
@@ -59,26 +59,27 @@ function validarNumeros (evt) {
     }
 }
 
-function listar_usuarios () {
-    $('#usuarios .table tbody tr').remove();
+function listar_aspirantes () {
+    $('#aspirantes .table tbody tr').remove();
 
     $.ajax({
-        url: '../../index.php?c=c_usuario&a=listar',
+        url: '../../index.php?c=c_aspirante&a=listar',
         type: 'POST',
         success: function (result) {
             let data = JSON.parse(result);
 
             if (data.CODE == 1) {
                 data.DATA.forEach(element => {
-                    $('#usuarios table tbody').append(`
+                    $('#aspirantes table tbody').append(`
                         <tr>
-                            <td>${element.usuario}</td>
-                            <td>${element.nombres} ${element.apellidos}</td>
-                            <td>${element.nombre_rol}</td>
+                            <td>${element.nombre_aspirante}</td>
+                            <td>${element.nombre_sede}</td>
+                            <td>${element.nombre_jornada}</td>
+                            <td>${element.nombre_grado}</td>
                             <td>${element.nombre_estado}</td>
+                            <td>${element.fecha}</td>
                             <td class="text-end">
-                                <a href="./formularioUsuarios.php?id=${element.id}" class="btn btn-light">Ver / Editar</a>
-                                <button type="button" class="btn btn-danger" onclick="eliminar_usuario(${element.id})"><i class="bi bi-trash"></i></button>
+                                <a href="./observacion.php?id=${element.id}" class="btn btn-light">Ver / Evaluar</a>
                             </td>
                         </tr>
                     `);
@@ -90,16 +91,17 @@ function listar_usuarios () {
     });
 }
 
-var role = '';
-var state = '';
 var typeId = '';
 var department = '';
 var gender = '';
 var typeBlood = '';
 var preference = '';
-function buscar_usuario (id) {
+var campus = '';
+var session = '';
+var grade = '';
+function buscar_aspirante (id) {
     $.ajax({
-        url: '../../index.php?c=c_usuario&a=buscar',
+        url: '../../index.php?c=c_aspirante&a=buscar',
         type: 'POST',
         data: { id: id },
         success: function (result) {
@@ -107,11 +109,6 @@ function buscar_usuario (id) {
 
             if(data.CODE == 1){
                 data = data.DATA[0];
-                $('#txtUser').val(data.usuario);
-                $('#selRole').val(data.id_rol_fk);
-                role = parseInt(data.id_rol_fk);
-                $('#selStatus').val(data.id_estado_usuario_fk);
-                state = parseInt(data.id_estado_usuario_fk);
                 $('#selTypeId').val(data.id_tipo_documento_fk);
                 typeId = parseInt(data.id_tipo_documento_fk);
                 $('#txtId').val(parseInt(data.documento));
@@ -119,8 +116,8 @@ function buscar_usuario (id) {
                 $('#txtLastName').val(data.apellidos);
                 $('#txtDate').val(data.fecha_nacimiento);
                 $('#txtEmail').val(data.correo);
-                $('#txtPhone').val(parseInt(data.telefono));
-                $('#txtMobile').val(parseInt(data.celular));
+                $('#txtPhone').val(data.telefono);
+                $('#txtMobile').val(data.celular);
                 $('#selDepartment').val(parseInt(data.id_departamento_fk));
                 department = parseInt(data.id_departamento_fk);
                 listar_ciudades(data.id_departamento_fk, data.id_ciudad_fk);
@@ -132,7 +129,21 @@ function buscar_usuario (id) {
                 typeBlood = parseInt(data.id_tipo_sangre_fk);
                 $('#selPreference').val(data.id_preferencia_fk);
                 preference = parseInt(data.id_preferencia_fk);
+                $('#txtObservationn').val(data.observacionn);
+                $('#selYear').val(parseInt(data.anio));
+                $('#selCampus').val(parseInt(data.id_sede_fk));
+                campus = parseInt(data.id_sede_fk);
+                listar_jornadas(data.id_sede_fk, data.id_jornada_fk);
+                $('#selSession').val(parseInt(data.id_jornada_fk));
+                listar_grados(data.id_jornada_fk, data.id_grado_fk);
+                $('#selGrade').val(parseInt(data.id_grado_fk));
                 $('#txtObservation').val(data.observacion);
+                $('#cbxStatus').val(data.id_estado_matricula_fk);
+                if (data.id_estado_matricula_fk == 2) {
+                    $('#cbxAccepted').prop('checked', true);
+                } else if (data.id_estado_matricula_fk == 4) {
+                    $('#cbxRehected').prop('checked', true);
+                }
             } else {
                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
@@ -140,41 +151,113 @@ function buscar_usuario (id) {
     });
 }
 
-function listar_roles () {
+function listar_anualidades () {
     $.ajax({
-        url: '../../index.php?c=c_general&a=listar_roles',
+        url: '../../index.php?c=c_general&a=listar_anualidades',
         type: 'POST',
         success: function (result) {
             let data = JSON.parse(result);
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    if (element.id == role) {
-                        $('#selRole').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                    $('#selYear').append(`<option value="${element.id}">${element.anio}</option>`);
+                });
+            } else {
+                $('#selYear').append(`<option value="">Seleccionar</option>`);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+            }
+        }
+    });
+}
+
+function listar_sedes () {
+    $.ajax({
+        url: '../../index.php?c=c_sede&a=listar',
+        type: 'POST',
+        success: function (result) {
+            let data = JSON.parse(result);
+
+            if(data.CODE == 1){
+                data.DATA.forEach(element => {
+                    if (element.id == campus) {
+                        $('#selCampus').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
                     } else {
-                        $('#selRole').append(`<option value="${element.id}">${element.nombre}</option>`);
+                        $('#selCampus').append(`<option value="${element.id}">${element.nombre}</option>`);
                     }
                 });
             } else {
-                $('#selRole').append(`<option value="">Seleccionar</option>`);
+                $('#selCampus').append(`<option value="">Seleccionar</option>`);
                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
         }
     });
 }
 
-function listar_estados_usuario () {
+function listar_jornadas (sede, jornada=null) {
+    $('#selSession').html(`<option value="" selected>Seleccionar</option>`);
+    $('#selGrade').html(`<option value="" selected>Seleccionar</option>`);
+    
+    if (sede != '') {
+        $.ajax({
+            url: '../../index.php?c=c_jornada&a=filtrar',
+            type: 'POST',
+            data: { nombre: '', sede: sede },
+            success: function (result) {
+                let data = JSON.parse(result);
+
+                if(data.CODE == 1){
+                    data.DATA.forEach(element => {
+                        if (element.id == session || element.id == jornada) {
+                            $('#selSession').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                        } else {
+                            $('#selSession').append(`<option value="${element.id}">${element.nombre}</option>`);
+                        }
+                    });
+                } else {
+                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                }
+            }
+        });
+    }
+}
+
+function listar_grados (jornada, grado=null) {
+    $('#selGrade').html(`<option value="" selected>Seleccionar</option>`);
+    
+    if (jornada != '') {
+        $.ajax({
+            url: '../../index.php?c=c_grado&a=filtrar',
+            type: 'POST',
+            data: { nombre: '', sede: '', jornada: jornada },
+            success: function (result) {
+                let data = JSON.parse(result);
+
+                if(data.CODE == 1){
+                    data.DATA.forEach(element => {
+                        if (element.id == grade || element.id == grado) {
+                            $('#selGrade').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                        } else {
+                            $('#selGrade').append(`<option value="${element.id}">${element.nombre}</option>`);
+                        }
+                    });
+                } else {
+                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                }
+            }
+        });
+    }
+}
+
+function listar_estados_matricula () {
     $.ajax({
-        url: '../../index.php?c=c_general&a=listar_estados_usuario',
+        url: '../../index.php?c=c_general&a=listar_estados_matricula',
         type: 'POST',
         success: function (result) {
             let data = JSON.parse(result);
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    if (element.id == state) {
-                        $('#selStatus').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
-                    } else {
+                    if (element.id == 1 || element.id == 2) {
                         $('#selStatus').append(`<option value="${element.id}">${element.nombre}</option>`);
                     }
                 });
@@ -236,8 +319,6 @@ function listar_ciudades (departamento, ciudad=null) {
     $('#selCity').html(`<option value="" selected>Seleccionar</option>`);
     
     if (departamento != '') {
-        $('#selCity').prop('disabled', false);
-
         $.ajax({
             url: '../../index.php?c=c_general&a=listar_ciudades',
             type: 'POST',
@@ -258,8 +339,6 @@ function listar_ciudades (departamento, ciudad=null) {
                 }
             }
         });
-    } else {
-        $('#selCity').prop('disabled', true);
     }
 }
 
@@ -332,27 +411,28 @@ function listar_preferencias () {
     });
 }
 
-function filtrar_usuarios (usuario, nombre, rol, estado) {
-    $('#usuarios .table tbody tr').remove();
+function filtrar_aspirantes (anio, sede, jornada, grado, estado) {
+    $('#aspirantes .table tbody tr').remove();
 
     $.ajax({
-        url: '../../index.php?c=c_usuario&a=filtrar',
+        url: '../../index.php?c=c_aspirante&a=filtrar',
         type: 'POST',
-        data: { usuario: usuario, nombre: nombre, rol: rol, estado: estado },
+        data: { anio: anio, sede: sede, jornada: jornada, grado: grado, estado: estado },
         success: function (result) {
             let data = JSON.parse(result);
 
             if (data.CODE == 1) {
                 data.DATA.forEach(element => {
-                    $('#usuarios table tbody').append(`
+                    $('#aspirantes table tbody').append(`
                         <tr>
-                            <td>${element.usuario}</td>
-                            <td>${element.nombres} ${element.apellidos}</td>
-                            <td>${element.nombre_rol}</td>
+                            <td>${element.nombre_aspirante}</td>
+                            <td>${element.nombre_sede}</td>
+                            <td>${element.nombre_jornada}</td>
+                            <td>${element.nombre_grado}</td>
                             <td>${element.nombre_estado}</td>
+                            <td>${element.fecha}</td>
                             <td class="text-end">
-                                <a href="./formularioUsuarios.php?id=${element.id}" class="btn btn-light">Ver / Editar</a>
-                                <button type="button" class="btn btn-danger" onclick="eliminar_usuario(${element.id})"><i class="bi bi-trash"></i></button>
+                                <a href="./observacion.php?id=${element.id}" class="btn btn-light">Ver / Evaluar</a>
                             </td>
                         </tr>
                     `);
@@ -364,37 +444,11 @@ function filtrar_usuarios (usuario, nombre, rol, estado) {
     });
 }
 
-function eliminar_usuario (id) {
-    Swal.fire({
-        title: '¿Está seguro(a) que desea eliminar este usuario?',
-        showCancelButton: true,
-        confirmButtonText: 'Continuar',
-        cancelButtonText: `Cancelar`,
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '../../index.php?c=c_usuario&a=eliminar',
-                type: 'POST',
-                data: { id: id },
-                success: function (result) {
-                    let data = JSON.parse(result);
-        
-                    if (data.CODE == 1) {
-                        Toast.fire({ icon: 'success', title: data.DESCRIPTION });
-                        listar_usuarios();
-                    } else {
-                        Toast.fire({ icon: 'error', title: data.DESCRIPTION });
-                    }
-                }
-            });
-        }
-    })
-}
-
 function limpiar () {
-    $('#txtUser').val('');
-    $('#txtName').val('');
-    $('#selRole').val('');
-    $('#selStatus').val('');
-    listar_usuarios();
+    $('#selYear').val('');
+    $('#selCampus').val('');
+    $('#selSession').val('');
+    $('#selGrade').val('');
+    $('#selState').val('');
+    listar_aspirantes();
 }

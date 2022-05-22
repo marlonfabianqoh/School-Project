@@ -13,7 +13,7 @@ const Toast = Swal.mixin({
 (function() {
     'use strict';
     window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('preinscription-validation');
+        var forms = document.getElementsByClassName('preinscripcion-validation');
 
         var validation = Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
@@ -24,7 +24,7 @@ const Toast = Swal.mixin({
                     Toast.fire({ icon: 'warning', title: 'Diligencie todos los campos antes de continuar' });
                 }
                 else if (form.checkValidity() === true) {
-                    var frm = $("#form-preinscription");
+                    var frm = $("#form-preinscripcion");
 
                     if ($('#txtPass').val() == $('#txtPassConfirm').val()) {
                         $.ajax({
