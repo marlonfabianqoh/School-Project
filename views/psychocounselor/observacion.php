@@ -212,6 +212,16 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="txtPhoto" class="form-label">Documentos:</label>
+                                <button type="button" class="form-control btn btn-success" data-bs-toggle="modal" data-bs-target="#modalViewer" onclick="">
+                                    <i class="bi bi-eye"></i>
+                                    Visualizar
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <hr>
@@ -245,6 +255,19 @@
                             </a>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalViewer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body" id="modal-body">
+                    </div>
                 </div>
             </div>
         </div>

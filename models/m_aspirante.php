@@ -48,16 +48,29 @@
 				INNER JOIN ciudad c ON du.id_ciudad_fk = c.id 
 				INNER JOIN departamento d ON c.id_departamento_fk = d.id 
 				WHERE u.id_rol_fk = 6 AND m.id_estado_matricula_fk IN (1, 2) AND du.id = $id;";
-			$result = $this->mysqli->query($query);
-			
-			if ($result->num_rows) {
-				$data = array();
+			$result1 = $this->mysqli->query($query);
 
-				while ($row = mysqli_fetch_assoc($result)) {
-					$data[] = $row;
+			$query = "SELECT dm.nombre FROM documento_matricula dm INNER JOIN matricula m ON dm.id_matricula_fk = m.id WHERE m.id_detalle_usuario_fk = $id;";
+			$result2 = $this->mysqli->query($query);
+			
+			if ($result1->num_rows) {
+				$data1 = array();
+
+				while ($row = mysqli_fetch_assoc($result1)) {
+					$data1[] = $row;
+				}
+
+				if ($result2->num_rows) {
+					$data2 = array();
+	
+					while ($row = mysqli_fetch_assoc($result2)) {
+						array_push($data2, $row['nombre']);
+					}
+
+					$data1[0]['documentos'] = implode(',', $data2);
 				}
 	
-				$response = array('CODE' => 1, 'DESCRIPTION' => 'Aspirante cargado con éxito', 'DATA' => $data);
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Aspirante cargado con éxito', 'DATA' => $data1);
 				return json_encode($response);
 			} else {
 				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existe el aspirante', 'DATA' => array());

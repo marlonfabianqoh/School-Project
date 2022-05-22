@@ -82,7 +82,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selDepartmentAttendant" class="form-label">Departamento:</label>
-                                <select class="form-select" id="selDepartmentAttendant" name="selDepartmentAttendant" onchange="listar_ciudades_acudiente(selDepartmentAttendant.value)">
+                                <select class="form-select" id="selDepartmentAttendant" name="selDepartmentAttendant" onchange="listar_ciudades_acudiente(selDepartmentAttendant.value)" required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -91,7 +91,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selCityAttendant" class="form-label">Ciudad:</label>
-                                <select class="form-select" id="selCityAttendant" name="selCityAttendant" disabled>
+                                <select class="form-select" id="selCityAttendant" name="selCityAttendant" disabled required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -100,7 +100,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="txtAddressAttendant" class="form-label">Dirección:</label>
-                                <input type="text" class="form-control" id="txtAddressAttendant" name="txtAddressAttendant" >
+                                <input type="text" class="form-control" id="txtAddressAttendant" name="txtAddressAttendant" required>
                             </div>
                         </div>
 
@@ -242,7 +242,7 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="txtObservation" class="form-label">Observaciones:</label>
-                                <textarea  class="form-control" cols="30" rows="5" id="txtObservation" name="txtObservation"></textarea>
+                                <textarea class="form-control" cols="30" rows="5" id="txtObservation" name="txtObservation"></textarea>
                             </div>
                         </div>
 
@@ -279,6 +279,30 @@
                                 <select class="form-select" id="selGrade" name="selGrade" disabled required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="txtPhoto" class="form-label">Adjunte foto:</label>
+                                <input type="file" accept=".jpg, .png, .jpeg, .svg" id="txtPhoto" name="txtPhoto" onchange="changeFilePhoto()" hidden />
+                                <button type="button" class="form-control btn btn-success" onclick="selectFilePhoto()">
+                                    <i class="bi bi-clip"></i>
+                                    Adjuntar
+                                </button>
+                                <label id="lblPhoto" class="form-label"></label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="txtCertificate" class="form-label">Certificado grado anterior:</label>
+                                <input type="file" id="txtCertificate" name="txtCertificate" onchange="changeFileCertificate()" hidden />
+                                <button type="button" class="form-control btn btn-success" onclick="selectFileCertificate()">
+                                    <i class="bi bi-clip"></i>
+                                    Adjuntar
+                                </button>
+                                <label id="lblCertificate" class="form-label"></label>
                             </div>
                         </div>
 

@@ -144,6 +144,16 @@ function buscar_aspirante (id) {
                 } else if (data.id_estado_matricula_fk == 4) {
                     $('#cbxRehected').prop('checked', true);
                 }
+                console.log(data.documentos)
+                if (data.documentos != '') {
+                    var documentos = data.documentos.split(',');
+                    console.log(documentos)
+
+                    documentos.forEach(element => {
+                        document.getElementById('modal-body').innerHTML += `<iframe style="width:100%;height:600px;" src="http://localhost/School-Project/files/${element}"></iframe>`;
+
+                    });
+                }
             } else {
                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
             }
@@ -191,6 +201,70 @@ function listar_sedes () {
             }
         }
     });
+}
+
+function listar_jornadas_filtro (sede, jornada=null) {
+    $('#selSession').html(`<option value="" selected>Seleccionar</option>`);
+    $('#selGrade').html(`<option value="" selected>Seleccionar</option>`);
+    $('#selGrade').prop('disabled', true);
+    
+    if (sede != '') {
+        $('#selSession').prop('disabled', false);
+
+        $.ajax({
+            url: '../../index.php?c=c_jornada&a=filtrar',
+            type: 'POST',
+            data: { nombre: '', sede: sede },
+            success: function (result) {
+                let data = JSON.parse(result);
+
+                if(data.CODE == 1){
+                    data.DATA.forEach(element => {
+                        if (element.id == session || element.id == jornada) {
+                            $('#selSession').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                        } else {
+                            $('#selSession').append(`<option value="${element.id}">${element.nombre}</option>`);
+                        }
+                    });
+                } else {
+                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                }
+            }
+        });
+    } else {
+        $('#selSession').prop('disabled', true);
+    }
+}
+
+function listar_grados_filtro (jornada, grado=null) {
+    $('#selGrade').html(`<option value="" selected>Seleccionar</option>`);
+    
+    if (jornada != '') {
+        $('#selGrade').prop('disabled', false);
+
+        $.ajax({
+            url: '../../index.php?c=c_grado&a=filtrar',
+            type: 'POST',
+            data: { nombre: '', sede: '', jornada: jornada },
+            success: function (result) {
+                let data = JSON.parse(result);
+
+                if(data.CODE == 1){
+                    data.DATA.forEach(element => {
+                        if (element.id == grade || element.id == grado) {
+                            $('#selGrade').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                        } else {
+                            $('#selGrade').append(`<option value="${element.id}">${element.nombre}</option>`);
+                        }
+                    });
+                } else {
+                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                }
+            }
+        });
+    } else {
+        $('#selGrade').prop('disabled', true);
+    }
 }
 
 function listar_jornadas (sede, jornada=null) {

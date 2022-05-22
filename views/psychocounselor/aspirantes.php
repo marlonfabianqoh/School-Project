@@ -65,8 +65,17 @@
 
                         <div class="col-md-2">
                             <div class="mb-3">
+                                <label for="selStatus" class="form-label">Estado:</label>
+                                <select class="form-select" id="selStatus" name="selStatus">
+                                    <option value="" selected>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="mb-3">
                                 <label for="selCampus" class="form-label">Sede:</label>
-                                <select class="form-select" id="selCampus" name="selCampus" onchange="listar_jornadas(selCampus.value);" >
+                                <select class="form-select" id="selCampus" name="selCampus" onchange="listar_jornadas_filtro(selCampus.value);" >
                                     <option value="" selected>Seleccionar</option>
                                 </select>
                             </div>
@@ -75,7 +84,7 @@
                         <div class="col-md-2">
                             <div class="mb-3">
                                 <label for="selSession" class="form-label">Jornada:</label>
-                                <select class="form-select" id="selSession" name="selSession" onchange="listar_grados(selSession.value);" disabled>
+                                <select class="form-select" id="selSession" name="selSession" onchange="listar_grados_filtro(selSession.value);" disabled>
                                     <option value="" selected>Seleccionar</option>
                                 </select>
                             </div>
@@ -85,15 +94,6 @@
                             <div class="mb-3">
                                 <label for="selGrade" class="form-label">Grado:</label>
                                 <select class="form-select" id="selGrade" name="selGrade" disabled>
-                                    <option value="" selected>Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                <label for="selStatus" class="form-label">Estado:</label>
-                                <select class="form-select" id="selStatus" name="selStatus">
                                     <option value="" selected>Seleccionar</option>
                                 </select>
                             </div>

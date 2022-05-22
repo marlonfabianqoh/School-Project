@@ -6,13 +6,13 @@
 			$this->mysqli = Database::connection();
 		}
 
-		public function crear_matricula ($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado) {
+		public function crear_matricula ($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $foto, $certificado) {
 			$query = "SELECT id FROM usuario WHERE usuario = '$usuario';";
 			$result = $this->mysqli->query($query);
 
 			if ($result->num_rows) {
 				$response = array('CODE' => 2, 'DESCRIPTION' => 'El usuario ingresado no se encuentra disponible', 'DATA' => array());
-				return json_encode($response);
+				return json_encode($response);	
 			}
 			
 			$query = "SELECT m.id, m.id_estado_matricula_fk FROM matricula m INNER JOIN detalle_usuario du ON m.id_detalle_usuario_fk = du.id WHERE m.anio = $anio AND du.documento = '$documento';";
@@ -47,8 +47,13 @@
 
 			$query = "INSERT INTO matricula (anio, id_grado_fk, id_detalle_usuario_fk, id_estado_matricula_fk) VALUES ($anio, $grado, $id_detalle_usuario, 1);";
 			$result5 = $this->mysqli->query($query);
+
+			$id_matricula = $this->mysqli->insert_id;
+
+			$query = "INSERT INTO documento_matricula (nombre, id_matricula_fk) VALUES ('$foto', $id_matricula), ('$certificado', $id_matricula);";
+			$result6 = $this->mysqli->query($query);
 			
-			if ($result1 && $result2 && $result3 && $result4 && $result5) {
+			if ($result1 && $result2 && $result3 && $result4 && $result5 && $result6) {
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Preinscripción creada con éxito', 'DATA' => array());
 				return json_encode($response);
 			} else {
@@ -73,6 +78,29 @@
 			} else {
 				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existe preinscripción', 'DATA' => array());
 				echo json_encode($response);
+			}
+		}
+
+		function subir_archivo ($archivo) {
+			if ($archivo['name'] != "") {
+				$target_dir = "files/";
+				$file = $archivo['name'];
+				$path = pathinfo($file);
+				$filename = '';
+				$keys = array_merge(range(0, 9), range('a', 'z'));
+
+				for ($i = 0; $i < 20; $i++) {
+					$filename .= $keys[array_rand($keys)];
+				}
+
+				$ext = $path['extension'];
+				$temp_name = $archivo['tmp_name'];
+				$path_filename_ext = $target_dir.$filename.".".$ext;
+				 
+				if (!file_exists($path_filename_ext)) {
+					move_uploaded_file($temp_name,$path_filename_ext);
+					return $filename.".".$ext;
+				}
 			}
 		}
 	} 

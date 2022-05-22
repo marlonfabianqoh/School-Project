@@ -1,6 +1,6 @@
-CREATE DATABASE matriculapp CHARSET="utf8";
+CREATE DATABASE matriculapp1 CHARSET="utf8";
 
-USE matriculapp;
+USE matriculapp1;
 
 CREATE TABLE parametro (
     id INT PRIMARY KEY auto_increment,
@@ -210,6 +210,8 @@ CREATE TABLE documento_matricula (
     id INT PRIMARY KEY auto_increment,
     nombre TEXT NOT NULL,
     id_matricula_fk INT NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_matricula_fk) REFERENCES matricula(id)
 );
 
@@ -1422,7 +1424,7 @@ INSERT INTO estado_usuario (id, nombre) VALUES
 
 INSERT INTO usuario (usuario, clave, id_rol_fk, id_estado_usuario_fk) VALUES
     ('administrador', SHA1('administrador'), 1, 1),
-    ('secretaria', SHA1('secretaria'), 2, ,1),
+    ('secretaria', SHA1('secretaria'), 2, 1),
     ('coordinador', SHA1('coordinador'), 3, 1),
     ('psicoorientador', SHA1('psicoorientador'), 4, 1);
 

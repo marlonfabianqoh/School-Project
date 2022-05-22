@@ -27,23 +27,36 @@ const Toast = Swal.mixin({
                     var frm = $("#form-preinscripcion");
 
                     if ($('#txtPass').val() == $('#txtPassConfirm').val()) {
-                        $.ajax({
-                            url: '../../index.php?c=c_matricula&a=guardar',
-                            type: "POST",
-                            data: frm.serialize(),
-                            success: function (result) {
-                                let data = JSON.parse(result);
-    
-                                if(data.CODE == 1){
-                                    Toast.fire({ icon: 'success', title: data.DESCRIPTION });
-                                    setTimeout(() => {
-                                        window.location.href = "../../home.php";
-                                    }, 3000);
-                                } else {
-                                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                        var foto = document.getElementById('txtPhoto').files;
+                        var certificado = document.getElementById('txtCertificate').files;
+
+                        if (foto.length == 0) {
+                            Toast.fire({ icon: 'warning', title: 'Debe adjuntar la foto' });
+                        } else if (certificado.length == 0) {
+                            Toast.fire({ icon: 'warning', title: 'Debe adjuntarel certificado' });
+                        } else {
+                            var formData = new FormData(frm[0]);
+                            
+                            $.ajax({
+                                url: '../../index.php?c=c_matricula&a=guardar',
+                                type: "POST",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function (result) {
+                                    let data = JSON.parse(result);
+        
+                                    if(data.CODE == 1){
+                                        Toast.fire({ icon: 'success', title: data.DESCRIPTION });
+                                        setTimeout(() => {
+                                            window.location.href = "../../home.php";
+                                        }, 3000);
+                                    } else {
+                                        Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        }
                     } else {
                         Toast.fire({ icon: 'warning', title: 'Las claves no coinciden' });
                     }
@@ -381,5 +394,37 @@ function listar_grados (jornada) {
         });
     } else {
         $('#selGrade').prop('disabled', true);
+    }
+}
+
+function selectFilePhoto () {
+    document.getElementById("txtPhoto").click();
+}
+
+function changeFilePhoto () {
+    let file = document.getElementById("txtPhoto");
+
+    if (file.files.length > 0) {
+        let name = file.files[0].name
+        document.getElementById("lblPhoto").innerHTML = name;
+    } else {
+        document.getElementById("lblPhoto").value = "";
+        document.getElementById("txtPhoto").value = '';
+    }
+}
+
+function selectFileCertificate () {
+    document.getElementById('txtCertificate').click();
+}
+
+function changeFileCertificate () {
+    let file = document.getElementById("txtCertificate");
+
+    if (file.files.length > 0) {
+        let name = file.files[0].name
+        document.getElementById("lblCertificate").innerHTML = name;
+    } else {
+        document.getElementById("lblCertificate").value = "";
+        document.getElementById("txtCertificate").value = '';
     }
 }
