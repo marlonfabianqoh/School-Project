@@ -6,16 +6,30 @@
 		
 		public function listar () {
 			$aspirante = new M_aspirante();
-			$response = $aspirante->obtener_aspirantes();
-			echo $response;
+			session_start();
+
+			if ($_SESSION['rol'] == '2') {
+				$response = $aspirante->obtener_aspirantes_secretaria();
+				echo $response;
+			} else if ($_SESSION['rol'] == '4') {
+				$response = $aspirante->obtener_aspirantes_psicoorientador();
+				echo $response;
+			}
 		}
 
 		public function buscar () {
 			$id = $_POST['id'];
-
+			
 			$aspirante = new M_aspirante();
-			$response = $aspirante->obtener_aspirante($id);
-			echo $response;
+			session_start();
+			
+			if ($_SESSION['rol'] == '2') {
+				$response = $aspirante->obtener_aspirante_secretaria($id);
+				echo $response;
+			} else if ($_SESSION['rol'] == '4') {
+				$response = $aspirante->obtener_aspirante_psicoorientador($id);
+				echo $response;
+			}
 		}
 
 		public function filtrar () {
@@ -26,8 +40,15 @@
 			$estado = $_POST['estado'];
 			
 			$aspirante = new M_aspirante();
-			$response = $aspirante->filtrar_aspirantes($anio, $sede, $jornada, $grado, $estado);
-			echo $response;
+			session_start();
+			
+			if ($_SESSION['rol'] == '2') {
+				$response = $aspirante->filtrar_aspirantes_secretaria($anio, $sede, $jornada, $grado, $estado);
+				echo $response;
+			} else if ($_SESSION['rol'] == '4') {
+				$response = $aspirante->filtrar_aspirantes_psicoorientador($anio, $sede, $jornada, $grado, $estado);
+				echo $response;
+			}
 		}
 
 		public function observar () {
@@ -36,8 +57,16 @@
 			$estado = $_POST['cbxStatus'];
 
 			$aspirante = new M_aspirante();
-			$response = $aspirante->observar_aspirante($id, $observacion, $estado);
-			echo $response;
+			session_start();
+
+			if ($_SESSION['rol'] == '2') {
+				$curso = isset($_POST['selCourse']) ? $_POST['selCourse'] : '';
+				$response = $aspirante->observar_aspirante_secretaria($id, $observacion, $estado, $curso);
+				echo $response;
+			} else if ($_SESSION['rol'] == '4') {
+				$response = $aspirante->observar_aspirante_psicoorientador($id, $observacion, $estado);
+				echo $response;
+			}
 		}
 	}
 ?>

@@ -96,10 +96,12 @@ var department = '';
 var gender = '';
 var typeBlood = '';
 var preference = '';
+var year = '';
 var campus = '';
 var session = '';
 var grade = '';
-function buscar_aspirante (id) {
+var course = '';
+function buscar_aspirante (id, rol) {
     $.ajax({
         url: '../../index.php?c=c_aspirante&a=buscar',
         type: 'POST',
@@ -131,28 +133,52 @@ function buscar_aspirante (id) {
                 preference = parseInt(data.id_preferencia_fk);
                 $('#txtObservationn').val(data.observacionn);
                 $('#selYear').val(parseInt(data.anio));
+                year = parseInt(data.anio)
                 $('#selCampus').val(parseInt(data.id_sede_fk));
                 campus = parseInt(data.id_sede_fk);
                 listar_jornadas(data.id_sede_fk, data.id_jornada_fk);
                 $('#selSession').val(parseInt(data.id_jornada_fk));
+                session = parseInt(data.id_jornada_fk);
                 listar_grados(data.id_jornada_fk, data.id_grado_fk);
                 $('#selGrade').val(parseInt(data.id_grado_fk));
+                grade = parseInt(data.id_grado_fk);
+
+                if (rol == 2) {
+                    listar_cursos(data.anio, data.id_grado_fk, data.id_curso_fk);
+                    $('#selCourse').val(parseInt(data.id_curso_fk));
+
+                    if (data.id_estado_matricula_fk == '2' || data.id_estado_matricula_fk == '3') {
+                        if (data.id_curso_fk != '') {
+                            $('#cbxAccepted').prop('checked', true);
+                            aceptar();
+                        }
+                    } else if (data.id_estado_matricula_fk == '4') {
+                        $('#cbxRejected').prop('checked', true);
+                        rechazar();
+                    }
+                } else if (rol == 4) {
+                    if (data.id_estado_matricula_fk == '2') {
+                        $('#cbxAccepted').prop('checked', true);
+                        aceptar();
+                    } else if (data.id_estado_matricula_fk == '4') {
+                        $('#cbxRejected').prop('checked', true);
+                        rechazar();
+                    }
+                }
+
                 $('#txtObservation').val(data.observacion);
                 $('#cbxStatus').val(data.id_estado_matricula_fk);
-                if (data.id_estado_matricula_fk == 2) {
-                    $('#cbxAccepted').prop('checked', true);
-                } else if (data.id_estado_matricula_fk == 4) {
-                    $('#cbxRehected').prop('checked', true);
-                }
-                console.log(data.documentos)
-                if (data.documentos != '') {
+                
+               
+                
+                if (typeof data.documentos != 'undefined') {
                     var documentos = data.documentos.split(',');
-                    console.log(documentos)
 
                     documentos.forEach(element => {
-                        document.getElementById('modal-body').innerHTML += `<iframe style="width:100%;height:600px;" src="http://localhost/School-Project/files/${element}"></iframe>`;
-
+                        document.getElementById('files').innerHTML += `<div class="col-12"><iframe style="height:400px; width:100%;" src="http://localhost/School-Project/files/${element}"></iframe></div><hr>`;
                     });
+                } else {
+                    document.getElementById('files').innerHTML += `<div class="col-12"><p>No hay documentos adjuntos</p></div>`;
                 }
             } else {
                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
@@ -170,7 +196,11 @@ function listar_anualidades () {
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    $('#selYear').append(`<option value="${element.id}">${element.anio}</option>`);
+                    if (element.id == year) {
+                        $('#selYear').append(`<option value="${element.id}" selected>${element.anio}</option>`);
+                    } else {
+                        $('#selYear').append(`<option value="${element.id}">${element.anio}</option>`);
+                    }
                 });
             } else {
                 $('#selYear').append(`<option value="">Seleccionar</option>`);
@@ -322,7 +352,34 @@ function listar_grados (jornada, grado=null) {
     }
 }
 
-function listar_estados_matricula () {
+function listar_cursos (anio, grado, curso=null) {
+    $('#selCourse').html(`<option value="" selected>Seleccionar</option>`);
+    
+    if (grado != '') {
+        $.ajax({
+            url: '../../index.php?c=c_curso&a=filtrar',
+            type: 'POST',
+            data: { anio: anio, nombre: '', sede: '', jornada: '', grado: grado },
+            success: function (result) {
+                let data = JSON.parse(result);
+
+                if(data.CODE == 1){
+                    data.DATA.forEach(element => {
+                        if (element.id == course || element.id == curso) {
+                            $('#selCourse').append(`<option value="${element.id}" selected>${element.nombre}</option>`);
+                        } else {
+                            $('#selCourse').append(`<option value="${element.id}">${element.nombre}</option>`);
+                        }
+                    });
+                } else {
+                    Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                }
+            }
+        });
+    }
+}
+
+function listar_estados_matricula_psicoorientador () {
     $.ajax({
         url: '../../index.php?c=c_general&a=listar_estados_matricula',
         type: 'POST',
@@ -331,7 +388,28 @@ function listar_estados_matricula () {
 
             if(data.CODE == 1){
                 data.DATA.forEach(element => {
-                    if (element.id == 1 || element.id == 2) {
+                    if (element.id == 1 || element.id == 2 || element.id == 4) {
+                        $('#selStatus').append(`<option value="${element.id}">${element.nombre}</option>`);
+                    }
+                });
+            } else {
+                $('#selStatus').append(`<option value="">Seleccionar</option>`);
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+            }
+        }
+    });
+}
+
+function listar_estados_matricula_secretaria () {
+    $.ajax({
+        url: '../../index.php?c=c_general&a=listar_estados_matricula',
+        type: 'POST',
+        success: function (result) {
+            let data = JSON.parse(result);
+
+            if(data.CODE == 1){
+                data.DATA.forEach(element => {
+                    if (element.id == 1 || element.id == 2 || element.id == 3 || element.id == 4) {
                         $('#selStatus').append(`<option value="${element.id}">${element.nombre}</option>`);
                     }
                 });
@@ -525,4 +603,16 @@ function limpiar () {
     $('#selGrade').val('');
     $('#selState').val('');
     listar_aspirantes();
+}
+
+function aceptar () {
+    $('#selCourse').val('');
+    $('#curso').removeClass('d-none');
+    $('#selCourse').prop('disabled', false);
+}
+
+function rechazar () {
+    $('#selCourse').val('');
+    $('#curso').addClass('d-none');
+    $('#selCourse').prop('disabled', true);
 }

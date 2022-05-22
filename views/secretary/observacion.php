@@ -5,7 +5,7 @@
         session_destroy();
         header("Location: ../../login.php");
     } else {
-        if ($_SESSION['rol'] != '4') {
+        if ($_SESSION['rol'] != '2') {
             header("Location: ../dashboard.php");
         } else {
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -238,20 +238,29 @@
 
                         <div class="col-12">
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" value="2" id="cbxAccepted" name="cbxStatus" required>
+                                <input type="radio" class="form-check-input" value="3" id="cbxAccepted" name="cbxStatus" onchange="aceptar()" required>
                                 <label class="form-check-label" for="cbxAccepted">Aceptado</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input type="radio" class="form-check-input" value="4" id="cbxRejected" name="cbxStatus" required>
+                                <input type="radio" class="form-check-input" value="4" id="cbxRejected" name="cbxStatus" onchange="rechazar()" required>
                                 <label class="form-check-label" for="cbxRejected">Rechazado</label>
+                            </div>
+                        </div>
+
+                        <div id="curso" class="col-md-3 d-none">
+                            <div class="mb-3">
+                                <label for="selCourse" class="form-label">Curso:</label>
+                                <select class="form-select" id="selCourse" name="selCourse" disabled required>
+                                    <option value="" selected disabled>Seleccionar</option>
+                                </select>
                             </div>
                         </div>
 
                         <div class="col-12 mt-5">
                             <button type="submit" class="btn btn-primary">Enviar</button>
                             <a href="aspirantes.php">
-                                <button type="button" class="btn btn-outline-secondary">Cancelar</button>
+                              <button type="button" class="btn btn-outline-secondary">Cancelar</button>
                             </a>
                         </div>
                     </form>
@@ -263,6 +272,7 @@
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Documentos</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 

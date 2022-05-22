@@ -115,6 +115,16 @@
                         </a>
                     </div>
 
+                    <div class="col-md-3 mb-5">
+                        <a href="./secretary/aspirantes.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Aspirantes</h4>
+                                <h2>
+                                    <i class="bi bi-person text-primary"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
                 <?php } ?>
 
                 <?php if ($_SESSION['rol'] == '3') {?>

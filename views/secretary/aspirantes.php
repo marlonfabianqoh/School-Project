@@ -5,7 +5,7 @@
         session_destroy();
         header("Location: ../../login.php");
     } else {
-        if ($_SESSION['rol'] != '4') {
+        if ($_SESSION['rol'] != '2') {
             header("Location: ../dashboard.php");
         } else {
 ?>
@@ -165,7 +165,7 @@
             listar_aspirantes();
             listar_anualidades();
             listar_sedes();
-            listar_estados_matricula_psicoorientador();
+            listar_estados_matricula_secretaria();
         });
     </script>
 </body>
