@@ -159,7 +159,7 @@
                                 </h2>
                             </div>
                         </a>
-                    </div> -->
+                    </div>
 
                     <div class="col-md-3 mb-5">
                         <a href="./secretary/grados.php" class="text-decoration-none">
@@ -178,6 +178,17 @@
                                 <h4 class="card-title text-dark">Cursos</h4>
                                 <h2>
                                     <i class="bi bi-journal-bookmark text-success"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div> -->
+
+                    <div class="col-md-3 mb-5">
+                        <a href="./coordinator/estudiantes.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Estudiantes</h4>
+                                <h2>
+                                    <i class="bi bi-people"></i>
                                 </h2>
                             </div>
                         </a>

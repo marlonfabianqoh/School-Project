@@ -11,9 +11,9 @@
 			if ($_SESSION['rol'] == '2') {
 				$response = $estudiante->obtener_estudiantes_secretaria();
 				echo $response;
-			} else if ($_SESSION['rol'] == '4') {
-				// $response = $estudiante->obtener_estudiantes_psicoorientador();
-				// echo $response;
+			} else if ($_SESSION['rol'] == '3') {
+				$response = $estudiante->obtener_estudiantes_coordinador();
+				echo $response;
 			}
 		}
 
@@ -28,9 +28,9 @@
 			if ($_SESSION['rol'] == '2') {
 				$response = $estudiante->filtrar_estudiantes_secretaria($sede, $jornada, $grado);
 				echo $response;
-			} else if ($_SESSION['rol'] == '4') {
-				// $response = $aspirante->filtrar_aspirantes_psicoorientador($anio, $sede, $jornada, $grado, $estado);
-				// echo $response;
+			} else if ($_SESSION['rol'] == '3') {
+				$response = $estudiante->filtrar_estudiantes_coordinador($sede, $jornada, $grado);
+				echo $response;
 			}
 		}
 	}

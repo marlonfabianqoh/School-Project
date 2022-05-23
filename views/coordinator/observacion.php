@@ -5,7 +5,7 @@
         session_destroy();
         header("Location: ../../login.php");
     } else {
-        if ($_SESSION['rol'] != '2') {
+        if ($_SESSION['rol'] != '3') {
             header("Location: ../dashboard.php");
         } else {
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -213,7 +213,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="txtPhoto" class="form-label">Documentos:</label>
                                 <button type="button" class="form-control btn btn-success" data-bs-toggle="modal" data-bs-target="#modalViewer" onclick="">
@@ -221,12 +221,12 @@
                                     Visualizar
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <hr>
 
-                    <form id="form-observacion" class="row observacion-validation" method="POST" novalidate>
+                    <!-- <form id="form-observacion" class="row observacion-validation" method="POST" novalidate>
                         <input type="text" id="id" name="id" value="<?php if (isset($params['id'])) { echo $params['id']; } else { echo ''; } ?>" hidden>
 
                         <div class="col-12">
@@ -258,14 +258,82 @@
                         </div>
 
                         <div class="col-12 mt-5">
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                            <a href="aspirantes.php">
+                            <a href="estudiantes.php">
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                            </a>
+                            <a href="estudiantes.php">
                               <button type="button" class="btn btn-outline-secondary">Cancelar</button>
                             </a>
                         </div>
-                    </form>
+                    </form> -->
                 </div>
             </div>
+
+            <form class="row">
+                        <!-- <legend class="mt-5">Datos del coordinador</legend>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="nombresCoordinador" class="form-label">Nombres del coordinador:</label>
+                                <input type="text" class="form-control" id="nombresCoordinador">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="apellidosCoordinador" class="form-label">Apellidos del coordinador:</label>
+                                <input type="text" class="form-control" id="apellidosCoordinador">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="telefonoCoordinador" class="form-label">Identificacion del
+                                    coordinador:</label>
+                                <input type="number" class="form-control" id="telefonoCoordinador">
+                            </div>
+                        </div>
+                        <legend class="mt-5">Datos del estudiante</legend>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="nombresEstudiante" class="form-label">Nombres del estudiante:</label>
+                                <input type="text" class="form-control" id="nombresEstudiante">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="apellidosEstudiante" class="form-label">Apellidos del estudiante:</label>
+                                <input type="text" class="form-control" id="apellidosEstudiante">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="telefonoEstudiante" class="form-label">Identificacion del
+                                    estudiante:</label>
+                                <input type="number" class="form-control" id="telefonoEstudiante">
+                            </div>
+                        </div> -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="observacionesEstudiante" class="form-label">Observaciones:</label>
+                                <textarea name="observacionesEstudiante" class="form-control" id="observacionesEstudiante"
+                                    cols="30" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <a href="studentObservation.php">
+                                <button type="button" class="btn btn-success">
+                                    <i class="bi bi-book"></i>
+                                    Historial de observaciones
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col-12 mt-5">
+                            <a href="studentList.php">
+                                <button type="button" class="btn btn-primary">Enviar</button>
+                            </a>
+                            <a href="studentList.php">
+                                <button type="button" class="btn btn-outline-secondary">Cancelar</button>
+                            </a>
+                        </div>
+                    </form>
         </div>
 
         <div class="modal fade" id="modalViewer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

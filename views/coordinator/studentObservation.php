@@ -1,40 +1,41 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['id']) || $_SESSION['rol'] != '5') {
-        header("Location: ../../index.php");
+    if (!isset($_SESSION['id'])) {
+        session_destroy();
+        header("Location: ../../login.php");
     } else {
+        if ($_SESSION['rol'] != '3') {
+            header("Location: ../dashboard.php");
+        } else {
 ?>
 <!doctype html>
 <html lang="en">
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
-
     <!-- CSS Custom -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+
+    <!-- Sweetalert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>School Project</title>
 </head>
 
 <body>
     <main class="content">
-    <nav class="navbar navbar-dark bg-primary">
+        <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../home.php">School Project</a>
+                <a class="navbar-brand" href="../dashboard.php">School Project</a>
                 <div>
-                    <!-- <a href="/views/secretary/dashboard.html">
-                        <button type="button" class="btn btn-light">Secretaria</button>
-                    </a> -->
-                    <a href="../../controllers/logout.php">
+                    <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar sesión</button>
                     </a>
                 </div>
@@ -46,7 +47,7 @@
                     <h1>Historial de observaciones.</h1>
                 </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col">
                     <form class="row">
                         <legend class="mt-5">Datos del estudiante</legend>
@@ -82,7 +83,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> -->
             <div class="row mt-5">
                 <div class="col-md-4">
                     <div class="card mb-4">
@@ -169,7 +170,7 @@
                     </div>
                 </div>
                 <div class="col-12 mt-5">
-                    <a href="studentList.php">
+                    <a href="estudiantes.php">
                         <button type="button" class="btn btn-outline-secondary">Volver</button>
                     </a> 
                 </div>
@@ -218,5 +219,6 @@
 </html>
 
 <?php 
+        }
     }
 ?> 
