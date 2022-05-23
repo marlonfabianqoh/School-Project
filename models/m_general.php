@@ -205,5 +205,25 @@
 				return json_encode($response);
 			}
 		}
+
+		public function obtener_coordinadores () {
+			$query = "SELECT du.id, CONCAT(du.nombres, ' ', du.apellidos) AS nombre FROM detalle_usuario du INNER JOIN usuario u ON du.id_usuario_fk = u.id WHERE u.id_rol_fk = 3;";
+			$result = $this->mysqli->query($query);
+			
+			if ($result->num_rows) {
+				$data = array();
+
+				while ($row = mysqli_fetch_assoc($result)) {
+					$data[] = $row;
+				}
+
+				$response = array('CODE' => 1, 'DESCRIPTION' => 'Coordinadores cargados con éxito', 'DATA' => $data);
+				return json_encode($response);
+
+			} else {
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'No existen coordinadores', 'DATA' => array());
+				return json_encode($response);
+			}
+		}
 	} 
 ?>

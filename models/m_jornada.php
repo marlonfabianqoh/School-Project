@@ -7,7 +7,7 @@
 		}
 		
 		public function obtener_jornadas () {
-			$query = "SELECT id, nombre, IFNULL(observacion, '') as observacion, id_sede_fk FROM jornada;";
+			$query = "SELECT id, nombre, IFNULL(observacion, '') as observacion, id_sede_fk, id_detalle_usuario_fk FROM jornada;";
 			$result = $this->mysqli->query($query);
 			
 			if ($result->num_rows) {
@@ -29,7 +29,7 @@
 		}
 
 		public function obtener_jornada ($id) {
-			$query = "SELECT id, nombre, IFNULL(observacion, '') as observacion, id_sede_fk FROM jornada WHERE id = ".$id.";";
+			$query = "SELECT id, nombre, IFNULL(observacion, '') as observacion, id_sede_fk, id_detalle_usuario_fk FROM jornada WHERE id = ".$id.";";
 			$result = $this->mysqli->query($query);
 			
 			if ($result->num_rows) {
@@ -51,7 +51,7 @@
 		}
 
 		public function filtrar_jornadas ($nombre, $sede) {
-			$query = "SELECT id, nombre, IFNULL(observacion, '') as observacion, id_sede_fk FROM jornada";
+			$query = "SELECT id, nombre, IFNULL(observacion, '') as observacion, id_sede_fk, id_detalle_usuario_fk FROM jornada";
         
 			if (!empty($nombre) || !empty($sede)) {
 				$count = 0;
@@ -93,8 +93,8 @@
 			}
 		}
 
-		public function crear_jornada ($nombre, $sede, $observacion) {
-			$query = "INSERT INTO jornada (nombre, observacion, id_sede_fk) VALUES ('$nombre', '$observacion', $sede);";
+		public function crear_jornada ($nombre, $sede, $observacion, $usuario) {
+			$query = "INSERT INTO jornada (nombre, observacion, id_sede_fk, id_detalle_usuario_fk) VALUES ('$nombre', '$observacion', $sede, $usuario);";
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {
@@ -107,8 +107,8 @@
 			}
 		}
 
-		public function editar_jornada ($id, $nombre, $sede, $observacion) {
-			$query = "UPDATE jornada SET nombre = '$nombre', observacion = '$observacion', id_sede_fk = $sede WHERE id = $id";
+		public function editar_jornada ($id, $nombre, $sede, $observacion, $usuario) {
+			$query = "UPDATE jornada SET nombre = '$nombre', observacion = '$observacion', id_sede_fk = $sede, id_detalle_usuario_fk = $usuario WHERE id = $id";
 			$result = $this->mysqli->query($query);
 			
 			if ($result) {

@@ -66,17 +66,26 @@
                     <form id="form-jornada" class="row jornada-validation" method="POST" novalidate>
                         <input type="text" id="id" name="id" value="<?php if (isset($params['id'])) { echo $params['id']; } else { echo ''; } ?>" hidden>
 
-                        <div class="col-6">
+                        <div class="col-4">
                             <div class="mb-3">
                                 <label for="txtName" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="txtName" name="txtName" required>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="selCampus" class="form-label">Sede</label>
                                 <select class="form-select" id="selCampus" name="selCampus" required>
+                                    <option value="" selected disabled>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="selUser" class="form-label">Coordinador</label>
+                                <select class="form-select" id="selUser" name="selUser" required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -138,6 +147,7 @@
             <?php } ?>
 
             listar_sedes();
+            listar_coordinadores();
         });
     </script>
 </body>

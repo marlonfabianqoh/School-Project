@@ -65,5 +65,11 @@
 			$response = $general->obtener_estados_matricula();
 			echo $response;
 		}
+
+		public function listar_coordinadores () {
+			$general = new M_general();
+			$response = $general->obtener_coordinadores();
+			echo $response;
+		}
 	}
 ?>

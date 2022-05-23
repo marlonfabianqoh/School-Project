@@ -31,14 +31,15 @@
 			$id = $_POST['id'];
 			$nombre = $_POST['txtName'];
 			$sede = $_POST['selCampus'];
+			$usuario = $_POST['selUser'];
 			$observacion = $_POST['txtObservation'];
 
 			$jornada = new M_jornada();
 
 			if (empty($id)) {
-				$response = $jornada->crear_jornada($nombre, $sede, $observacion);
+				$response = $jornada->crear_jornada($nombre, $sede, $observacion, $usuario);
 			} else {
-				$response = $jornada->editar_jornada($id, $nombre, $sede, $observacion);
+				$response = $jornada->editar_jornada($id, $nombre, $sede, $observacion, $usuario);
 			}
 
 			echo $response;

@@ -157,9 +157,11 @@ CREATE TABLE jornada (
     nombre VARCHAR(20) NOT NULL,
     observacion TEXT,
     id_sede_fk INT NOT NULL,
+    id_detalle_usuario_fk INT NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_sede_fk) REFERENCES sede(id)
+    FOREIGN KEY (id_sede_fk) REFERENCES sede(id),
+    FOREIGN KEY (id_detalle_usuario_fk) REFERENCES detalle_usuario(id)
 );
 
 CREATE TABLE grado (
