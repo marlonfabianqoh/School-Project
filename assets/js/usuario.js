@@ -398,3 +398,15 @@ function limpiar () {
     $('#selStatus').val('');
     listar_usuarios();
 }
+
+document.getElementById('submitExport').addEventListener('click', function(e) {
+    e.preventDefault();
+    let export_to_excel = document.getElementById('export_to_excel').cloneNode(true);
+    let data_to_send = document.getElementById('data_to_send');
+    let options = export_to_excel.querySelectorAll('.text-end')
+    options.forEach(element => {
+        element.remove()
+    });
+    data_to_send.value = export_to_excel.outerHTML;
+    document.getElementById('formExport').submit();
+});

@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="col-12">
-                    <table class="table mt-5">
+                    <table class="table mt-5" id="export_to_excel">
                         <thead>
                             <tr>
                                 <th scope="col">Usuario</th>
@@ -127,9 +127,17 @@
                     <a href="../dashboard.php">
                         <button type="button" class="btn btn-outline-secondary">Volver</button>
                     </a>
+
+                    <a href="javascript:void()" id="submitExport">
+                        <button type="button" class="btn btn-success">Exportar</button>
+                    </a>
                 </div>
             </div>
        </div>
+
+        <form action="../../config/export.php" method="post" target="_blank" id="formExport">
+            <input type="hidden" id="data_to_send" name="data_to_send" />
+        </form>
 
         <footer class="container mt-5">
             <div class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
