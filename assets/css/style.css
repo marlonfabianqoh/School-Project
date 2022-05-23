@@ -10,3 +10,14 @@ textarea[readonly] {
     background-color: transparent !important;
     
 }
+
+.navbar {
+    width: 100%;
+    background-color: #5463FF!important;
+    position: fixed;
+    top: 0;
+}
+
+.content {
+    padding-top: 80px;
+}

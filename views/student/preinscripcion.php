@@ -24,6 +24,9 @@
         <nav class="navbar navbar-dark bg-primary">
             <div class="container">
                 <a class="navbar-brand" href="../../home.php">School Project</a>
+                <a href="../../login.php">
+                    <button type="button" class="btn btn-light">Ingresar</button>
+                </a>
             </div>
         </nav>
 
