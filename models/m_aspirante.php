@@ -16,7 +16,7 @@
 				INNER JOIN grado g ON m.id_grado_fk = g.id 
 				INNER JOIN jornada j ON g.id_jornada_fk = j.id 
 				INNER JOIN sede s ON j.id_sede_fk = s.id 
-				WHERE u.id_rol_fk = 6 AND m.id_estado_matricula_fk IN (1, 2, 3, 4);";
+				WHERE u.id_rol_fk IN (5, 6) AND m.id_estado_matricula_fk IN (1, 2, 3, 4);";
 			$result = $this->mysqli->query($query);
 			
 			if ($result->num_rows) {
@@ -44,7 +44,7 @@
 				INNER JOIN grado g ON m.id_grado_fk = g.id 
 				INNER JOIN jornada j ON g.id_jornada_fk = j.id 
 				INNER JOIN sede s ON j.id_sede_fk = s.id 
-				WHERE u.id_rol_fk = 6 AND m.id_estado_matricula_fk IN (1, 2, 4);";
+				WHERE u.id_rol_fk IN (6) AND m.id_estado_matricula_fk IN (1, 2, 4);";
 			$result = $this->mysqli->query($query);
 			
 			if ($result->num_rows) {
@@ -75,7 +75,7 @@
 				INNER JOIN sede s ON j.id_sede_fk = s.id 
 				INNER JOIN ciudad c ON du.id_ciudad_fk = c.id 
 				INNER JOIN departamento d ON c.id_departamento_fk = d.id 
-				WHERE u.id_rol_fk = 6 AND m.id_estado_matricula_fk IN (1, 2, 3, 4) AND du.id = $id;";
+				WHERE u.id_rol_fk IN (5, 6) AND m.id_estado_matricula_fk IN (1, 2, 3, 4) AND du.id = $id;";
 			$result1 = $this->mysqli->query($query);
 
 			$query = "SELECT dm.nombre FROM documento_matricula dm INNER JOIN matricula m ON dm.id_matricula_fk = m.id WHERE m.id_detalle_usuario_fk = $id;";
@@ -119,7 +119,7 @@
 				INNER JOIN sede s ON j.id_sede_fk = s.id 
 				INNER JOIN ciudad c ON du.id_ciudad_fk = c.id 
 				INNER JOIN departamento d ON c.id_departamento_fk = d.id 
-				WHERE u.id_rol_fk = 6 AND m.id_estado_matricula_fk IN (1, 2, 4) AND du.id = $id;";
+				WHERE u.id_rol_fk IN (6) AND m.id_estado_matricula_fk IN (1, 2, 4) AND du.id = $id;";
 			$result1 = $this->mysqli->query($query);
 
 			$query = "SELECT dm.nombre FROM documento_matricula dm INNER JOIN matricula m ON dm.id_matricula_fk = m.id WHERE m.id_detalle_usuario_fk = $id;";
@@ -160,7 +160,7 @@
 				INNER JOIN grado g ON m.id_grado_fk = g.id 
 				INNER JOIN jornada j ON g.id_jornada_fk = j.id 
 				INNER JOIN sede s ON j.id_sede_fk = s.id 
-				WHERE u.id_rol_fk = 6";
+				WHERE u.id_rol_fk IN (5, 6)";
         
 			if (!empty($anio) || !empty($sede) || !empty($jornada) || !empty($grado) || !empty($estado)) {
 				$count = 0;
@@ -224,7 +224,7 @@
 				INNER JOIN grado g ON m.id_grado_fk = g.id 
 				INNER JOIN jornada j ON g.id_jornada_fk = j.id 
 				INNER JOIN sede s ON j.id_sede_fk = s.id 
-				WHERE u.id_rol_fk = 6";
+				WHERE u.id_rol_fk IN (6)";
         
 			if (!empty($anio) || !empty($sede) || !empty($jornada) || !empty($grado) || !empty($estado)) {
 				$count = 0;
@@ -280,22 +280,39 @@
 
 		public function observar_aspirante_secretaria ($id, $observacion, $estado, $curso) {
 			if (!empty($curso)) {
-				$query = "SELECT COUNT(m.id) AS cantidad, IFNULL((SELECT p.cantidad_estudiantes FROM parametro p WHERE p.anio = (SELECT c.anio FROM curso c WHERE c.id = $curso)), 0) AS cantidad_estudiantes FROM matricula m WHERE m.id_curso_fk = $curso AND m.id_estado_matricula_fk = 3;";
+				$query = "SELECT id_curso_fk FROM matricula WHERE id_detalle_usuario_fk = $id;";
 				$result = $this->mysqli->query($query);
-
+				
 				if ($result->num_rows) {
 					while ($row = mysqli_fetch_assoc($result)) {
-						if ($row['cantidad'] >= $row['cantidad_estudiantes']) {
-							$response = array('CODE' => 2, 'DESCRIPTION' => 'Ha llegado al límite de estudiantes permitidos por curso ('.$row['cantidad_estudiantes'].')', 'DATA' => array());
-							return json_encode($response);
+						if ($row['id_curso_fk'] != (int) $curso) {
+							$query = "SELECT COUNT(m.id) AS cantidad, IFNULL((SELECT p.cantidad_estudiantes FROM parametro p WHERE p.anio = (SELECT c.anio FROM curso c WHERE c.id = $curso)), 0) AS cantidad_estudiantes FROM matricula m WHERE m.id_curso_fk = $curso AND m.id_estado_matricula_fk = 3;";
+							$result = $this->mysqli->query($query);
+
+							if ($result->num_rows) {
+								while ($row = mysqli_fetch_assoc($result)) {
+									if ($row['cantidad'] >= $row['cantidad_estudiantes']) {
+										$response = array('CODE' => 2, 'DESCRIPTION' => 'Ha llegado al límite de estudiantes permitidos por curso ('.$row['cantidad_estudiantes'].')', 'DATA' => array());
+										return json_encode($response);
+									}
+								}
+							}
 						}
 					}
 				}
 
 				$query = "UPDATE matricula SET id_curso_fk = $curso, observacion = '$observacion', id_estado_matricula_fk = $estado WHERE id_detalle_usuario_fk = $id;";
 				$result = $this->mysqli->query($query);
+
+				if ($estado == '3') {
+					$query = "UPDATE usuario u INNER JOIN detalle_usuario du ON u.id = du.id_usuario_fk SET u.id_rol_fk = 5 WHERE du.id = $id;";
+					$result = $this->mysqli->query($query);
+				}
 			} else {
-				$query = "UPDATE matricula SET observacion = '$observacion', id_estado_matricula_fk = $estado WHERE id_detalle_usuario_fk = $id;";
+				$query = "UPDATE matricula SET observacion = '$observacion', id_estado_matricula_fk = $estado, id_curso_fk = null WHERE id_detalle_usuario_fk = $id;";
+				$result = $this->mysqli->query($query);
+
+				$query = "UPDATE usuario u INNER JOIN detalle_usuario du ON u.id = du.id_usuario_fk SET u.id_rol_fk = 6 WHERE du.id = $id;";
 				$result = $this->mysqli->query($query);
 			}
 			

@@ -169,8 +169,6 @@ function buscar_aspirante (id, rol) {
                 $('#txtObservation').val(data.observacion);
                 $('#cbxStatus').val(data.id_estado_matricula_fk);
                 
-               
-                
                 if (typeof data.documentos != 'undefined') {
                     var documentos = data.documentos.split(',');
 
