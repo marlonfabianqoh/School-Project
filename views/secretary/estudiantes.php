@@ -46,7 +46,7 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col">
-                    <h1>Listado de aspirantes</h1>
+                    <h1>Listado de estudiantes</h1>
                 </div>
             </div>
 
@@ -54,24 +54,6 @@
                 <div class="col">
                     <legend class="mt-5">Filtro de búsqueda</legend>
                     <div class="row">
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                <label for="selYear" class="form-label">Año:</label>
-                                <select class="form-select" id="selYear" name="selYear">
-                                    <option value="" selected>Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div class="mb-3">
-                                <label for="selStatus" class="form-label">Estado:</label>
-                                <select class="form-select" id="selStatus" name="selStatus">
-                                    <option value="" selected>Seleccionar</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="col-md-2">
                             <div class="mb-3">
                                 <label for="selCampus" class="form-label">Sede:</label>
@@ -100,7 +82,7 @@
                         </div>
 
                         <div class="col-12">
-                            <button type="button" class="btn btn-success" onclick="filtrar_aspirantes(selYear.value, selCampus.value, selSession.value, selGrade.value, selStatus.value)">
+                            <button type="button" class="btn btn-success" onclick="filtrar_estudiantes(selCampus.value, selSession.value, selGrade.value)">
                                 <i class="bi bi-search"></i>
                                 Filtrar
                             </button>
@@ -110,7 +92,7 @@
                 </div>
             </div>
 
-            <div id="aspirantes" class="row mt-5">
+            <div id="estudiantes" class="row mt-5">
                 <div class="col-12">
                     <table class="table mt-5">
                         <thead>
@@ -119,8 +101,7 @@
                                 <th scope="col">Sede</th>
                                 <th scope="col">Jornada</th>
                                 <th scope="col">Grado</th>
-                                <th scope="col">Estado</th>
-                                <th scope="col">Fecha</th>
+                                <th scope="col">Curso</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -164,14 +145,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- JS Custom -->
-    <script type="text/javascript" src="../../assets/js/aspirante.js"></script>
+    <script type="text/javascript" src="../../assets/js/estudiante.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            listar_aspirantes();
-            listar_anualidades();
+            listar_estudiantes();
             listar_sedes();
-            listar_estados_matricula_secretaria();
         });
     </script>
 </body>

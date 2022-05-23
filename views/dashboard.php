@@ -125,10 +125,21 @@
                             </div>
                         </a>
                     </div>
+
+                    <div class="col-md-3 mb-5">
+                        <a href="./secretary/estudiantes.php" class="text-decoration-none">
+                            <div class="card text-center shadow-sm p-4">
+                                <h4 class="card-title text-dark">Estudiantes</h4>
+                                <h2>
+                                    <i class="bi bi-people"></i>
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
                 <?php } ?>
 
                 <?php if ($_SESSION['rol'] == '3') {?>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         <a href="./secretary/sedes.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Sedes</h4>
@@ -148,9 +159,9 @@
                                 </h2>
                             </div>
                         </a>
-                    </div>
+                    </div> -->
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-5">
                         <a href="./secretary/grados.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Grados</h4>
@@ -161,8 +172,8 @@
                         </a>
                     </div>
 
-                    <div class="col-md-3">
-                        <a href="./secretary/dashboard.php" class="text-decoration-none">
+                    <div class="col-md-3 mb-5">
+                        <a href="./secretary/cursos.php" class="text-decoration-none">
                             <div class="card text-center shadow-sm p-4">
                                 <h4 class="card-title text-dark">Cursos</h4>
                                 <h2>
