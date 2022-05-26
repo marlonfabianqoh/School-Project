@@ -93,6 +93,11 @@
                                 adipisci obcaecati iure eum voluptas, architecto, at tempore dolor, ratione laboriosam
                                 labore temporibus? Voluptate rem quam, consequatur unde temporibus illo reprehenderit.
                             </p>
+                            <a href="./observacion.php">
+                                <button type="button" class="btn btn-success">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </a>
                             <button type="button" class="btn btn-danger">
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -184,7 +189,7 @@
                     <use xlink:href="#bootstrap"></use>
                   </svg>
                 </a>
-                <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda</span>
+                <span class="text-muted">© 2022 School Project -- Marlon Garcia -- Carlos Rueda -- Luis Corredor -- Eva Orejarena</span>
               </div>
       
               <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
