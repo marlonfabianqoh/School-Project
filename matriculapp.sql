@@ -1,6 +1,6 @@
-CREATE DATABASE matriculapp1 CHARSET="utf8";
+CREATE DATABASE matriculapp CHARSET="utf8";
 
-USE matriculapp1;
+USE matriculapp;
 
 CREATE TABLE parametro (
     id INT PRIMARY KEY auto_increment,
@@ -211,10 +211,20 @@ CREATE TABLE matricula (
 CREATE TABLE documento_matricula (
     id INT PRIMARY KEY auto_increment,
     nombre TEXT NOT NULL,
+    id_tipo_documento_matricula_fk INT NOT NULL,
     id_matricula_fk INT NOT NULL,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_tipo_documento_matricula_fk) REFERENCES tipo_documento_matricula(id),
     FOREIGN KEY (id_matricula_fk) REFERENCES matricula(id)
+);
+
+CREATE TABLE tipo_documento_matricula (
+    id INT PRIMARY KEY auto_increment,
+    nombre TEXT NOT NULL,
+    anio INT NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO anualidad (anio) VALUES 

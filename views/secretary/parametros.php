@@ -34,9 +34,9 @@
     <main class="content">
     <nav class="navbar navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../home.php">School Project</a>
+                <a class="navbar-brand" href="../dashboard.php">School Project</a>
                 <div>
-                    <a href="../../controllers/logout.php">
+                    <a href="../../index.php?c=c_login&a=salir">
                         <button type="button" class="btn btn-light">Cerrar sesión</button>
                     </a>
                 </div>
@@ -62,27 +62,65 @@
                             </div>
                         </div>
                         
-                        <div class="col-12">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAnnuity">
+                        <div class="col-md-3 mt-md-3">
+                            <button type="button" class="btn btn-success mt-0 mt-md-3" data-bs-toggle="modal" data-bs-target="#modalAnnuity">
                                 <i class="bi bi-plus"></i>
-                                Agregar anualidad
+                                Agregar
                             </button>
                         </div>
 
                         <div id="result" class="row mt-5 d-none">
+                            <hr>
+                            
                             <input type="text" id="id" name="id" value="" hidden>
 
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="txtCourse" class="form-label">Número máximo de cursos por grado:</label>
+                                    <label for="txtCourse" class="form-label">Número de de cursos por grado:</label>
                                     <input type="text" class="form-control" id="txtCourse" name="txtCourse" onkeypress="validarNumeros(event)">
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="txtStudent" class="form-label">Número máximo de estudiantes por curso:</label>
+                                    <label for="txtStudent" class="form-label">Número de estudiantes por curso:</label>
                                     <input type="text" class="form-control" id="txtStudent" name="txtStudent" onkeypress="validarNumeros(event)">
+                                </div>
+                            </div>
+
+                            <div class="row mt-5">
+                                <div class="col-md-3">
+                                    <h5>Documentos</h5>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-success">
+                                        <i class="bi bi-plus"></i>
+                                        Agregar
+                                    </button>
+                                </div>
+
+                                <div id="documentos" class="row mt-2">
+                                    <div class="col-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Nombre / Descripción</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>Foto del estudiante</td>
+                                                <td class="text-end">
+                                                    <button type="button" class="btn btn-success"><i class="bi bi-pencil"></i></button>
+                                                    <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
@@ -110,7 +148,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label for="txtYear" class="form-label">Año:</label>
-                                        <input type="text" class="form-control" maxlength="4" id="txtYear" name="txtYear" onkeypress="validarNumeros(event)"required>
+                                        <input type="number" placeholder="YYYY" min="2022" max="2100" class="form-control" maxlength="4" id="txtYear" name="txtYear" onkeypress="validarNumeros(event)"required>
                                     </div>
                                 </div>
 

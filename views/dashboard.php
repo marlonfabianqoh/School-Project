@@ -34,6 +34,24 @@
                         <button type="button" class="btn btn-light">Cerrar sesión</button>
                     </a>
                 </div>
+                <!-- <div class="btn-group">
+                    <a href="javascript:void(0)" class="nav-link text-light dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false"><?php echo $nombre; ?></a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end">
+                        <li><a href="#" class="dropdown-item">Perfil</a></li>
+                        <li>
+                            <a href="#" class="dropdown-item">Tema </a>
+                            <ul class="dropdown-menu dropdown-submenu dropdown-submenu-left">
+                                <li>
+                                    <a class="dropdown-item" href="#">Oscuro</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Claro</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="../index.php?c=c_login&a=salir" class="dropdown-item">Salir</a></li>
+                    </ul>
+                </div> -->
             </div>
         </nav>
         <div class="container my-5">

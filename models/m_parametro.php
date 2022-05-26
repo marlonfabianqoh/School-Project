@@ -55,6 +55,14 @@
 		}
 
 		public function crear_anualidad ($anio) {
+			$query = "SELECT id FROM anualidad WHERE anio = '$anio';";
+			$result = $this->mysqli->query($query);
+			
+			if ($result->num_rows) {
+				$response = array('CODE' => 2, 'DESCRIPTION' => 'Ya existe la anualidad', 'DATA' => array());
+				return json_encode($response);
+			}
+
 			$query = "INSERT INTO anualidad (anio) VALUES ('$anio');";
 			$result = $this->mysqli->query($query);
 			
