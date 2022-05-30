@@ -34,9 +34,21 @@
 			$grado = $_POST['selGrade'];
 
 			$matricula = new M_matricula();
-			$foto = $matricula->subir_archivo($_FILES['txtPhoto']);
-			$certificado = $matricula->subir_archivo($_FILES['txtCertificate']);
-			$response = $matricula->crear_matricula($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $foto, $certificado);
+
+			$bool = true;
+			$count = 0;
+			$documentos = array();
+
+			while ($bool) {
+				if (isset($_FILES['txtFile'.$count])) {
+					$documentos[] = $matricula->subir_archivo($_FILES['txtFile'.$count]);
+					$count++;
+				} else {
+					$bool = false;
+				}
+			}
+
+			$response = $matricula->crear_matricula($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $documentos);
 			echo $response;
 		}
 

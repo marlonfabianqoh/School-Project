@@ -76,9 +76,47 @@ const Toast = Swal.mixin({
 
                             if(data.CODE == 1){
                                 Toast.fire({ icon: 'success', title: data.DESCRIPTION });
-                                setTimeout(() => {
-                                    window.location.href = "parametros.php";
-                                }, 3000);
+                                buscar_parametro($('#selYear').val());
+                            } else {
+                                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                            }
+                        }
+                    })
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('documento-validation');
+
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (form.checkValidity() === false) {
+                    Toast.fire({ icon: 'warning', title: 'Diligencie todos los campos antes de continuar' });
+                }
+                else if (form.checkValidity() === true) {
+                    var frm = $("#form-documento");
+
+                    $.ajax({
+                        url: '../../index.php?c=c_documento&a=guardar',
+                        type: "POST",
+                        data: frm.serialize(),
+                        success: function (result) {
+                            let data = JSON.parse(result);
+
+                            if(data.CODE == 1){
+                                Toast.fire({ icon: 'success', title: data.DESCRIPTION });
+                                listar_documentos($('#selYear').val());
+                                limpiar_modal();
                             } else {
                                 Toast.fire({ icon: 'error', title: data.DESCRIPTION });
                             }
@@ -140,4 +178,85 @@ function listar_anualidades () {
             }
         }
     });
+}
+
+function listar_documentos (anio) {
+    $('#documentos table tbody').html('');
+
+    $.ajax({
+        url: '../../index.php?c=c_documento&a=listar',
+        type: 'POST',
+        data: { anio: anio },
+        success: function (result) {
+            let data = JSON.parse(result);
+
+            if (data.CODE == 1) {
+                data.DATA.forEach(element => {
+                    $('#documentos table tbody').append(`
+                        <tr>
+                            <td>${element.nombre}</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalDocument" onclick="buscar_documento(${element.id});"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="eliminar_documento(${element.id})"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+        }
+    });
+}
+
+function buscar_documento (id) {
+    $.ajax({
+        url: '../../index.php?c=c_documento&a=buscar',
+        type: 'POST',
+        data: { id: id },
+        success: function (result) {
+            let data = JSON.parse(result);
+
+            if(data.CODE == 1){
+                data = data.DATA[0];
+                $('#id_document').val(data.id);
+                $('#txtName').val(data.nombre);
+                $('#anio_document').val(data.anio);
+            } else {
+                Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+            }
+        }
+    });
+}
+
+function eliminar_documento (id) {
+    Swal.fire({
+        title: '¿Está seguro(a) que desea eliminar este documento?',
+        showCancelButton: true,
+        confirmButtonText: 'Continuar',
+        cancelButtonText: `Cancelar`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../index.php?c=c_documento&a=eliminar',
+                type: 'POST',
+                data: { id: id },
+                success: function (result) {
+                    let data = JSON.parse(result);
+        
+                    if (data.CODE == 1) {
+                        Toast.fire({ icon: 'success', title: data.DESCRIPTION });
+                        listar_documentos($('#selYear').val());
+                    } else {
+                        Toast.fire({ icon: 'error', title: data.DESCRIPTION });
+                    }
+                }
+            });
+        }
+    })
+}
+
+function limpiar_modal () {
+    $('#id_document').val('');
+    $('#anio_document').val('');
+    $('#txtName').val('');
+    $('#modalDocument').modal('toggle');
 }

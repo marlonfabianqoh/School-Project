@@ -252,7 +252,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="selYear" class="form-label">Año:</label>
-                                <select class="form-select" id="selYear" name="selYear" onchange="listar_sedes(selYear.value)" required>
+                                <select class="form-select" id="selYear" name="selYear" onchange="listar_sedes(selYear.value); listar_documentos(selYear.value);" required>
                                     <option value="" selected disabled>Seleccionar</option>
                                 </select>
                             </div>
@@ -285,29 +285,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtPhoto" class="form-label">Adjunte foto:</label>
-                                <input type="file" accept=".jpg, .png, .jpeg, .svg" id="txtPhoto" name="txtPhoto" onchange="changeFilePhoto()" hidden />
-                                <button type="button" class="form-control btn btn-success" onclick="selectFilePhoto()">
-                                    <i class="bi bi-clip"></i>
-                                    Adjuntar
-                                </button>
-                                <label id="lblPhoto" class="form-label"></label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="txtCertificate" class="form-label">Certificado grado anterior:</label>
-                                <input type="file" id="txtCertificate" name="txtCertificate" onchange="changeFileCertificate()" hidden />
-                                <button type="button" class="form-control btn btn-success" onclick="selectFileCertificate()">
-                                    <i class="bi bi-clip"></i>
-                                    Adjuntar
-                                </button>
-                                <label id="lblCertificate" class="form-label"></label>
-                            </div>
-                        </div>
+                        <div id="documentos" class="row m-0 p-0"></div>
 
                         <div class="col-12 mt-5">
                             <button type="submit" class="btn btn-primary">Enviar</button>

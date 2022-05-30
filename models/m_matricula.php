@@ -6,7 +6,7 @@
 			$this->mysqli = Database::connection();
 		}
 
-		public function crear_matricula ($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $foto, $certificado) {
+		public function crear_matricula ($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $documentos) {
 			$query = "SELECT id FROM usuario WHERE usuario = '$usuario';";
 			$result = $this->mysqli->query($query);
 
@@ -49,11 +49,20 @@
 			$result5 = $this->mysqli->query($query);
 
 			$id_matricula = $this->mysqli->insert_id;
-
-			$query = "INSERT INTO documento_matricula (nombre, id_matricula_fk) VALUES ('$foto', $id_matricula), ('$certificado', $id_matricula);";
-			$result6 = $this->mysqli->query($query);
 			
-			if ($result1 && $result2 && $result3 && $result4 && $result5 && $result6) {
+			if (count($documentos)) {
+				$query = "INSERT INTO documento_matricula (nombre, id_matricula_fk) VALUES";
+
+				foreach ($documentos as $key => $value) {
+					$query .= " ('$value', $id_matricula),";
+				}
+
+				$query = rtrim($query, ',');
+				$query .= ";";
+				$result6 = $this->mysqli->query($query);
+			}
+			
+			if ($result1 && $result2 && $result3 && $result4 && $result5) {
 				$response = array('CODE' => 1, 'DESCRIPTION' => 'Preinscripción creada con éxito', 'DATA' => array());
 				return json_encode($response);
 			} else {

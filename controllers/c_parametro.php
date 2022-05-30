@@ -16,7 +16,7 @@
 			$id = $_POST['id'];
 			$cursos = $_POST['txtCourse'];
 			$estudiantes = $_POST['txtStudent'];
-			$anio = $_POST['selYear'];
+			$anio = $_POST['anio'];
 
 			$parametro = new M_parametro();
 

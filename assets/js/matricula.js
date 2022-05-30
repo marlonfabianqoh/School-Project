@@ -27,14 +27,20 @@ const Toast = Swal.mixin({
                     var frm = $("#form-preinscripcion");
 
                     if ($('#txtPass').val() == $('#txtPassConfirm').val()) {
-                        var foto = document.getElementById('txtPhoto').files;
-                        var certificado = document.getElementById('txtCertificate').files;
+                        var valido = true;
 
-                        if (foto.length == 0) {
-                            Toast.fire({ icon: 'warning', title: 'Debe adjuntar la foto' });
-                        } else if (certificado.length == 0) {
-                            Toast.fire({ icon: 'warning', title: 'Debe adjuntarel certificado' });
-                        } else {
+                        if (documentos.length > 0) {
+                            documentos.forEach((element, index) => {
+                                var file = document.getElementById('txtFile'+index).files;
+
+                                if (file.length == 0) {
+                                    Toast.fire({ icon: 'warning', title: 'Debe adjuntar ' + element.nombre });
+                                    valido = false;
+                                }
+                            });
+                        }
+
+                        if (valido) {
                             var formData = new FormData(frm[0]);
                             
                             $.ajax({
@@ -397,34 +403,52 @@ function listar_grados (jornada) {
     }
 }
 
-function selectFilePhoto () {
-    document.getElementById("txtPhoto").click();
+var documentos = [];
+function listar_documentos (anio) {
+    $('#documentos').html('');
+    documentos = [];
+
+    $.ajax({
+        url: '../../index.php?c=c_documento&a=listar',
+        type: 'POST',
+        data: { anio: anio },
+        success: function (result) {
+            let data = JSON.parse(result);
+
+            if (data.CODE == 1) {
+                documentos = data.DATA;
+                data.DATA.forEach((element, index) => {
+                    $('#documentos').append(`
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="txtFile${index}" class="form-label">${element.nombre}:</label>
+                                <input type="file" id="txtFile${index}" name="txtFile${index}" onchange="changeFile(${index})" hidden />
+                                <button type="button" class="form-control btn btn-success" onclick="selectFile(${index})">
+                                    <i class="bi bi-clip"></i>
+                                    Adjuntar
+                                </button>
+                                <label id="lblFile${index}" class="form-label"></label>
+                            </div>
+                        </div>
+                    `);
+                });
+            }
+        }
+    });
 }
 
-function changeFilePhoto () {
-    let file = document.getElementById("txtPhoto");
+function selectFile (index) {
+    document.getElementById("txtFile"+index).click();
+}
+
+function changeFile (index) {
+    let file = document.getElementById("txtFile"+index);
 
     if (file.files.length > 0) {
         let name = file.files[0].name
-        document.getElementById("lblPhoto").innerHTML = name;
+        document.getElementById("lblFile"+index).innerHTML = name;
     } else {
-        document.getElementById("lblPhoto").value = "";
-        document.getElementById("txtPhoto").value = '';
-    }
-}
-
-function selectFileCertificate () {
-    document.getElementById('txtCertificate').click();
-}
-
-function changeFileCertificate () {
-    let file = document.getElementById("txtCertificate");
-
-    if (file.files.length > 0) {
-        let name = file.files[0].name
-        document.getElementById("lblCertificate").innerHTML = name;
-    } else {
-        document.getElementById("lblCertificate").value = "";
-        document.getElementById("txtCertificate").value = '';
+        document.getElementById("lblFile"+index).value = "";
+        document.getElementById("txtFile"+index).value = '';
     }
 }
