@@ -38,7 +38,13 @@
 			$bool = true;
 			$count = 0;
 			$documentos = array();
+			
+			$tipo_documentos = array();
 
+			if (!empty($_POST['tipo_documentos'])) {
+				$tipo_documentos = explode(',', $_POST['tipo_documentos']);
+			}
+			
 			while ($bool) {
 				if (isset($_FILES['txtFile'.$count])) {
 					$documentos[] = $matricula->subir_archivo($_FILES['txtFile'.$count]);
@@ -48,7 +54,7 @@
 				}
 			}
 
-			$response = $matricula->crear_matricula($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $documentos);
+			$response = $matricula->crear_matricula($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $documentos, $tipo_documentos);
 			echo $response;
 		}
 

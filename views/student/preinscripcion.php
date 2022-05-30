@@ -286,6 +286,7 @@
                         </div>
 
                         <div id="documentos" class="row m-0 p-0"></div>
+                        <input type="text" id="tipo_documentos" name="tipo_documentos" value="" hidden>
 
                         <div class="col-12 mt-5">
                             <button type="submit" class="btn btn-primary">Enviar</button>

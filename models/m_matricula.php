@@ -6,7 +6,7 @@
 			$this->mysqli = Database::connection();
 		}
 
-		public function crear_matricula ($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $documentos) {
+		public function crear_matricula ($nombresAcudiente, $apellidosAcudiente, $correoAcudiente, $direccionAcudiente, $ciudadAcudiente, $telefonoAcudiente, $celularAcudiente, $usuario, $clave, $documento, $tipo_documento, $nombres, $apellidos, $correo, $direccion, $ciudad, $telefono, $celular, $fecha_nacimiento, $genero, $preferencia, $tipo_sangre, $observacion, $anio, $grado, $documentos, $tipo_documentos) {
 			$query = "SELECT id FROM usuario WHERE usuario = '$usuario';";
 			$result = $this->mysqli->query($query);
 
@@ -51,10 +51,12 @@
 			$id_matricula = $this->mysqli->insert_id;
 			
 			if (count($documentos)) {
-				$query = "INSERT INTO documento_matricula (nombre, id_matricula_fk) VALUES";
+				$query = "INSERT INTO documento_matricula (nombre, id_matricula_fk, id_tipo_documento_matricula_fk) VALUES";
 
+				$index = 0;
 				foreach ($documentos as $key => $value) {
-					$query .= " ('$value', $id_matricula),";
+					$query .= " ('$value', $id_matricula, $tipo_documentos[$index]),";
+					$index++;
 				}
 
 				$query = rtrim($query, ',');

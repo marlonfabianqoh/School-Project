@@ -404,9 +404,11 @@ function listar_grados (jornada) {
 }
 
 var documentos = [];
+var tipo_documentos = [];
 function listar_documentos (anio) {
     $('#documentos').html('');
     documentos = [];
+    tipo_documentos = [];
 
     $.ajax({
         url: '../../index.php?c=c_documento&a=listar',
@@ -418,6 +420,7 @@ function listar_documentos (anio) {
             if (data.CODE == 1) {
                 documentos = data.DATA;
                 data.DATA.forEach((element, index) => {
+                    tipo_documentos.push(element.id);
                     $('#documentos').append(`
                         <div class="col-md-3">
                             <div class="mb-3">
@@ -432,6 +435,7 @@ function listar_documentos (anio) {
                         </div>
                     `);
                 });
+                $("#tipo_documentos").val(tipo_documentos);
             }
         }
     });
