@@ -208,6 +208,14 @@ CREATE TABLE matricula (
     FOREIGN KEY (id_estado_matricula_fk) REFERENCES estado_matricula(id)
 );
 
+CREATE TABLE tipo_documento_matricula (
+    id INT PRIMARY KEY auto_increment,
+    nombre TEXT NOT NULL,
+    anio INT NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE documento_matricula (
     id INT PRIMARY KEY auto_increment,
     nombre TEXT NOT NULL,
@@ -217,14 +225,6 @@ CREATE TABLE documento_matricula (
     fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_tipo_documento_matricula_fk) REFERENCES tipo_documento_matricula(id),
     FOREIGN KEY (id_matricula_fk) REFERENCES matricula(id)
-);
-
-CREATE TABLE tipo_documento_matricula (
-    id INT PRIMARY KEY auto_increment,
-    nombre TEXT NOT NULL,
-    anio INT NOT NULL,
-    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fecha_modificacion DATETIME ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO anualidad (anio) VALUES 
@@ -1445,3 +1445,6 @@ INSERT INTO estado_matricula (id, nombre) VALUES
     (2, 'Prematriculado'),
     (3, 'Matriculado'),
     (4, 'Rechazado');
+
+INSERT INTO detalle_usuario (id, documento, id_tipo_documento_fk, nombres, apellidos, correo, direccion, id_ciudad_fk, telefono, celular, fecha_nacimiento, id_genero_fk, id_preferencia_fk, id_tipo_sangre_fk, id_usuario_fk, observacion, fecha_creacion, fecha_modificacion) VALUES 
+    (NULL, '1234567890', '1', 'Marlon Fabian', 'Garcia Mendoza', 'mgarcia29@udi.edu.co', 'Calle 1 # 1 - 2', '851', '1234567890', '1234567890', '2022-06-08 14:53:03.000000', '1', '1', '7', '1', NULL, current_timestamp(), NULL);

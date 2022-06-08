@@ -4,7 +4,7 @@ Importar base de datos matriculapp
 
 usuarios:
 
-admin/admin
+administrador/administrador
 coordinador/coordinador
 psicologo/psicologo
 secretaria/secretaria
